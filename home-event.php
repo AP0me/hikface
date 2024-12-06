@@ -1,6 +1,4 @@
 <?php
-$jsonData = file_get_contents('event-type-map.json');
-$logsTableValueMap = json_decode($jsonData);
 
 class LogRow{
   public $employeeID;
@@ -84,7 +82,7 @@ function fetchAcsEvent($logsTableValueMap)
         $info->cardNo??null,
         $logsTableValueMap->majors->{$info->major}->minors->{$info->minor}??null,
         $info->time??null,
-        "-"
+        (isset($info->pictureURL)?$info->pictureURL.'?1733473756778=&token=8kFDk81B8bNarQBZ3nZ6UDIButtDZOdJ':"-"),
       );
     }
   }
@@ -95,13 +93,14 @@ function fetchAcsEvent($logsTableValueMap)
 }
 
 // Call the function
+$logsTableValueMap = json_decode(file_get_contents('event-type-map.json'));
 $processedLogs = fetchAcsEvent($logsTableValueMap);
-foreach ($processedLogs as $log) {
-  echo "Employee ID: " . $log->employeeID . "<br>";
-  echo "Name: " . $log->name . "<br>";
-  echo "Card Number: " . $log->cardNum . "<br>";
-  echo "Event Type: " . $log->eventType . "<br>";
-  echo "Time: " . $log->time . "<br>";
-  echo "Operation: " . $log->operation . "<br>";
-  echo "<hr>";
-}
+// foreach ($processedLogs as $log) {
+//   echo "Employee ID: " . $log->employeeID . "<br>";
+//   echo "Name: " . $log->name . "<br>";
+//   echo "Card Number: " . $log->cardNum . "<br>";
+//   echo "Event Type: " . $log->eventType . "<br>";
+//   echo "Time: " . $log->time . "<br>";
+//   echo "Operation: " . $log->operation . "<br>";
+//   echo "<hr>";
+// }
