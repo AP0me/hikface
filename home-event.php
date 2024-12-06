@@ -95,12 +95,33 @@ function fetchAcsEvent($logsTableValueMap)
 // Call the function
 $logsTableValueMap = json_decode(file_get_contents('event-type-map.json'));
 $processedLogs = fetchAcsEvent($logsTableValueMap);
-// foreach ($processedLogs as $log) {
-//   echo "Employee ID: " . $log->employeeID . "<br>";
-//   echo "Name: " . $log->name . "<br>";
-//   echo "Card Number: " . $log->cardNum . "<br>";
-//   echo "Event Type: " . $log->eventType . "<br>";
-//   echo "Time: " . $log->time . "<br>";
-//   echo "Operation: " . $log->operation . "<br>";
-//   echo "<hr>";
-// }
+
+ ?>
+ 
+ <table border="1">
+ <thead>
+     <tr>
+         <th>Calisan Kimligi</th>
+         <th>Isim</th>
+         <th>Kart No.</th>
+         <th>Olay Turleri</th>
+         <th>Zaman</th>
+         <th>Isletim</th>
+     </tr>
+ </thead>
+ <tbody>
+     <?php
+     // Loop through the array of LogRow objects and display each object's properties in the table
+     foreach ($processedLogs as $logRow) {
+         echo "<tr>";
+         echo "<td>" . $logRow->employeeID . "</td>";
+         echo "<td>" . htmlspecialchars($logRow->name) . "</td>";
+         echo "<td>" . htmlspecialchars($logRow->cardNum) . "</td>";
+         echo "<td>" . htmlspecialchars($logRow->eventType) . "</td>";
+         echo "<td>" . htmlspecialchars($logRow->time) . "</td>";
+         echo "<td><img src='" .htmlspecialchars($logRow->operation) . "'></td>";
+         echo "</tr>";
+     }
+     ?>
+ </tbody>
+</table>
