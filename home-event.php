@@ -1,6 +1,6 @@
 <?php
 $jsonData = file_get_contents('event-type-map.json');
-$logsTableValueMap = json_decode($jsonData, true);
+$logsTableValueMap = json_decode($jsonData);
 
 class LogRow{
   public $employeeID;
@@ -75,16 +75,14 @@ function fetchAcsEvent($logsTableValueMap)
     echo "cURL Error: " . curl_error($ch);
   }
   else {
-    $processedLogs = [
-      
-    ];
+    $processedLogs = [];
     $infos = (array)($response->AcsEvent->InfoList);
     foreach ($infos as $info) {
       $processedLogs[] = new LogRow(
         $info->employeeNoString??null,
-        $info->employeeName??null,
+        $info->name??null,
         $info->cardNo??null,
-        $logsTableValueMap[$info->major][$info->minor]??null,
+        $logsTableValueMap->majors->{$info->major}->minors->{$info->minor}??null,
         $info->time??null,
         "-"
       );
@@ -98,4 +96,12 @@ function fetchAcsEvent($logsTableValueMap)
 
 // Call the function
 $processedLogs = fetchAcsEvent($logsTableValueMap);
-var_dump($processedLogs);
+foreach ($processedLogs as $log) {
+  echo "Employee ID: " . $log->employeeID . "<br>";
+  echo "Name: " . $log->name . "<br>";
+  echo "Card Number: " . $log->cardNum . "<br>";
+  echo "Event Type: " . $log->eventType . "<br>";
+  echo "Time: " . $log->time . "<br>";
+  echo "Operation: " . $log->operation . "<br>";
+  echo "<hr>";
+}

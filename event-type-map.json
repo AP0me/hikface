@@ -31,7 +31,8 @@
       "name": "Remote",
       "minors": {
         "21": "Door Unlocked",
-        "22": "Door Locked"
+        "22": "Door Locked",
+        "75": "Authenticated via Face"
       }
     }
   }
