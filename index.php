@@ -10,6 +10,7 @@
 <body>
     <a href="open-door.php"><button>Open</button></a>
     <a href="close-door.php"><button>Close</button></a>
+    <a href="home-event.php"><button>Events</button></a>
 </body>
 
 </html>

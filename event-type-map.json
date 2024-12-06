@@ -1,0 +1,39 @@
+{
+  "majors": {
+    "1": {
+      "name": "Device",
+      "minors": {
+        "1028": "Device Tampered"
+      }
+    },
+    "2": {
+      "name": "Remote",
+      "minors": {
+        "1024": "Device Powering",
+        "1031": "Network Recovered",
+        "39": "Network Disconnected"
+      }
+    },
+    "3": {
+      "name": "Remote",
+      "minors": {
+        "112": "Remote Login",
+        "113": "Remote Logout",
+        "1024": "Remote Unlock Door"
+      }
+    },
+    "4": {
+      "name": "Remote",
+      "minors": {
+      }
+    },
+    "5": {
+      "name": "Remote",
+      "minors": {
+        "21": "Door Unlocked",
+        "22": "Door Locked",
+        "75": "Authenticated via Face"
+      }
+    }
+  }
+}
