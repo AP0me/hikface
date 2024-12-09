@@ -37,5 +37,6 @@ function doorCommand($host, $command){
 
   // Close cURL session
   curl_close($ch);
-  header("location:index.php");
+  $serverRoot = $_SERVER['DOCUMENT_ROOT'];
+  header("location:$serverRoot/index.php");
 }
