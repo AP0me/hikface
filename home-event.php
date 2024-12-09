@@ -10,12 +10,12 @@ class LogRow
   public $operation;
   public function __construct($employeeID, $name, $cardNum, $eventType, $time, $operation,)
   {
-    $this->employeeID = $employeeID;
-    $this->name = $name;
-    $this->cardNum = $cardNum;
-    $this->eventType = $eventType;
-    $this->time = $time;
-    $this->operation = $operation;
+  $this->employeeID = $employeeID;
+  $this->name = $name;
+  $this->cardNum = $cardNum;
+  $this->eventType = $eventType;
+  $this->time = $time;
+  $this->operation = $operation;
   }
 }
 
@@ -25,16 +25,16 @@ function fetchAcsEvent($logsTableValueMap, $host)
 
   // Request body
   $data = json_encode([
-    "AcsEventCond" => [
-      "searchID" => "57f48f21928740cb86119fbb878c2c8f",
-      "searchResultPosition" => 0,
-      "maxResults" => 20,
-      "major" => 0,
-      "minor" => 0,
-      "startTime" => "2024-12-06T00:00:00+08:00",
-      "endTime" => "2024-12-06T23:59:59+08:00",
-      "timeReverseOrder" => true
-    ]
+  "AcsEventCond" => [
+    "searchID" => "57f48f21928740cb86119fbb878c2c8f",
+    "searchResultPosition" => 0,
+    "maxResults" => 20,
+    "major" => 0,
+    "minor" => 0,
+    "startTime" => "2024-12-06T00:00:00+08:00",
+    "endTime" => "2024-12-06T23:59:59+08:00",
+    "timeReverseOrder" => true
+  ]
   ]);
 
   // Initialize cURL session
@@ -55,16 +55,16 @@ function fetchAcsEvent($logsTableValueMap, $host)
 
   // Set additional headers
   $headers = [
-    "Content-Type: application/x-www-form-urlencoded; charset=UTF-8",
-    "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
-    "Accept: */*",
-    "Accept-Language: en-US,en;q=0.5",
-    "If-Modified-Since: 0",
-    "SessionTag: WIF1HDYXZHMY3SYCYFKDGN7N7QU5TSKFESKVK18OOCUSXVAJFTA9TIIXHELXZIND",
-    "X-Requested-With: XMLHttpRequest",
-    "Pragma: no-cache",
-    "Cache-Control: no-cache",
-    "skip_zrok_interstitial: 1",
+  "Content-Type: application/x-www-form-urlencoded; charset=UTF-8",
+  "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
+  "Accept: */*",
+  "Accept-Language: en-US,en;q=0.5",
+  "If-Modified-Since: 0",
+  "SessionTag: WIF1HDYXZHMY3SYCYFKDGN7N7QU5TSKFESKVK18OOCUSXVAJFTA9TIIXHELXZIND",
+  "X-Requested-With: XMLHttpRequest",
+  "Pragma: no-cache",
+  "Cache-Control: no-cache",
+  "skip_zrok_interstitial: 1",
   ];
   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -73,20 +73,20 @@ function fetchAcsEvent($logsTableValueMap, $host)
 
   // Check for errors
   if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
+  echo "cURL Error: " . curl_error($ch);
   } else {
-    $processedLogs = [];
-    $infos = (array)($response->AcsEvent->InfoList);
-    foreach ($infos as $info) {
-      $processedLogs[] = new LogRow(
-        $info->employeeNoString ?? '-',
-        $info->name ?? '-',
-        $info->cardNo ?? '-',
-        $logsTableValueMap->majors->{$info->major}->minors->{$info->minor} ?? '-',
-        $info->time ?? '-',
-        (isset($info->pictureURL) ? $info->pictureURL . '?1733486960563=&token=sHxbknNdDji499wYH2pddza3SIRSRMMm' : "-"),
-      );
-    }
+  $processedLogs = [];
+  $infos = (array)($response->AcsEvent->InfoList);
+  foreach ($infos as $info) {
+    $processedLogs[] = new LogRow(
+      $info->employeeNoString ?? '-',
+      $info->name ?? '-',
+      $info->cardNo ?? '-',
+      $logsTableValueMap->majors->{$info->major}->minors->{$info->minor} ?? '-',
+      $info->time ?? '-',
+      (isset($info->pictureURL) ? $info->pictureURL . '?1733486960563=&token=sHxbknNdDji499wYH2pddza3SIRSRMMm' : "-"),
+    );
+  }
   }
 
   // Close cURL session
@@ -101,34 +101,34 @@ $processedLogs = fetchAcsEvent($logsTableValueMap, $host);
 ?>
 <style>
   .img-icon-holder {
-    display: grid; 
-    justify-content: center;
+  display: grid; 
+  justify-content: center;
   }
   .img-icon {
-    width: 20px;
-    height: 20px;
-    border: 1px solid black;
-    border-radius: 5px;
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+  border-radius: 5px;
   }
 </style>
 <table border="1">
   <thead>
-    <tr>
-      <th>Calisan Kimligi</th>
-      <th>Isim</th>
-      <th>Kart No.</th>
-      <th>Olay Turleri</th>
-      <th>Zaman</th>
-      <th>Isletim</th>
-    </tr>
+  <tr>
+    <th>Calisan Kimligi</th>
+    <th>Isim</th>
+    <th>Kart No.</th>
+    <th>Olay Turleri</th>
+    <th>Zaman</th>
+    <th>Isletim</th>
+  </tr>
   </thead>
   <tbody>
-    <?php
-    // Loop through the array of LogRow objects and display each object's properties in the table
-    foreach ($processedLogs as $logRow) {
-      require 'event-row.php';
-    }
-    ?>
+  <?php
+  // Loop through the array of LogRow objects and display each object's properties in the table
+  foreach ($processedLogs as $logRow) {
+    require 'event-row.php';
+  }
+  ?>
   </tbody>
 </table>
 <script>

@@ -21,7 +21,7 @@ function doorCommand($host, $command){
 
   // Set additional headers
   $headers = [
-    "Content-Type: application/x-www-form-urlencoded; charset=UTF-8",
+  "Content-Type: application/x-www-form-urlencoded; charset=UTF-8",
   ];
   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -30,9 +30,9 @@ function doorCommand($host, $command){
 
   // Check for errors
   if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
+  echo "cURL Error: " . curl_error($ch);
   } else {
-    echo "Response: " . $response;
+  echo "Response: " . $response;
   }
 
   // Close cURL session
