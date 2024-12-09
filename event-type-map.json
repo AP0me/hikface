@@ -17,6 +17,7 @@
     "3": {
       "name": "Remote",
       "minors": {
+        "80" : "Local: Login",
         "112": "Remote Login",
         "113": "Remote Logout",
         "1024": "Remote Unlock Door"

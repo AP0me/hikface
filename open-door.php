@@ -1,7 +1,8 @@
 <?php
-function open()
+include_once 'hostname.php';
+function open($host)
 {
-    $url = "https://192.168.0.116/ISAPI/AccessControl/RemoteControl/door/1";
+    $url = "https://$host/ISAPI/AccessControl/RemoteControl/door/1";
     $data = '<RemoteControlDoor version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema"><cmd>open</cmd></RemoteControlDoor>';
 
     // Initialize cURL session
@@ -40,4 +41,4 @@ function open()
     curl_close($ch);
     header("location:index.php");
 }
-open();
+open($host);

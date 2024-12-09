@@ -1,13 +1,15 @@
 <?php
-
-class LogRow{
+include_once 'hostname.php';
+class LogRow
+{
   public $employeeID;
   public $name;
   public $cardNum;
   public $eventType;
   public $time;
   public $operation;
-  public function __construct($employeeID, $name, $cardNum, $eventType, $time, $operation, ){
+  public function __construct($employeeID, $name, $cardNum, $eventType, $time, $operation,)
+  {
     $this->employeeID = $employeeID;
     $this->name = $name;
     $this->cardNum = $cardNum;
@@ -17,9 +19,9 @@ class LogRow{
   }
 }
 
-function fetchAcsEvent($logsTableValueMap)
+function fetchAcsEvent($logsTableValueMap, $host)
 {
-  $url = "https://192.168.0.116/ISAPI/AccessControl/AcsEvent?format=json&security=1&iv=90b54a4c844c94bfe780ecf7b535a00e";
+  $url = "https://$host/ISAPI/AccessControl/AcsEvent?format=json&security=1&iv=90b54a4c844c94bfe780ecf7b535a00e";
 
   // Request body
   $data = json_encode([
@@ -61,7 +63,8 @@ function fetchAcsEvent($logsTableValueMap)
     "SessionTag: WIF1HDYXZHMY3SYCYFKDGN7N7QU5TSKFESKVK18OOCUSXVAJFTA9TIIXHELXZIND",
     "X-Requested-With: XMLHttpRequest",
     "Pragma: no-cache",
-    "Cache-Control: no-cache"
+    "Cache-Control: no-cache",
+    "skip_zrok_interstitial: 1",
   ];
   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
@@ -71,18 +74,17 @@ function fetchAcsEvent($logsTableValueMap)
   // Check for errors
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
-  }
-  else {
+  } else {
     $processedLogs = [];
     $infos = (array)($response->AcsEvent->InfoList);
     foreach ($infos as $info) {
       $processedLogs[] = new LogRow(
-        $info->employeeNoString??null,
-        $info->name??null,
-        $info->cardNo??null,
-        $logsTableValueMap->majors->{$info->major}->minors->{$info->minor}??null,
-        $info->time??null,
-        (isset($info->pictureURL)?$info->pictureURL.'?1733473756778=&token=8kFDk81B8bNarQBZ3nZ6UDIButtDZOdJ':"-"),
+        $info->employeeNoString ?? '-',
+        $info->name ?? '-',
+        $info->cardNo ?? '-',
+        $logsTableValueMap->majors->{$info->major}->minors->{$info->minor} ?? '-',
+        $info->time ?? '-',
+        (isset($info->pictureURL) ? $info->pictureURL . '?1733486960563=&token=sHxbknNdDji499wYH2pddza3SIRSRMMm' : "-"),
       );
     }
   }
@@ -94,34 +96,40 @@ function fetchAcsEvent($logsTableValueMap)
 
 // Call the function
 $logsTableValueMap = json_decode(file_get_contents('event-type-map.json'));
-$processedLogs = fetchAcsEvent($logsTableValueMap);
+$processedLogs = fetchAcsEvent($logsTableValueMap, $host);
 
- ?>
- 
- <table border="1">
- <thead>
-     <tr>
-         <th>Calisan Kimligi</th>
-         <th>Isim</th>
-         <th>Kart No.</th>
-         <th>Olay Turleri</th>
-         <th>Zaman</th>
-         <th>Isletim</th>
-     </tr>
- </thead>
- <tbody>
-     <?php
-     // Loop through the array of LogRow objects and display each object's properties in the table
-     foreach ($processedLogs as $logRow) {
-         echo "<tr>";
-         echo "<td>" . $logRow->employeeID . "</td>";
-         echo "<td>" . htmlspecialchars($logRow->name) . "</td>";
-         echo "<td>" . htmlspecialchars($logRow->cardNum) . "</td>";
-         echo "<td>" . htmlspecialchars($logRow->eventType) . "</td>";
-         echo "<td>" . htmlspecialchars($logRow->time) . "</td>";
-         echo "<td><img src='" .htmlspecialchars($logRow->operation) . "'></td>";
-         echo "</tr>";
-     }
-     ?>
- </tbody>
+?>
+<style>
+  .img-icon-holder {
+    display: grid;
+    justify-content: center;
+  }
+  .img-icon {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+  }
+</style>
+<table border="1">
+  <thead>
+    <tr>
+      <th>Calisan Kimligi</th>
+      <th>Isim</th>
+      <th>Kart No.</th>
+      <th>Olay Turleri</th>
+      <th>Zaman</th>
+      <th>Isletim</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php
+    // Loop through the array of LogRow objects and display each object's properties in the table
+    foreach ($processedLogs as $logRow) {
+      require 'event-row.php';
+    }
+    ?>
+  </tbody>
 </table>
+<script>
+</script>
