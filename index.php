@@ -8,8 +8,8 @@
 </head>
 
 <body>
-    <a href="open-door.php"><button>Open</button></a>
-    <a href="close-door.php"><button>Close</button></a>
+    <a href="door/open-door.php"><button>Open</button></a>
+    <a href="door/close-door.php"><button>Close</button></a>
     <a href="home-event.php"><button>Events</button></a>
 </body>
 

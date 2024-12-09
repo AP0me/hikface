@@ -101,7 +101,7 @@ $processedLogs = fetchAcsEvent($logsTableValueMap, $host);
 ?>
 <style>
   .img-icon-holder {
-    display: grid;
+    display: grid; 
     justify-content: center;
   }
   .img-icon {
