@@ -1,5 +1,5 @@
 <?php
-function doorCommand($host, $command){
+function doorCommand($host, $command, $redirectURL){
   $url = "https://$host/ISAPI/AccessControl/RemoteControl/door/1";
   $data = '<RemoteControlDoor version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema"><cmd>'.$command.'</cmd></RemoteControlDoor>';
 
@@ -37,6 +37,6 @@ function doorCommand($host, $command){
 
   // Close cURL session
   curl_close($ch);
-  $serverRoot = $_SERVER['DOCUMENT_ROOT'];
-  header("location:$serverRoot/index.php");
+  header("location: $redirectURL");
+  exit;
 }

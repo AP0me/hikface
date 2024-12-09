@@ -6,7 +6,7 @@
   <td><?php echo htmlspecialchars($logRow->time) ?></td>
   <td class='img-icon-holder'>
   <a href="<?php echo $logRow->operation ?>">
-    <img class='img-icon' src='./img/img-alt-svgrepo-com.svg'>
+    <img class='img-icon' src='./img/face-auth-img.svg'>
   </a>
   </td>
 </tr>
