@@ -83,7 +83,10 @@ for ($i = 0; $i < count($response->UserInfoSearch->UserInfo); $i++) {
 $numberOfUsers = count($response->UserInfoSearch->UserInfo);
 $numberOfEvents = fetchAcsEventTotalNum($host);
 
-print_r(xml_parse(fetchDeviceInfo($host)));
+$parser = xml_parser_create();
+foreach (fetchDeviceInfo($host) as $key => $value) {
+  print_r($key . ': ' . $value . '<br>');
+}
 print_r(json_encode($numberOfUsers).'<br>');
 print_r(json_encode($accessMethodCounts).'<br>');
 print_r(json_encode($numberOfusersWithAccessMethod).'<br>');

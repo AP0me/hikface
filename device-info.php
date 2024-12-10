@@ -1,4 +1,39 @@
 <?php
+class BasicInfo
+{
+  public $deviceName;
+  public $language;
+  public $model;
+  public $serialNumber;
+  public $firmwareVersion;
+  public $encodingVersion;
+  public $webVersion;
+  public $pluginVersion;
+  public $avaliableCameraCount;
+  public $IOInputNumber;
+  public $IOOutputNumber;
+  public $lockNumber;
+  public $localRS485Number;
+  public $alarmInputCount;
+  public $alarmOutputCount;
+  public function __construct($deviceName, $language, $model, $serialNumber, $firmwareVersion, $encodingVersion, $webVersion, $pluginVersion, $avaliableCameraCount, $IOInputNumber, $IOOutputNumber, $lockNumber, $localRS485Number, $alarmInputCount, $alarmOutputCount){
+    $this->deviceName = $deviceName;
+    $this->language = $language;
+    $this->model = $model;
+    $this->serialNumber = $serialNumber;
+    $this->firmwareVersion = $firmwareVersion;
+    $this->encodingVersion = $encodingVersion;
+    $this->webVersion = $webVersion;
+    $this->pluginVersion = $pluginVersion;
+    $this->avaliableCameraCount = $avaliableCameraCount;
+    $this->IOInputNumber = $IOInputNumber;
+    $this->IOOutputNumber = $IOOutputNumber;
+    $this->lockNumber = $lockNumber;
+    $this->localRS485Number = $localRS485Number;
+    $this->alarmInputCount = $alarmInputCount;
+    $this->alarmOutputCount = $alarmOutputCount;
+  }
+}
 function fetchDeviceInfo($host)
 {
   $url = "https://$host/ISAPI/System/deviceInfo?format=json";
@@ -39,10 +74,27 @@ function fetchDeviceInfo($host)
     echo "cURL Error: " . curl_error($ch);
   } else {
     $xml = new SimpleXMLElement($response);
-    var_dump($xml);
+    // print_r((array)$xml);
+    $basicInfo = new BasicInfo(
+      (string)$xml->deviceName,
+      'English',
+      (string)$xml->model,
+      (string)$xml->serialNumber,
+      (string)$xml->firmwareVersion,
+      (string)$xml->encoderVersion,
+      'V5.1.27_R0401 build 230722',
+      'V3.0.7.41',
+      '1',
+      '0',
+      '0',
+      (int)$xml->electroLockNum,
+      (int)$xml->RS485Num,
+      '0',
+      (int)$xml->alarmOutNum,
+    );
+    return $basicInfo;
   }
 
   // Close cURL session
   curl_close($ch);
 }
-
