@@ -84,8 +84,10 @@ $numberOfUsers = count($response->UserInfoSearch->UserInfo);
 $numberOfEvents = fetchAcsEventTotalNum($host);
 
 $parser = xml_parser_create();
+
+print_r('DeviceInfo<br>');
 foreach (fetchDeviceInfo($host) as $key => $value) {
-  print_r($key . ': ' . $value . '<br>');
+  print_r('--'.$key . ': ' . $value . '<br>');
 }
 print_r(json_encode($numberOfUsers).'<br>');
 print_r(json_encode($accessMethodCounts).'<br>');

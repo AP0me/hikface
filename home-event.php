@@ -10,34 +10,40 @@ $numberOfEvents = count($processedLogs);
 ?>
 <style>
   .img-icon-holder {
-  display: grid; 
-  justify-content: center;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .img-icon-anchor{
+    display: grid;
+    justify-content: center;
+    align-self: center;
   }
   .img-icon {
-  width: 20px;
-  height: 20px;
-  border: 1px solid black;
-  border-radius: 5px;
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
   }
 </style>
 <table border="1">
   <thead>
-  <tr>
-    <th>Calisan Kimligi</th>
-    <th>Isim</th>
-    <th>Kart No.</th>
-    <th>Olay Turleri</th>
-    <th>Zaman</th>
-    <th>Isletim</th>
-  </tr>
+    <tr>
+      <th>Calisan Kimligi</th>
+      <th>Isim</th>
+      <th>Kart No.</th>
+      <th>Olay Turleri</th>
+      <th>Zaman</th>
+      <th>Isletim</th>
+    </tr>
   </thead>
   <tbody>
-  <?php
-  // Loop through the array of LogRow objects and display each object's properties in the table
-  foreach ($processedLogs as $logRow) {
-    require 'event-row.php';
-  }
-  ?>
+    <?php
+    // Loop through the array of LogRow objects and display each object's properties in the table
+    foreach ($processedLogs as $logRow) {
+      require 'event-row.php';
+    }
+    ?>
   </tbody>
 </table>
 <script>
