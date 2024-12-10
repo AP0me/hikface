@@ -1,4 +1,10 @@
-<?php require_once  $_SERVER['DOCUMENT_ROOT'] . '/assets/css/root-css.php'; ?>
+<?php
+  if(!isset($_GET['side'])){
+    $side = 'overview';
+  }
+  else{ $side = $_GET['side']; }
+  require_once  $_SERVER['DOCUMENT_ROOT'] . '/assets/css/root-css.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -49,7 +55,7 @@
     <?php require_once  $_SERVER['DOCUMENT_ROOT'] . '/sidebar.php'; ?>
     <div class="content">
       <?php
-        switch ($_GET['side']) {
+        switch ($side) {
           case 'overview':
             require $_SERVER['DOCUMENT_ROOT'].'/content/overview.php';
             break;
