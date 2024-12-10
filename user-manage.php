@@ -1,11 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
-class SecUser
-{
-  id,
-  name,
-  level,
+class SecUser{
+
 }
 function fetchSecurityUsers($host, $queryParams)
 {
