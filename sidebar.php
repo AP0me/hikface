@@ -49,31 +49,32 @@
   }
 </style>
 <div class="sidebar">
-  <a href="/index.php?side=overview" class="side-item un-a" chosen="<?= ($_GET['side'] == 'overview') ? 'yes' : 'no' ?>">
+  <a href="/index.php?side=overview" class="side-item un-a" chosen="<?= ($side == 'overview') ? 'yes' : 'no' ?>">
     <div class="side-item-img">
       <img src="/img/presentation-chart.svg" alt="presentation-chart.svg">
     </div>
     <div class="side-item-text">Overview</div>
   </a>
-  <a href="/index.php?side=account" class="side-item un-a" chosen="<?= ($_GET['side'] == 'account') ? 'yes' : 'no' ?>">
+  <a href="/index.php?side=account" class="side-item un-a" chosen="<?= ($side == 'account') ? 'yes' : 'no' ?>">
     <div class="side-item-img">
       <img src="/img/account.svg" alt="account.svg">
     </div>
     <div class="side-item-text">Person Management</div>
   </a>
-  <a href="/index.php?side=logs" class="side-item un-a" chosen="<?= ($_GET['side'] == 'logs') ? 'yes' : 'no' ?>">
+  <a href="/index.php?side=logs" class="side-item un-a" chosen="<?= ($side == 'logs') ? 'yes' : 'no' ?>">
     <div class="side-item-img">
+      
       <img src="/img/logs.svg" alt="logs.svg">
     </div>
     <div class="side-item-text">Event Search</div>
   </a>
-  <a href="/index.php?side=configuration" class="side-item un-a" chosen="<?= ($_GET['side'] == 'configuration') ? 'yes' : 'no' ?>">
+  <a href="/index.php?side=configuration" class="side-item un-a" chosen="<?= ($side == 'configuration') ? 'yes' : 'no' ?>">
     <div class="side-item-img">
       <img src="/img/gear.svg" alt="gear.svg">
     </div>
     <div class="side-item-text">Configuration</div>
   </a>
-  <a href="/index.php?side=maintenance" class="side-item un-a" chosen="<?= ($_GET['side'] == 'maintenance') ? 'yes' : 'no' ?>">
+  <a href="/index.php?side=maintenance" class="side-item un-a" chosen="<?= ($side == 'maintenance') ? 'yes' : 'no' ?>">
     <div class="side-item-img">
       <img src="/img/computer-sec.svg" alt="computer-sec.svg">
     </div>

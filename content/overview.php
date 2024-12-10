@@ -47,7 +47,8 @@ $doorStatus = $doorStatusMap[$doorStatusNumberMap[$doorStatusNumber]];
   }
 
   .dpanel-camera img {
-    height: 144px;
+    width: 100%;
+    height: 100%;
   }
 
   .door-name {
@@ -102,12 +103,16 @@ $doorStatus = $doorStatusMap[$doorStatusNumberMap[$doorStatusNumber]];
   .change-btn-text{
     color: var(--content-text);
   }
+  .logs-panel{
+    max-height: 50vh;
+    overflow: auto;
+  }
 </style>
 <div class="door-n-logs content-panel">
   <div class="door-panel">
     <div class="dpanel-title">Door Status</div>
     <div class="dpanel-camera">
-      <img class="stacked" src="/img/camera-img.png" alt="camera-img.png">
+      <img class="stacked camera-img" src="/img/camera-img.png" alt="camera-img.png">
       <div class="stacked tight door-name">Door1</div>
     </div>
     <div class="dpanel-status">
@@ -137,6 +142,6 @@ $doorStatus = $doorStatusMap[$doorStatusNumberMap[$doorStatusNumber]];
   </div>
   <div style="background-color: lightgray"></div>
   <div class="logs-panel">
-
+    <?php require $_SERVER['DOCUMENT_ROOT'].'/home-event.php'; ?>
   </div>
 </div>

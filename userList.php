@@ -1,12 +1,17 @@
 <?php
-    $url = 'https://192.168.0.116/ISAPI/AccessControl/UserInfo/Search?format=json&security=1&iv=126193887ffb915737e0c76173e18f83';
-    $data = json_encode([
-        "UserInfoSearchCond" => [
-            "searchID" => "7323fd9b3a9c4f4ba427384263a8eb14",
-            "maxResults" => 20,
-            "searchResultPosition" => 0
-        ]
-    ]);
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/event-number.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/device-info.php';
+function userAccessMethods($host)
+{
+  $url = "https://$host/ISAPI/AccessControl/UserInfo/Search?format=json&security=1&iv=126193887ffb915737e0c76173e18f83";
+  $data = json_encode([
+    "UserInfoSearchCond" => [
+      "searchID" => "7323fd9b3a9c4f4ba427384263a8eb14",
+      "maxResults" => 20,
+      "searchResultPosition" => 0
+    ]
+  ]);
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -32,39 +37,59 @@
   $response = json_decode(curl_exec($ch));
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
+  } else {
+    return $response;
   }
-  else {
-    print_r($response->UserInfoSearch);
-    $numOfFP=0;
-    $numOfCard=0;
-    $numOfFace=0;
-    for($i=0;$i<count($response->UserInfoSearch->UserInfo);$i++){
-       $numOfFP+=$response->UserInfoSearch->UserInfo[$i]->numOfFP;
-       $numOfCard+=$response->UserInfoSearch->UserInfo[$i]->numOfCard;
-       $numOfFace+=$response->UserInfoSearch->UserInfo[$i]->numOfFace; 
-    }
-   echo '<br>'.$numOfFP.'<br>'.$numOfCard."<br>".$numOfFace;
-  echo '<br>';
-  $existFace=0;
-  $existFP=0;
-  $existCard=0;
-      for($i=0;$i<count($response->UserInfoSearch->UserInfo);$i++){
-        if($response->UserInfoSearch->UserInfo[$i]->numOfFace!=0){
-          $existFace+=1;
-         }else{
-           $existFace=$existFace;
-         }
-         if($response->UserInfoSearch->UserInfo[$i]->numOfCard!=0){
-          $existCard+=1;
-         }else{
-           $existCard=$existCard;
-         }
-         if($response->UserInfoSearch->UserInfo[$i]->numOfFP!=0){
-          $existFP+=1;
-         }else{
-           $existFP=$existFP;
-         }
-      }
-      echo $existFace.'<br>'.$existFP.'<br>'.$existCard.'<br>';
+}
 
+class AccessMethodCounts
+{
+  public $face = 0;
+  public $fingerPrint = 0;
+  public $card = 0;
+}
+
+class NumberOfUsersWithAccessMethod
+{
+  public $face = 0;
+  public $fingerPrint = 0;
+  public $card = 0;
+}
+
+$response = userAccessMethods($host);
+
+$accessMethodCounts = new AccessMethodCounts();
+for ($i = 0; $i < count($response->UserInfoSearch->UserInfo); $i++) {
+  $currentUserInfo = $response->UserInfoSearch->UserInfo[$i];
+  $accessMethodCounts->fingerPrint += $currentUserInfo->numOfFP;
+  $accessMethodCounts->card += $currentUserInfo->numOfCard;
+  $accessMethodCounts->face += $currentUserInfo->numOfFace;
+}
+
+$numberOfusersWithAccessMethod = new NumberOfUsersWithAccessMethod();
+for ($i = 0; $i < count($response->UserInfoSearch->UserInfo); $i++) {
+  $currentUserInfo = $response->UserInfoSearch->UserInfo[$i];
+  if ($currentUserInfo->numOfFace != 0) {
+    $numberOfusersWithAccessMethod->face += 1;
   }
+  if ($currentUserInfo->numOfCard != 0) {
+    $numberOfusersWithAccessMethod->card += 1;
+  }
+  if ($currentUserInfo->numOfFP != 0) {
+    $numberOfusersWithAccessMethod->fingerPrint += 1;
+  }
+}
+
+$numberOfUsers = count($response->UserInfoSearch->UserInfo);
+$numberOfEvents = fetchAcsEventTotalNum($host);
+
+$parser = xml_parser_create();
+
+print_r('DeviceInfo<br>');
+foreach (fetchDeviceInfo($host) as $key => $value) {
+  print_r('--'.$key . ': ' . $value . '<br>');
+}
+print_r(json_encode($numberOfUsers).'<br>');
+print_r(json_encode($accessMethodCounts).'<br>');
+print_r(json_encode($numberOfusersWithAccessMethod).'<br>');
+print_r($numberOfEvents.'<br>');
