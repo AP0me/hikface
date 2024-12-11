@@ -42,8 +42,10 @@
 
   .content{
     display: grid;
+    grid-template-rows: max-content max-content;
     padding: 20px;
     background-color: var(--content-wrap-bg);
+    gap: 20px;
   }
 </style>
 

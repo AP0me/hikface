@@ -1,19 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
-
-class SystemTime
-{
-  public $datetime;
-  public $zone;
-  public $syncMode;
-  public function __construct($datetime, $zone, $syncMode) {
-    $this->datetime = $datetime;
-    $this->zone = $zone;
-    $this->syncMode = $syncMode;
-  }
-}
-function fetchSystemTime($host)
+function updateSystemTime($host, $xmlBody)
 {
   $url = "https://$host/ISAPI/System/time";
 
@@ -24,25 +11,22 @@ function fetchSystemTime($host)
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
-
-  // Set authentication credentials
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); // Set method to PUT
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlBody); // Set XML body
 
   // Set headers
   $headers = [
     "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
     "Accept: */*",
     "Accept-Language: en-US,en;q=0.5",
+    "Content-Type: application/x-www-form-urlencoded; charset=UTF-8",
     "If-Modified-Since: 0",
-    "SessionTag: VQ83QPI70ZS9J62WL256NI3S595SOAM9OBTKG9VKI2P8KBRDWLKZ7WMRZ2FLJWSZ",
+    "SessionTag: E7DY2UL5OF4J2NCRDNL1M06MMI3SGI37TCAMC49D73KXVXLSZE4Y5Z3NTL2Q76GM",
     "X-Requested-With: XMLHttpRequest",
     "Sec-Fetch-Dest: empty",
     "Sec-Fetch-Mode: cors",
     "Sec-Fetch-Site: same-origin",
+    "Priority: u=0",
     "Pragma: no-cache",
     "Cache-Control: no-cache",
   ];
@@ -55,21 +39,20 @@ function fetchSystemTime($host)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    return xmlToJson($response);
+    echo "Response: " . $response;
   }
 
   // Close cURL session
   curl_close($ch);
 }
 
-$timeData = fetchSystemTime($host);
-$systemTime = new SystemTime(
-  $timeData->localTime,
-  $timeData->timeZone,
-  $timeData->timeMode
-);
-foreach ($systemTime as $key => $value) {
-  print_r($key . ": " . $value . "<br>");
-}
+// XML body to send
+$xmlBody = '<?xml version="1.0" encoding="UTF-8"?>'
+  . '<Time>'
+  . '<timeMode>'.$_GET['syncMode'].'</timeMode>'
+  . '<localTime>'.$_GET['datetime'].'</localTime>'
+  . '<timeZone>'.$_GET['zone'].'</timeZone>'
+  . '</Time>';
 
-
+// Call the function
+updateSystemTime($host, $xmlBody);

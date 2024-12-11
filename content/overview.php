@@ -1,5 +1,9 @@
-<?php require_once $_SERVER['DOCUMENT_ROOT'].'/door/get-status.php'; ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/door/get-status.php'; ?>
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/method-user-count.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/access-methods.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/event-number.php';
+
 $doorStatusMap = [
   'controlled' => (object)[
     'svg' => 'door-controlled.svg',
@@ -73,7 +77,7 @@ $doorStatus = $doorStatusMap[$doorStatusNumberMap[$doorStatusNumber]];
     align-self: center;
   }
 
-  .status-change{
+  .status-change {
     position: absolute;
     display: grid;
     grid-template-columns: 1fr;
@@ -83,7 +87,8 @@ $doorStatus = $doorStatusMap[$doorStatusNumberMap[$doorStatusNumber]];
     width: 200px;
     transform: translate(72px, calc(-50% - 25px));
   }
-  .status-change-btn{
+
+  .status-change-btn {
     display: grid;
     grid-template-columns: max-content auto;
     padding: 5px 10px;
@@ -91,21 +96,30 @@ $doorStatus = $doorStatusMap[$doorStatusNumberMap[$doorStatusNumber]];
     transition: background-color 0.1s ease-in-out;
     gap: 10px;
   }
-  .status-change-btn:hover{
+
+  .status-change-btn:hover {
     background-color: lightgray;
   }
-  .change-btn-svg{
+
+  .change-btn-svg {
     width: 20px;
     height: 20px;
     justify-self: center;
     align-self: center;
   }
-  .change-btn-text{
+
+  .change-btn-text {
     color: var(--content-text);
   }
-  .logs-panel{
+
+  .logs-panel {
     max-height: 50vh;
     overflow: auto;
+  }
+
+  .device-info-overview-panel{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 </style>
 <div class="door-n-logs content-panel">
@@ -142,6 +156,33 @@ $doorStatus = $doorStatusMap[$doorStatusNumberMap[$doorStatusNumber]];
   </div>
   <div style="background-color: lightgray"></div>
   <div class="logs-panel">
-    <?php require $_SERVER['DOCUMENT_ROOT'].'/home-event.php'; ?>
+    <?php require $_SERVER['DOCUMENT_ROOT'] . '/home-event.php'; ?>
+  </div>
+
+</div>
+<div class="content-panel">
+  Person Information
+  <?php
+  $response = userAccessMethods($host);
+  $numberOfusersWithAccessMethod = new NumberOfUsersWithAccessMethod($response);
+  print_r($numberOfusersWithAccessMethod);
+  ?>
+</div>
+<div class="content-panel device-info-overview-panel">
+  <div>
+    Network Status
+  </div>
+  <div>
+    Basic information
+  </div>
+  <div>
+    Device Capacity
+    <?php
+    $AccessMethodCounts = new AccessMethodCounts($response);
+    print_r($AccessMethodCounts);
+    echo '<br>';
+    $numberOfEvents = fetchAcsEventTotalNum($host);
+    print_r('numberOfEvents: ' . $numberOfEvents . '<br>');
+    ?>
   </div>
 </div>
