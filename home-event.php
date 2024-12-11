@@ -11,7 +11,6 @@ $numberOfEvents = count($processedLogs);
 <style>
   .img-icon-holder {
     height: 100%;
-    width: 100%;
     box-sizing: border-box;
   }
   .img-icon-anchor{
@@ -25,8 +24,12 @@ $numberOfEvents = count($processedLogs);
     border: 1px solid black;
     border-radius: 5px;
   }
+  .event-log-table{
+    justify-self: end;
+    width: 100%;
+  }
 </style>
-<table border="1">
+<table border="1" class="event-log-table">
   <thead>
     <tr>
       <th>Calisan Kimligi</th>

@@ -1,19 +1,21 @@
 <?php
-function xmlToJson($reponseXML)
-{
-  return json_decode(json_encode(new SimpleXMLElement($reponseXML)));
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
+class DeployInfo{
+  public $ipAddr;
+  public $deployNo;
+  public $deployType;
+  public function __construct($ipAddr, $deployNo, $deployType) {
+    $this->ipAddr = $ipAddr;
+    $this->deployNo = $deployNo;
+    $this->deployType = $deployType;
+  }
 }
-
-function isXml($xml)
+function fetchDeployInfo($host)
 {
-  libxml_use_internal_errors(true);
-  $xml = simplexml_load_string($xml);
-  libxml_clear_errors();
-  return $xml !== false;
-}
+  $url = "https://$host/ISAPI/AccessControl/DeployInfo";
 
-function isAPIGet($url)
-{
+  // Initialize cURL session
   $ch = curl_init($url);
 
   // Set cURL options
@@ -34,8 +36,11 @@ function isAPIGet($url)
     "Accept: */*",
     "Accept-Language: en-US,en;q=0.5",
     "If-Modified-Since: 0",
-    "SessionTag: VQ83QPI70ZS9J62WL256NI3S595SOAM9OBTKG9VKI2P8KBRDWLKZ7WMRZ2FLJWSZ",
+    "SessionTag: E7DY2UL5OF4J2NCRDNL1M06MMI3SGI37TCAMC49D73KXVXLSZE4Y5Z3NTL2Q76GM",
     "X-Requested-With: XMLHttpRequest",
+    "Sec-Fetch-Dest: empty",
+    "Sec-Fetch-Mode: cors",
+    "Sec-Fetch-Site: same-origin",
     "Pragma: no-cache",
     "Cache-Control: no-cache",
   ];
@@ -48,13 +53,23 @@ function isAPIGet($url)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    if (isXml($response)) {
-      return xmlToJson($response);
-    } else {
-      return json_decode($response);
-    }
+    return xmlToJson($response)->DeployList->Content;
   }
 
   // Close cURL session
   curl_close($ch);
 }
+
+// Example usage
+$deployInfoTMP = fetchDeployInfo($host);
+// var_dump($deployInfoTMP);
+
+$deployInfo = new DeployInfo(
+  $deployInfoTMP->deployNo,
+  $deployInfoTMP->deployType,
+  $deployInfoTMP->ipAddr,
+);
+foreach ($deployInfo as $key => $value) {
+  echo $key.': '.$value.'<br>';
+}
+

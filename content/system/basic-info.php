@@ -1,4 +1,9 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/event-number.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/method-user-count.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/access-methods.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/content/system/project-config.php';
 class BasicInfo
 {
   public $deviceName;
@@ -16,7 +21,8 @@ class BasicInfo
   public $localRS485Number;
   public $alarmInputCount;
   public $alarmOutputCount;
-  public function __construct($deviceName, $language, $model, $serialNumber, $firmwareVersion, $encodingVersion, $webVersion, $pluginVersion, $avaliableCameraCount, $IOInputNumber, $IOOutputNumber, $lockNumber, $localRS485Number, $alarmInputCount, $alarmOutputCount){
+  public function __construct($deviceName, $language, $model, $serialNumber, $firmwareVersion, $encodingVersion, $webVersion, $pluginVersion, $avaliableCameraCount, $IOInputNumber, $IOOutputNumber, $lockNumber, $localRS485Number, $alarmInputCount, $alarmOutputCount)
+  {
     $this->deviceName = $deviceName;
     $this->language = $language;
     $this->model = $model;
@@ -75,6 +81,7 @@ function fetchDeviceInfo($host)
   } else {
     $xml = new SimpleXMLElement($response);
     // print_r((array)$xml);
+    $projectConfig = fetchProjectConfig($host);
     $basicInfo = new BasicInfo(
       (string)$xml->deviceName,
       'English',
@@ -82,8 +89,8 @@ function fetchDeviceInfo($host)
       (string)$xml->serialNumber,
       (string)$xml->firmwareVersion,
       (string)$xml->encoderVersion,
-      'V5.1.27_R0401 build 230722',
-      'V3.0.7.41',
+      $projectConfig->pluginVersion,
+      $projectConfig->version,
       '1',
       '0',
       '0',
@@ -98,3 +105,33 @@ function fetchDeviceInfo($host)
   // Close cURL session
   curl_close($ch);
 }
+
+$response = userAccessMethods($host);
+$accessMethodCounts = new AccessMethodCounts($response);
+$numberOfUsers = count($response->UserInfoSearch->UserInfo);
+$numberOfEvents = fetchAcsEventTotalNum($host);
+
+$parser = xml_parser_create();
+
+print_r('DeviceInfo<br>');
+$deviceInfo = fetchDeviceInfo($host);
+foreach ($deviceInfo as $key => $value) {
+  print_r('--' . $key . ': ' . $value . '<br>');
+}
+print_r(json_encode($numberOfUsers) . '<br>');
+print_r(json_encode($accessMethodCounts) . '<br>');
+print_r($numberOfEvents . '<br>');
+
+$backURL = $_SERVER['PHP_SELF'];
+?>
+
+<form action="device-info-set.php" method="get">
+  <input type="hidden" name="backURL" value="<?= $backURL ?>">
+  <input type="text" name="device_name" class="Device Name" value="<?= $deviceInfo->deviceName ?>">
+  <button type="submit">Save</button>
+</form>
+
+<label for="language-input">Language</label>
+<select name="language" id="language-input">
+  <option value="lang_id_0">English</option>
+</select>
