@@ -36,5 +36,12 @@ function fetchPrograms($host)
   return $response;
 }
 
-$response = fetchPrograms($host, $sessionTag);
+$response = fetchPrograms($host);
 echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+
+?>
+<form action="program-add.php" method="get">
+  <input type="text" name="program_name">
+  <input type="submit" name="Add">
+</form>
+
