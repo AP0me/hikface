@@ -1,10 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-function fetchSDKLanguage($host)
+function fetchRFCardConfiguration($host)
 {
-  $url = "https://$host/SDK/language";
+  $url = "https://$host/ISAPI/AccessControl/Configuration/RFCardCfg?format=json";
 
   // Initialize cURL session
   $ch = curl_init($url);
@@ -28,12 +27,23 @@ function fetchSDKLanguage($host)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    return xmlToJson($response)->type;
+    return json_decode($response);
   }
 
   // Close cURL session
   curl_close($ch);
 }
 
-// Example usage
-echo fetchSDKLanguage($host);
+$RFCardCfg = fetchRFCardConfiguration($host)->RFCardCfg;
+
+foreach ($RFCardCfg as $card) {
+  var_dump(json_encode($card).'<br>');
+}
+
+?>
+
+<br><br>
+<a href="card-type-save.php?RFCardCfg=<?= htmlspecialchars(json_encode($RFCardCfg)); ?>">
+  <button>Save</button>
+</a>
+

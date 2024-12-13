@@ -16,22 +16,6 @@ function streamingChannels($host)
   curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
   curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
 
-  // Set the HTTP headers
-  $headers = [
-    "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
-    "Accept: */*",
-    "Accept-Language: en-US,en;q=0.5",
-    "If-Modified-Since: 0",
-    "SessionTag: XNNO0FQPRGUKEYYLNHWISFWTC1FL2TNZ05UB21FSRDWT23B7PFEUZKZ0561IH4OG",
-    "X-Requested-With: XMLHttpRequest",
-    "Sec-Fetch-Dest: empty",
-    "Sec-Fetch-Mode: cors",
-    "Sec-Fetch-Site: same-origin",
-    "Pragma: no-cache",
-    "Cache-Control: no-cache"
-  ];
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
   // Include credentials (cookies, session, etc.)
   curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie.txt");
   curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt");

@@ -1,10 +1,14 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-function fetchSDKLanguage($host)
+function fetchAudioVolume($host, $inOut)
 {
-  $url = "https://$host/SDK/language";
+  $inOutMap = [
+    'in' => ['AudioIn', 'AudioInVlome', 'AudioInVolumelist'],
+    'out' => ['AudioOut', 'AudioOutVlome', 'AudioOutVolumelist'],
+  ];
+  $audioInOut = $inOutMap[$inOut][0];
+  $url = "https://$host/ISAPI/System/Audio/$audioInOut/channels/1/capabilities";
 
   // Initialize cURL session
   $ch = curl_init($url);
@@ -28,12 +32,14 @@ function fetchSDKLanguage($host)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    return xmlToJson($response)->type;
+    $xml = xmlToJson($response);
+    $audioInOut = $inOutMap[$inOut][1];
+    $audioInOutVolumelist = $inOutMap[$inOut][2];
+    $volume = $xml->{$audioInOutVolumelist}->{$audioInOut}->volume;
+    return $volume;
   }
 
   // Close cURL session
   curl_close($ch);
 }
 
-// Example usage
-echo fetchSDKLanguage($host);

@@ -29,8 +29,8 @@ function fetchAcsEvent($logsTableValueMap, $host)
       "maxResults" => 20,
       "major" => 0,
       "minor" => 0,
-      "startTime" => "2024-12-06T00:00:00+08:00",
-      "endTime" => "2024-12-06T23:59:59+08:00",
+      // "startTime" => "2024-12-06T00:00:00+08:00",
+      // "endTime" => "2024-12-06T23:59:59+08:00",
       "timeReverseOrder" => true
     ]
   ]);
@@ -51,21 +51,6 @@ function fetchAcsEvent($logsTableValueMap, $host)
   curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
   curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
 
-  // Set additional headers
-  $headers = [
-    "Content-Type: application/x-www-form-urlencoded; charset=UTF-8",
-    "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
-    "Accept: */*",
-    "Accept-Language: en-US,en;q=0.5",
-    "If-Modified-Since: 0",
-    "SessionTag: WIF1HDYXZHMY3SYCYFKDGN7N7QU5TSKFESKVK18OOCUSXVAJFTA9TIIXHELXZIND",
-    "X-Requested-With: XMLHttpRequest",
-    "Pragma: no-cache",
-    "Cache-Control: no-cache",
-    "skip_zrok_interstitial: 1",
-  ];
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
   // Execute cURL request
   $response = json_decode(curl_exec($ch));
 
@@ -82,7 +67,7 @@ function fetchAcsEvent($logsTableValueMap, $host)
         $info->cardNo ?? '-',
         $logsTableValueMap->majors->{$info->major}->minors->{$info->minor} ?? '-',
         $info->time ?? '-',
-        (isset($info->pictureURL) ? $info->pictureURL . '?1733486960563=&token=sHxbknNdDji499wYH2pddza3SIRSRMMm' : "-"),
+        (isset($info->pictureURL) ? $info->pictureURL . "?1734011388935=&token=$securityToken" : "-"),
       );
     }
   }

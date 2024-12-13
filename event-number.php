@@ -28,20 +28,6 @@ function fetchAcsEventTotalNum($host)
   curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
   curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
 
-  // Set headers
-  $headers = [
-    "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
-    "Accept: */*",
-    "Accept-Language: en-US,en;q=0.5",
-    "Content-Type: application/x-www-form-urlencoded; charset=UTF-8",
-    "If-Modified-Since: 0",
-    "SessionTag: FD7BAAZAVY912N0N1N6EO6BC6YUWGDKE1CW4ETOVGIBQ8JVLO8JK8383YIXQIWDR",
-    "X-Requested-With: XMLHttpRequest",
-    "Pragma: no-cache",
-    "Cache-Control: no-cache",
-  ];
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
   // Execute cURL request
   $response = json_decode(curl_exec($ch));
 

@@ -31,4 +31,11 @@
   .grid{
     display: grid;
   }
+
+  .content-panel {
+    padding: 20px;
+    height: max-content;
+    box-sizing: border-box;
+    background-color: var(--content-bg);
+  }
 </style>

@@ -27,13 +27,6 @@ $doorStatusNumber = fetchAcsWorkStatus($host);
 $doorStatus = $doorStatusMap[$doorStatusNumberMap[$doorStatusNumber]];
 ?>
 <style>
-  .content-panel {
-    padding: 20px;
-    height: max-content;
-    box-sizing: border-box;
-    background-color: var(--content-bg);
-  }
-
   .door-n-logs {
     display: grid;
     grid-template-columns: max-content 1px auto;
