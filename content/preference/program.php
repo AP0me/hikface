@@ -41,7 +41,6 @@ echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
 
 ?>
 <form action="program-add.php" method="get">
-  <input type="text" name="program_id" placeholder="Program ID">
   <input type="text" name="program_name" placeholder="Program Name">
   <input type="submit" value="Add">
 </form>
