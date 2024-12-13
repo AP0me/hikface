@@ -2,9 +2,21 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-function fetchSDKLanguage($host)
+class LinkedNetwork{
+  public string $deviceType;
+  public array $serverIPAddress;
+  public array $stationIPAddress;
+
+  public function __construct($deviceType, $serverIPAddress, $stationIPAddress){
+    $this->deviceType = $deviceType;
+    $this->serverIPAddress = $serverIPAddress;
+    $this->stationIPAddress = $stationIPAddress;
+  }
+}
+
+function fetchRelatedDeviceAddress($host)
 {
-  $url = "https://$host/SDK/language";
+  $url = "https://$host/ISAPI/VideoIntercom/relatedDeviceAddress";
 
   // Initialize cURL session
   $ch = curl_init($url);
@@ -15,7 +27,6 @@ function fetchSDKLanguage($host)
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
 
-  // Set authentication credentials
   $username = "admin";
   $password = "12345678m";
   curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
@@ -28,12 +39,25 @@ function fetchSDKLanguage($host)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    return xmlToJson($response)->type;
+    return xmlToJson($response);
   }
 
   // Close cURL session
   curl_close($ch);
 }
 
-// Example usage
-echo fetchSDKLanguage($host);
+$relatedAddressData = fetchRelatedDeviceAddress($host);
+$linkedNetwork = new LinkedNetwork(
+  $relatedAddressData->unitType,
+  explode('.', $relatedAddressData->SIPServerAddress->ipAddress),
+  explode('.', $relatedAddressData->ManageAddress->ipAddress),
+);
+
+print_r($linkedNetwork);
+?>
+
+<br><br>
+<a href="linked-network-save.php?linkedNetwork=<?= htmlspecialchars(json_encode($linkedNetwork)); ?>">
+  <button>Save</button>
+</a>
+

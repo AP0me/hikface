@@ -1,10 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-function fetchSDKLanguage($host)
+function getFaceCompareCond($host)
 {
-  $url = "https://$host/SDK/language";
+  $url = "https://$host/ISAPI/AccessControl/FaceCompareCond";
 
   // Initialize cURL session
   $ch = curl_init($url);
@@ -27,13 +26,15 @@ function fetchSDKLanguage($host)
   // Check for errors
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
-  } else {
-    return xmlToJson($response)->type;
+    return null;
   }
 
   // Close cURL session
   curl_close($ch);
+
+  // Return response
+  return $response;
 }
 
-// Example usage
-echo fetchSDKLanguage($host);
+$response = getFaceCompareCond($host);
+echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";

@@ -1,10 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-function fetchSDKLanguage($host)
+function fetchPrograms($host)
 {
-  $url = "https://$host/SDK/language";
+  $url = "https://$host/ISAPI/Publish/ProgramMgr/program";
 
   // Initialize cURL session
   $ch = curl_init($url);
@@ -20,20 +19,29 @@ function fetchSDKLanguage($host)
   $password = "12345678m";
   curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
   curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
-
+  
   // Execute cURL request
   $response = curl_exec($ch);
 
   // Check for errors
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
-  } else {
-    return xmlToJson($response)->type;
+    return null;
   }
 
   // Close cURL session
   curl_close($ch);
+
+  // Return response
+  return $response;
 }
 
-// Example usage
-echo fetchSDKLanguage($host);
+$response = fetchPrograms($host);
+echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+
+?>
+<form action="program-add.php" method="get">
+  <input type="text" name="program_name">
+  <input type="submit" name="Add">
+</form>
+

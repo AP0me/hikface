@@ -1,10 +1,19 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-function fetchSDKLanguage($host)
+function updateTTSText($host)
 {
-  $url = "https://$host/SDK/language";
+  $url = "https://$host/ISAPI/AccessControl/Verification/ttsText?format=json";
+
+  // JSON body
+  $jsonBody = json_encode([
+    "TTSText" => [
+      "enable" => true,
+      "prefix" => "none",
+      "Success" => [],
+      "Failure" => []
+    ]
+  ]);
 
   // Initialize cURL session
   $ch = curl_init($url);
@@ -13,7 +22,8 @@ function fetchSDKLanguage($host)
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); // Set method to PUT
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody); // Attach JSON body
 
   // Set authentication credentials
   $username = "admin";
@@ -27,13 +37,15 @@ function fetchSDKLanguage($host)
   // Check for errors
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
-  } else {
-    return xmlToJson($response)->type;
+    return null;
   }
 
   // Close cURL session
   curl_close($ch);
+
+  // Return response
+  return $response;
 }
 
-// Example usage
-echo fetchSDKLanguage($host);
+$response = updateTTSText($host);
+echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";

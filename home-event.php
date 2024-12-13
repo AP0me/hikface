@@ -1,5 +1,5 @@
 <?php
-include_once 'hostname.php';
+require_once 'hostname.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/logs.php';
 
 // Call the function

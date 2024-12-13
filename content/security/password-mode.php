@@ -1,10 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-function fetchSDKLanguage($host)
+function fetchPwMgrParams($host)
 {
-  $url = "https://$host/SDK/language";
+  $url = "https://$host/ISAPI/AccessControl/UserAndRight/PwMgrParams?format=json";
 
   // Initialize cURL session
   $ch = curl_init($url);
@@ -27,13 +26,22 @@ function fetchSDKLanguage($host)
   // Check for errors
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
-  } else {
-    return xmlToJson($response)->type;
+    return null;
   }
 
   // Close cURL session
   curl_close($ch);
+
+  // Decode and return the JSON response
+  return json_decode($response, true);
 }
 
 // Example usage
-echo fetchSDKLanguage($host);
+$pwMgrParams = fetchPwMgrParams($host);
+
+if ($pwMgrParams) {
+  echo '<pre>' . json_encode($pwMgrParams, JSON_PRETTY_PRINT) . '</pre>';
+} else {
+  echo "Failed to fetch Password Manager Parameters.";
+}
+?>

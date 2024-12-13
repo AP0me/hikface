@@ -18,19 +18,6 @@ function fetchAcsWorkStatus($host)
   curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
   curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
 
-  // Set headers
-  $headers = [
-    "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
-    "Accept: */*",
-    "Accept-Language: en-US,en;q=0.5",
-    "If-Modified-Since: 0",
-    "SessionTag: 7SMBMXYB2RUYETU8LF4P2NQIFQGA7GNGO0LQ2T8H9JX434KTB4BHTK4QLUA16V1P",
-    "X-Requested-With: XMLHttpRequest",
-    "Pragma: no-cache",
-    "Cache-Control: no-cache",
-  ];
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
   // Execute cURL request
   $response = curl_exec($ch);
 
