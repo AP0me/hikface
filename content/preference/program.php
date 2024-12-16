@@ -41,7 +41,6 @@ echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
 
 ?>
 <form action="program-add.php" method="get">
-  <input type="text" name="program_id" placeholder="Program ID">
   <input type="text" name="program_name" placeholder="Program Name">
   <input type="submit" value="Add">
 </form>
@@ -54,4 +53,11 @@ echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
 <a href="program-delete.php">
   <button>Delete</button>
 </a>
+
+<form action="program-save.php" method="get">
+  <input type="number" name="interval" placeholder="Slide Show Interval">
+  <input type="input" name="schedule_start" placeholder="Schedule Start">
+  <input type="input" name="schedule_end" placeholder="Schedule End">
+  <button>Save</button>
+</form
 

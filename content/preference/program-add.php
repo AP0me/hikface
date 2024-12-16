@@ -1,7 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 
-function createProgram($host, $programName, $programID)
+function createProgram($host, $programName)
 {
   $url = "https://$host/ISAPI/Publish/ProgramMgr/program";
 
@@ -80,6 +80,5 @@ XML;
 }
 
 $programName = $_GET['program_name'];
-$programID = $_GET['program_id'];
-$response = createProgram($host, $programName, $programID);
+$response = createProgram($host, $programName);
 echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
