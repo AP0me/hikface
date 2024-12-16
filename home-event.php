@@ -1,6 +1,6 @@
 <?php
 require_once 'hostname.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/logs.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/logs.php';
 
 // Call the function
 $logsTableValueMap = json_decode(file_get_contents('event-type-map.json'));

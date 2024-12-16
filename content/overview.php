@@ -1,8 +1,8 @@
 <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/door/get-status.php'; ?>
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/method-user-count.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/method-user-count.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/access-methods.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/event-number.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/event-number.php';
 
 $doorStatusMap = [
   'controlled' => (object)[
