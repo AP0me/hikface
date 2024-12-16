@@ -67,7 +67,7 @@ function fetchAcsEvent($logsTableValueMap, $host)
         $info->cardNo ?? '-',
         $logsTableValueMap->majors->{$info->major}->minors->{$info->minor} ?? '-',
         $info->time ?? '-',
-        (isset($info->pictureURL) ? $info->pictureURL . "?1734011388935=&token=$securityToken" : "-"),
+        (isset($info->pictureURL) ? $info->pictureURL . "?1734011388935=&token=" : "-"),
       );
     }
   }
