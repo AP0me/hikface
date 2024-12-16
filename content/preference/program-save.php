@@ -1,9 +1,32 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 
-function updateProgramPage($host, $xmlBody)
+function updatePlaySchedule($host)
 {
-  $url = "https://$host/ISAPI/Publish/ProgramMgr/program/1/page/1";
+  $url = "https://$host/ISAPI/Publish/ScheduleMgr/playSchedule/1";
+
+  // XML body for the request
+  $xmlBody = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<PlaySchedule version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">
+    <id>1</id>
+    <scheduleName>web</scheduleName>
+    <scheduleMode>screensaver</scheduleMode>
+    <scheduleType>daily</scheduleType>
+    <DailySchedule>
+        <PlaySpanList>
+            <PlaySpan>
+                <id>1</id>
+                <programNo>1</programNo>
+                <TimeRange>
+                    <beginTime>02:00:00</beginTime>
+                    <endTime>17:30:00</endTime>
+                </TimeRange>
+            </PlaySpan>
+        </PlaySpanList>
+    </DailySchedule>
+</PlaySchedule>
+XML;
 
   // Initialize cURL session
   $ch = curl_init($url);
@@ -14,6 +37,12 @@ function updateProgramPage($host, $xmlBody)
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); // Set method to PUT
   curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlBody); // Attach XML body
+
+  // Set authentication credentials
+  $username = "admin";
+  $password = "12345678m";
+  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
+  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
 
   // Execute cURL request
   $response = curl_exec($ch);
@@ -30,41 +59,6 @@ function updateProgramPage($host, $xmlBody)
   // Return response
   return $response;
 }
-
-$xmlBody = <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<Page version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">
-    <id>1</id>
-    <PageBasicInfo>
-        <pageName>1</pageName>
-        <playDurationMode>1</playDurationMode>
-        <switchDuration>1</switchDuration>
-        <switchEffect>none</switchEffect>
-    </PageBasicInfo>
-    <WindowsList>
-        <Windows>
-            <id>1</id>
-            <Position>
-                <positionX>0</positionX>
-                <positionY>0</positionY>
-                <height>1920</height>
-                <width>1920</width>
-            </Position>
-            <layerNo>1</layerNo>
-            <WinMaterialInfo>
-                <materialType>static</materialType>
-                <staticMaterialType>picture</staticMaterialType>
-            </WinMaterialInfo>
-            <PlayItemList/>
-        </Windows>
-    </WindowsList>
-</Page>
-XML;
-
-$response = updateProgramPage($host, $xmlBody);
-echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
-
-
 
 function deletePlaySchedule($host)
 {
@@ -101,5 +95,16 @@ function deletePlaySchedule($host)
   return $response;
 }
 
-$response = deletePlaySchedule($host);
-echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+
+$schedule_start = $_GET['schedule_start'];
+$schedule_end = $_GET['schedule_end'];
+
+if (isset($schedule_start) && isset($schedule_end) && $schedule_start != '' && $schedule_end != '') {
+  $response = deletePlaySchedule($host);
+  echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+
+  $response = updatePlaySchedule($host);
+  echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+} else {
+  echo "Please provide both schedule_start and schedule_end parameters.";
+}

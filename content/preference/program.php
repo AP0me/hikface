@@ -54,3 +54,10 @@ echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
   <button>Delete</button>
 </a>
 
+<form action="program-save.php" method="get">
+  <input type="number" name="interval" placeholder="Slide Show Interval">
+  <input type="input" name="schedule_start" placeholder="Schedule Start">
+  <input type="input" name="schedule_end" placeholder="Schedule End">
+  <button>Save</button>
+</form
+

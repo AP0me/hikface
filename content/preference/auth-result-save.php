@@ -11,15 +11,15 @@ function updateCustomPrompt($host)
     "PromptList" => [
       [
         "promptType" => "stranger",
-        "promptContent" => "mm"
+        "promptContent" => $_GET['stranger']
       ],
       [
         "promptType" => "authenticationSuccess",
-        "promptContent" => "mm"
+        "promptContent" => $_GET['authenticated']
       ],
       [
         "promptType" => "authenticationFailed",
-        "promptContent" => "mm"
+        "promptContent" => $_GET['authenticating_failed']
       ]
     ]
   ]);
