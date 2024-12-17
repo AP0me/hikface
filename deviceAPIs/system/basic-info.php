@@ -1,9 +1,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/event-number.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/method-user-count.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/event-number.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/method-user-count.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/access-methods.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/content/system/project-config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/system/project-config.php';
 class BasicInfo
 {
   public $deviceName;

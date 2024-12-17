@@ -1,15 +1,17 @@
 <?php
 
-function computePasswordHash($password, $salt, $iterations) {
-  $hash = $password;
-  for ($i = 0; $i < $iterations; $i++) {
-      $hash = hash('sha256', $hash . $salt);
-  }
-  return $hash;
+function computePasswordHash($password, $salt, $iterations)
+{
+    $hash = $password;
+    for ($i = 0; $i < $iterations; $i++) {
+        $hash = hash('sha256', $hash . $salt);
+    }
+    return $hash;
 }
 
 
-function fetchSessionLoginCapabilities($host, $username, $random) {
+function fetchSessionLoginCapabilities($host, $username, $random)
+{
     $url = "https://$host/ISAPI/Security/sessionLogin/capabilities?username=$username&random=$random";
 
     $ch = curl_init($url);
@@ -35,7 +37,8 @@ function fetchSessionLoginCapabilities($host, $username, $random) {
     return simplexml_load_string($response); // Parse XML response
 }
 
-function sessionLogin($host, $timestamp, $username, $password, $sessionID, $challenge, $salt, $iterations) {
+function sessionLogin($host, $timestamp, $username, $password, $sessionID, $challenge, $salt, $iterations)
+{
     $url = "https://$host/ISAPI/Security/sessionLogin?timeStamp=$timestamp";
 
     // Compute hashed password
@@ -103,4 +106,3 @@ if ($capabilities) {
 } else {
     echo "Failed to fetch session login capabilities.";
 }
-?>

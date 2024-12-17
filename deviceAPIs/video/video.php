@@ -1,5 +1,5 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/content/video/channels.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/video/channels.php';
 
 class VideoStream
 {

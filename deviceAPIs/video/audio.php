@@ -1,7 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/content/video/channels.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/content/video/volume.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/video/channels.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/video/volume.php';
 
 class AudioSettings
 {
