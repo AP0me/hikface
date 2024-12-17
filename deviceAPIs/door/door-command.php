@@ -1,4 +1,6 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
+
 function doorCommand($host, $command, $redirectURL){
   $url = "https://$host/ISAPI/AccessControl/RemoteControl/door/1";
   $data = '<RemoteControlDoor version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema"><cmd>'.$command.'</cmd></RemoteControlDoor>';
@@ -32,11 +34,11 @@ function doorCommand($host, $command, $redirectURL){
   if (curl_errno($ch)) {
   echo "cURL Error: " . curl_error($ch);
   } else {
-  echo "Response: " . $response;
+    echo json_encode(xmlToJson($response));
   }
 
   // Close cURL session
   curl_close($ch);
-  header("location: $redirectURL");
-  exit;
+  // header("location: $redirectURL");
+  // exit;
 }
