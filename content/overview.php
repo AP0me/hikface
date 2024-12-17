@@ -1,4 +1,4 @@
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/door/get-status.php'; ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/door/get-status.php'; ?>
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/method-user-count.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/access-methods.php';
@@ -126,19 +126,19 @@ $doorStatus = $doorStatusMap[$doorStatusNumberMap[$doorStatusNumber]];
       <details class="status-change-details" onmouseenter="this.open = true;" onmouseleave="this.open = false;">
         <summary class="grid"><img src="/img/<?php echo $doorStatus->svg ?>" alt="<?php echo $doorStatus->svg ?>"></summary>
         <div class="status-change">
-          <a href="/door/open-door.php" class="status-change-btn un-a">
+          <a href="deviceAPIs/door/open-door.php" class="status-change-btn un-a">
             <img class="change-btn-svg" src="/img/lock-locked.svg" alt="lock-locked.svg">
             <div class="change-btn-text">Open</div>
           </a>
-          <a href="/door/close-door.php" class="status-change-btn un-a">
+          <a href="deviceAPIs/door/close-door.php" class="status-change-btn un-a">
             <img class="change-btn-svg" src="/img/lock-unlocked.svg" alt="lock-unlocked.svg">
             <div class="change-btn-text">Close</div>
           </a>
-          <a href="/door/remain-open.php" class="status-change-btn un-a">
+          <a href="deviceAPIs/door/remain-open.php" class="status-change-btn un-a">
             <img class="change-btn-svg" src="/img/door-open.svg" alt="door-open.svg">
             <div class="change-btn-text">Remain open</div>
           </a>
-          <a href="/door/remain-closed.php" class="status-change-btn un-a">
+          <a href="deviceAPIs/door/remain-closed.php" class="status-change-btn un-a">
             <img class="change-btn-svg" src="/img/door-controlled.svg" alt="door-controlled.svg">
             <div class="change-btn-text">Remain closed</div>
           </a>

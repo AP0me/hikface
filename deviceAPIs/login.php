@@ -86,6 +86,11 @@ $timestamp = time() * 1000;
 
 // Step 1: Fetch session login capabilities
 $capabilities = fetchSessionLoginCapabilities($host, $username, $random);
+
+foreach ($capabilities as $key => $value) {
+    echo "$key: json_encode($value)<br>";
+}
+
 if ($capabilities) {
     $sessionID = (string)$capabilities->sessionID;
     $challenge = (string)$capabilities->challenge;
