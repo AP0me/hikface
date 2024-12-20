@@ -53,7 +53,7 @@ $linkedNetwork = new LinkedNetwork(
   explode('.', $relatedAddressData->ManageAddress->ipAddress),
 );
 
-print_r($linkedNetwork);
+print_r(json_encode($linkedNetwork));
 ?>
 
 <br><br>

@@ -28,7 +28,7 @@ function updateRelatedDeviceAddress($host, $xmlBody)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    echo "Response: " . $response;
+    return xmlToJson($response);
   }
 
   // Close cURL session
@@ -36,20 +36,19 @@ function updateRelatedDeviceAddress($host, $xmlBody)
 }
 
 $linkedNetwork = json_decode($_GET['linkedNetwork']);
-$deviceType = $linkedNetwork->deviceType;
-$serverIPAddress = $linkedNetwork->serverIPAddress;
-$stationIPAddress = $linkedNetwork->stationIPAddress;
+$serverIPAddress = implode('.', $linkedNetwork->serverIPAddress);
+$stationIPAddress = implode('.', $linkedNetwork->stationIPAddress);
 
 $xmlBody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   . "<RelatedDeviceAddress version=\"2.0\" xmlns=\"http://www.isapi.org/ver20/XMLSchema\">"
   . "<SIPServerAddress>"
   . "<addressingFormatType>ipaddress</addressingFormatType>"
-  . "<ipAddress>0.0.0.0</ipAddress>"
+  . "<ipAddress>$serverIPAddress</ipAddress>"
   . "</SIPServerAddress>"
   . "<ManageAddress>"
   . "<addressingFormatType>ipaddress</addressingFormatType>"
-  . "<ipAddress>0.0.0.0</ipAddress>"
+  . "<ipAddress>$stationIPAddress</ipAddress>"
   . "</ManageAddress>"
   . "</RelatedDeviceAddress>";
 
-updateRelatedDeviceAddress($host, $xmlBody);
+echo json_encode(updateRelatedDeviceAddress($host, $xmlBody));

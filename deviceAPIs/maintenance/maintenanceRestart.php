@@ -1,6 +1,9 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
+
 function fetchNetworkInterfaces($host) {
-    $url = "https://192.168.0.116/ISAPI/VCS/wireshark/capture/capabilities";
+    $url = "https://$host/ISAPI/VCS/wireshark/capture/capabilities";
     
     // Initialize cURL session
     $ch = curl_init($url);
@@ -41,13 +44,7 @@ function fetchNetworkInterfaces($host) {
     if (curl_errno($ch)) {
         echo "cURL Error: " . curl_error($ch);
     } else { 
-        $xml=new SimpleXMLElement($response);
-        print_r($xml);echo '<br>';
-        print_r((string)$xml->cmdType['req']);echo '<br>';
-        print_r((string)$xml->packageSize);echo '<br>';
-        print_r((string)$xml->duration);
-      
-   
+        return xmlToJson($response);
     }
 
     // Close cURL session
@@ -55,4 +52,4 @@ function fetchNetworkInterfaces($host) {
 }
 
 // Example usage
-fetchNetworkInterfaces("192.168.0.116");
+echo json_encode(fetchNetworkInterfaces($host));

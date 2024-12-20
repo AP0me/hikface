@@ -8,7 +8,7 @@ enum Location
   case UI;
 }
 
-class MainTainlogRow
+class MainTainlogRow implements JsonSerializable
 {
   public int $rowNumber;
   public string $time;
@@ -39,6 +39,20 @@ class MainTainlogRow
     $this->remoteHostIP = $remoteHostIP;
     $this->parameter = $parameter;
     $this->information = $information;
+  }
+  public function jsonSerialize(): mixed
+  {
+    return [
+      'rowNumber' => $this->rowNumber,
+      'time' => $this->time,
+      'majorType' => $this->majorType,
+      'minorType' => $this->minorType,
+      'channelNumber' => $this->channelNumber,
+      'location' => $this->location instanceof Location ? $this->location->name : $this->location,
+      'remoteHostIP' => $this->remoteHostIP,
+      'parameter' => $this->parameter,
+      'information' => $this->information
+    ];
   }
 }
 
@@ -78,19 +92,27 @@ function logSearch($host, $body)
   return xmlToJson($response);
 }
 
+$CMSearchDescription = $_GET['CMSearchDescription'];
+$searchID = $CMSearchDescription['searchID'];
+$metaId = $CMSearchDescription['metaId'];
+$startTime = $CMSearchDescription['startTime'];
+$endTime = $CMSearchDescription['endTime'];
+$maxResults = $CMSearchDescription['maxResults'];
+$searchResultPostion = $CMSearchDescription['searchResultPostion'];
+
 $body = <<<XML
 <?xml version="1.0" encoding="utf-8"?>
 <CMSearchDescription>
-    <searchID>2e74f9f96dcd44248126d655a9e6aa0a</searchID>
-    <metaId>log.std-cgi.com</metaId>
+    <searchID>$searchID</searchID>
+    <metaId>$metaId</metaId>
     <timeSpanList>
         <timeSpan>
-            <startTime>2024-12-16T00:00:00+08:00</startTime>
-            <endTime>2024-12-16T23:59:59+08:00</endTime>
+            <startTime>$startTime</startTime>
+            <endTime>$endTime</endTime>
         </timeSpan>
     </timeSpanList>
-    <maxResults>20</maxResults>
-    <searchResultPostion>0</searchResultPostion>
+    <maxResults>$maxResults</maxResults>
+    <searchResultPostion>$searchResultPostion</searchResultPostion>
 </CMSearchDescription>
 XML;
 
@@ -118,53 +140,5 @@ foreach ($response as $key => $value) {
   $counter++;
 }
 
+print_r(json_encode($maintainLogs, JSON_PRETTY_PRINT));
 
-?>
-<style>
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  table,
-  th,
-  td {
-    border: 1px solid black;
-  }
-
-  th,
-  td {
-    padding: 8px;
-    text-align: left;
-  }
-</style>
-<table>
-  <thead>
-    <tr>
-      <th>No.</th>
-      <th>Time</th>
-      <th>Major Type</th>
-      <th>Minor Type</th>
-      <th>Channel No.</th>
-      <th>Local/Remote</th>
-      <th>Remote Host Ip</th>
-      <th>Parameter</th>
-      <th>Information</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php foreach ($maintainLogs as $row) : ?>
-      <tr>
-        <td><?php echo $row->rowNumber; ?></td>
-        <td><?php echo $row->time; ?></td>
-        <td><?php echo $row->majorType; ?></td>
-        <td><?php echo $row->minorType; ?></td>
-        <td><?php echo $row->channelNumber ?? '--'; ?></td>
-        <td><?php echo $row->location == Location::Web ? 'WEB' : 'UI'; ?></td>
-        <td><?php echo $row->remoteHostIP; ?></td>
-        <td><?php echo $row->parameter; ?></td>
-        <td><?php echo $row->information; ?></td>
-      </tr>
-    <?php endforeach; ?>
-  </tbody>
-</table>

@@ -36,14 +36,4 @@ function fetchRFCardConfiguration($host)
 
 $RFCardCfg = fetchRFCardConfiguration($host)->RFCardCfg;
 
-foreach ($RFCardCfg as $card) {
-  var_dump(json_encode($card).'<br>');
-}
-
-?>
-
-<br><br>
-<a href="card-type-save.php?RFCardCfg=<?= htmlspecialchars(json_encode($RFCardCfg)); ?>">
-  <button>Save</button>
-</a>
-
+echo json_encode($RFCardCfg);

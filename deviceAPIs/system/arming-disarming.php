@@ -1,11 +1,13 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
-class DeployInfo{
+class DeployInfo
+{
   public $ipAddr;
   public $deployNo;
   public $deployType;
-  public function __construct($ipAddr, $deployNo, $deployType) {
+  public function __construct($ipAddr, $deployNo, $deployType)
+  {
     $this->ipAddr = $ipAddr;
     $this->deployNo = $deployNo;
     $this->deployType = $deployType;
@@ -54,6 +56,5 @@ $deployInfo = new DeployInfo(
   $deployInfoTMP->ipAddr,
 );
 foreach ($deployInfo as $key => $value) {
-  echo $key.': '.$value.'<br>';
+  echo $key . ': ' . $value . '<br>';
 }
-

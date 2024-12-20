@@ -38,8 +38,7 @@ function fetchAttendanceMode($host)
 
 // Fetch attendance mode configuration
 $attendanceData = fetchAttendanceMode($host)->AttendanceMode;
-var_dump($attendanceData);
-var_dump('<br>');
+// print_r(json_encode($attendanceData));
 
 
 function fetchKeyAttendance($host, $attendTypeID)
@@ -91,7 +90,7 @@ $attendanceTypes = [];
 foreach ($attendTypeIDMap as $key => $value) {
   $attendTypeID = $key;
   $attendanceTypes[$value] = fetchKeyAttendance($host, $attendTypeID);
-  print_r(json_encode($attendanceTypes[$value]).'<br>');
+  // print_r(json_encode($attendanceTypes[$value]).'<br>');
 }
 echo '<br>';
 
@@ -123,18 +122,26 @@ $attendTypeWeekIDMap = [
   2 => 'breakOut',
   3 => 'overTimeIn',
 ];
+$weekPlanData = [
+  "checkIn" => [],
+  "breakOut" => [],
+  "overTimeIn" => [],
+];
 foreach ($attendTypeWeekIDMap as $key => $value) {
   $planTypeID = $key;
-  print_r($value.'<br>');
+  // print_r($value.'<br>');
   $weekPlan = fetchAttendanceWeekPlan($host, $planTypeID);
-  foreach ($weekPlan['WeekPlanCfg'] as $key => $value) {
-    print_r('--'.json_encode($key).': '.json_encode($value).'<br>');
+  foreach ($weekPlan['WeekPlanCfg'] as $key => $value2) {
+    // print_r('--'.json_encode($key).': '.json_encode($value2).'<br>');
+    $weekPlanData[$value][] = $value2;
   }
 }
 
-?>
 
-<br><br>
-<a href="attendance-save.php?attendanceData=<?= htmlspecialchars(json_encode($attendanceData ?? [])); ?>">
-  <button>Save</button>
-</a>
+$attendenceReturn = [
+  "attendanceData" => $attendanceData,
+  "attendanceTypes" => $attendanceTypes,
+  "weekPlanData" => $weekPlanData,
+];
+
+echo json_encode($attendenceReturn);

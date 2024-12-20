@@ -47,3 +47,4 @@ function streamingChannels($host)
   // Close the cURL session
   curl_close($ch);
 }
+

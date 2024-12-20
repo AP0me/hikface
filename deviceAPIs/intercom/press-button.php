@@ -68,15 +68,18 @@ function fetchKeyConfig($host)
   curl_close($ch);
 }
 
-echo "Fetching Key Capabilities:<br>";
-print_r(fetchKeyCapabilities($host));
+echo json_encode([
+  "Capabilities" => [
+    fetchKeyCapabilities($host)
+  ],
+  "Configuration" => [
+    fetchKeyConfig($host)
+  ]
+  ]);
 
-echo "<br><br>Fetching Key Configuration:<br>";
-$callMethod = fetchKeyConfig($host);
-print_r($callMethod);
 ?>
 
-<br><br>
+<!-- <br><br>
 <a href="press-button-save.php?callMethod=<?= htmlspecialchars(json_encode($callMethod)); ?>">
   <button>Save</button>
-</a>
+</a> -->

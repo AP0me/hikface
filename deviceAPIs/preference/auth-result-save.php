@@ -59,4 +59,5 @@ function updateCustomPrompt($host)
 
 
 $response = updateCustomPrompt($host);
-echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+
+echo $response;

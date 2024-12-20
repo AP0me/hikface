@@ -1,7 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-function updatePlaySchedule($host)
+function updatePlaySchedule($host, $schedule_start, $schedule_end)
 {
   $url = "https://$host/ISAPI/Publish/ScheduleMgr/playSchedule/1";
 
@@ -19,8 +20,8 @@ function updatePlaySchedule($host)
                 <id>1</id>
                 <programNo>1</programNo>
                 <TimeRange>
-                    <beginTime>02:00:00</beginTime>
-                    <endTime>17:30:00</endTime>
+                    <beginTime>$schedule_start</beginTime>
+                    <endTime>$schedule_end</endTime>
                 </TimeRange>
             </PlaySpan>
         </PlaySpanList>
@@ -57,7 +58,7 @@ XML;
   curl_close($ch);
 
   // Return response
-  return $response;
+  return xmlToJson($response);
 }
 
 function deletePlaySchedule($host)
@@ -92,19 +93,20 @@ function deletePlaySchedule($host)
   curl_close($ch);
 
   // Return response
-  return $response;
+  return xmlToJson($response);
 }
 
 
-$schedule_start = $_GET['schedule_start'];
-$schedule_end = $_GET['schedule_end'];
+$schedule_start = $_GET['schedule_start']; // 02:00:00
+$schedule_end = $_GET['schedule_end']; // 17:30:00
 
 if (isset($schedule_start) && isset($schedule_end) && $schedule_start != '' && $schedule_end != '') {
-  $response = deletePlaySchedule($host);
-  echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+  $response = json_encode(deletePlaySchedule($host));
+  echo $response;
 
-  $response = updatePlaySchedule($host);
-  echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+  $response = json_encode(updatePlaySchedule($host, $schedule_start, $schedule_end));
+  echo $response;
+  
 } else {
   echo "Please provide both schedule_start and schedule_end parameters.";
 }

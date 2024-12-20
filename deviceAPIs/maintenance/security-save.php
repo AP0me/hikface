@@ -43,12 +43,6 @@ $body = json_encode([
     "mode" => $_GET['mode']
   ]
 ]);
-print_r($body);
 
 $response = setCommuMode($host, $body);
-
-if ($response) {
-  echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
-} else {
-  echo "Failed to set communication mode.";
-}
+echo $response;

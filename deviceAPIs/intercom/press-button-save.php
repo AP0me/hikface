@@ -29,7 +29,7 @@ function updateKeyConfiguration($host, $xmlBody)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    echo "Response: " . $response;
+    return xmlToJson($response);
   }
 
   // Close cURL session
@@ -45,6 +45,6 @@ $xmlBody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   . "<callMethod>$callMethod</callMethod>"
   . "</KeyCfg>";
 
-updateKeyConfiguration($host, $xmlBody);
+echo json_encode(updateKeyConfiguration($host, $xmlBody));
 
 // header("Location: press-button.php");

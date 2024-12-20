@@ -1,5 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
+
 
 function getCommuMode($host)
 {
@@ -38,16 +40,9 @@ function getCommuMode($host)
 
 $response = getCommuMode($host);
 
-if ($response) {
-  echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
-} else {
-  echo "Failed to fetch communication mode.";
-}
 
 $mode = json_decode($response)->CommuMode->mode;
-?>
+print_r(json_encode([
+  'mode' => $mode
+]));
 
-
-<a href="security-save.php?mode=<?= htmlspecialchars($mode); ?>">
-  <button>Save</button>
-</a>
