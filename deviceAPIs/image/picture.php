@@ -41,7 +41,6 @@ function imageSetting()
   curl_close($ch);
 }
 echo imageSetting();
-die;
 
 function LED($a)
 {

@@ -18,7 +18,6 @@ function fetchAcsEvent()
     ]
   ]);
   echo json_encode($data);
-  exit;
 
   // Set cURL options
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
