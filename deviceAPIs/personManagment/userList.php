@@ -51,18 +51,12 @@
       for($i=0;$i<count($response->UserInfoSearch->UserInfo);$i++){
         if($response->UserInfoSearch->UserInfo[$i]->numOfFace!=0){
           $existFace+=1;
-         }else{
-           $existFace=$existFace;
          }
          if($response->UserInfoSearch->UserInfo[$i]->numOfCard!=0){
           $existCard+=1;
-         }else{
-           $existCard=$existCard;
          }
          if($response->UserInfoSearch->UserInfo[$i]->numOfFP!=0){
           $existFP+=1;
-         }else{
-           $existFP=$existFP;
          }
       }
       echo $existFace.'<br>'.$existFP.'<br>'.$existCard.'<br>';
