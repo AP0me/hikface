@@ -80,7 +80,7 @@ XML;
   return xmlToJson($response);
 }
 
-$programName = $_GET['program_name'];
+$programName = reqBody()['program_name'];
 $response = json_encode(createProgram($host, $programName));
 echo $response;
 

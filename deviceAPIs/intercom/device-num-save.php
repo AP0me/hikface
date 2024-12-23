@@ -36,7 +36,7 @@ function updateDeviceId($host, $xmlBody)
   curl_close($ch);
 }
 
-$deviceIDs = json_decode($_GET['deviceIDs']);
+$deviceIDs = json_decode(reqBody()['deviceIDs']);
 $unitType = $deviceIDs->deviceType;
 $floorNumber = $deviceIDs->floorNumber;
 $deviceIndex = $deviceIDs->deviceIndex;

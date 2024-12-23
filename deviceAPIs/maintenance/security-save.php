@@ -40,7 +40,7 @@ function setCommuMode($host, $body)
 
 $body = json_encode([
   "CommuMode" => [
-    "mode" => $_GET['mode']
+    "mode" => reqBody()['mode']
   ]
 ]);
 

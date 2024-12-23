@@ -92,7 +92,7 @@ function logSearch($host, $body)
   return xmlToJson($response);
 }
 
-$CMSearchDescription = $_GET['CMSearchDescription'];
+$CMSearchDescription = reqBody()['CMSearchDescription'];
 $searchID = $CMSearchDescription['searchID'];
 $metaId = $CMSearchDescription['metaId'];
 $startTime = $CMSearchDescription['startTime'];

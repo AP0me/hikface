@@ -96,9 +96,9 @@ function deletePlaySchedule($host)
   return xmlToJson($response);
 }
 
-
-$schedule_start = $_GET['schedule_start']; // 02:00:00
-$schedule_end = $_GET['schedule_end']; // 17:30:00
+$reqBody = reqBody();
+$schedule_start = $reqBody['schedule_start']; // 02:00:00
+$schedule_end = $reqBody['schedule_end']; // 17:30:00
 
 if (isset($schedule_start) && isset($schedule_end) && $schedule_start != '' && $schedule_end != '') {
   $response = json_encode(deletePlaySchedule($host));

@@ -35,7 +35,7 @@ function updateRelatedDeviceAddress($host, $xmlBody)
   curl_close($ch);
 }
 
-$linkedNetwork = json_decode($_GET['linkedNetwork']);
+$linkedNetwork = json_decode(reqBody()['linkedNetwork']);
 $serverIPAddress = implode('.', $linkedNetwork->serverIPAddress);
 $stationIPAddress = implode('.', $linkedNetwork->stationIPAddress);
 

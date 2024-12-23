@@ -40,7 +40,7 @@ function enableSSH($host, $xmlBody)
 
 
 // XML Body
-$ssh_enabled = $_GET['enabled'];
+$ssh_enabled = reqBody()['enabled'];
 $xmlBody = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>
 <SSH>

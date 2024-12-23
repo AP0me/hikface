@@ -59,9 +59,10 @@ function sendPutRequest($host, $endpoint, $body, $headers = [])
   return $response;
 }
 
+$reqBody = reqBody();
 // Request 1: Card Reader Configuration
 $cardReaderCfgBody = json_encode([
-  "CardReaderCfg" => json_decode($_GET['CardReaderCfg']),
+  "CardReaderCfg" => json_decode($reqBody['CardReaderCfg']),
 ]);
 
 $response = sendPutRequest($host, "ISAPI/AccessControl/CardReaderCfg/1?format=json", $cardReaderCfgBody);
@@ -69,13 +70,13 @@ echo $response;
 
 // Request 2: Mask Detection
 $maskDetectionBody = json_encode([
-  "MaskDetection" => json_decode($_GET['MaskDetection']),
+  "MaskDetection" => json_decode($reqBody['MaskDetection']),
 ]);
 $response = sendPutRequest($host, "ISAPI/AccessControl/maskDetection?format=json", $maskDetectionBody);
 echo $response;
 
 // Request 3: Identity Terminal
-$IdentityTerminalData = (array)json_decode($_GET['IdentityTerminal']);
+$IdentityTerminalData = (array)json_decode($reqBody['IdentityTerminal']);
 $faceAlgorithm = $IdentityTerminalData['faceAlgorithm'];
 $saveCertifiedImage = $IdentityTerminalData['saveCertifiedImage'];
 $readInfoOfCard = $IdentityTerminalData['readInfoOfCard'];

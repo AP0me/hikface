@@ -73,7 +73,7 @@ function updateIdentityTerminal($host, $screenDisplayPreference)
 }
 
 // Example usage
-$screenDisplayPreference = json_decode($_GET['screenDisplayPreference']);
+$screenDisplayPreference = json_decode(reqBody()['screenDisplayPreference']);
 // print_r($screenDisplayPreference);
 // die;
 $response = updateIdentityTerminal($host, (array)$screenDisplayPreference);

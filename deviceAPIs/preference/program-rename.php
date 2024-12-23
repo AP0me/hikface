@@ -38,7 +38,7 @@ function updateProgram($host, $xmlBody)
 }
 
 // Example usage
-$programName = $_GET['program_name'];
+$programName = reqBody()['program_name'];
 
 $xmlBody = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>

@@ -36,7 +36,7 @@ function updateKeyConfiguration($host, $xmlBody)
   curl_close($ch);
 }
 
-$callMethod = $_GET['callMethod'];
+$callMethod = reqBody()['callMethod'];
 
 $xmlBody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   . "<KeyCfg version=\"2.0\" xmlns=\"http://www.isapi.org/ver20/XMLSchema\">"

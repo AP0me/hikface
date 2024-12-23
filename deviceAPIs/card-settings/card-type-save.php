@@ -101,9 +101,10 @@ function updateRFCardCfg($host, $jsonBody)
   curl_close($ch);
 }
 
-if(isset($_GET['RFCardCfg'])){
+$reqBody = reqBody();
+if(isset($reqBody['RFCardCfg'])){
   $jsonBody = json_encode([
-    "RFCardCfg" => json_decode($_GET['RFCardCfg']),
+    "RFCardCfg" => json_decode($reqBody['RFCardCfg']),
   ]);
 }
 else{

@@ -55,8 +55,8 @@ function updateAttendanceMode($host, $attendanceMode, $attendanceStatusTime, $re
 $attendanceSaveStatusData = [];
 
 // Example usage
-// print_r($_GET['attendanceData']);
-$attendanceData = json_decode($_GET['attendanceData']);
+// print_r(reqBody()['attendanceData']);
+$attendanceData = json_decode(reqBody()['attendanceData']);
 $attendanceMode = $attendanceData->mode;
 $attendanceStatusTime = $attendanceData->attendanceStatusTime;
 $reqAttendanceStatus = $attendanceData->reqAttendanceStatus;
