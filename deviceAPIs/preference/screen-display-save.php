@@ -69,15 +69,17 @@ function updateIdentityTerminal($host, $screenDisplayPreference)
   curl_close($ch);
 
   // Return the response
-  return $response;
+  return xmlToJson($response);
 }
 
 // Example usage
-$screenDisplayPreference = json_decode($_GET['screenDisplayPreference'], true);
-$response = updateIdentityTerminal($host, $screenDisplayPreference);
+$screenDisplayPreference = json_decode(reqBody()['screenDisplayPreference']);
+// print_r($screenDisplayPreference);
+// die;
+$response = updateIdentityTerminal($host, (array)$screenDisplayPreference);
 
 if ($response) {
-  echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+  echo json_encode($response);
 } else {
   echo "Failed to update Identity Terminal.";
 }

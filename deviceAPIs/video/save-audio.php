@@ -1,5 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
+
 
 function updateAudioIn($host, $xmlBody)
 {
@@ -28,7 +30,7 @@ function updateAudioIn($host, $xmlBody)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    echo "Response: " . $response;
+    return xmlToJson($response);
   }
 
   // Close cURL session
@@ -62,14 +64,14 @@ function updateAudioOut($host, $xmlBody)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    echo "Response: " . $response;
+    return xmlToJson($response);
   }
 
   // Close cURL session
   curl_close($ch);
 }
 
-$mainAudioStream = json_decode($_GET['mainAudioStream']);
+$mainAudioStream = json_decode(reqBody()['mainAudioStream']);
 $inputVolume = $mainAudioStream->inputVolume;
 $outputVolume = $mainAudioStream->outputVolume;
 $audioInputChannelID = $mainAudioStream->audioInputChannelID;
@@ -97,5 +99,5 @@ $audioOutXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   . "</AudioOutVolumelist>"
   . "</AudioOut>";
 
-updateAudioIn($host, $audioInXml);
-updateAudioOut($host, $audioOutXml);
+echo json_encode(updateAudioIn($host, $audioInXml));
+echo json_encode(updateAudioOut($host, $audioOutXml));

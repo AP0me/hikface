@@ -1,5 +1,8 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
+
+
 function fetchNetworkInterfaces($host) {
     $url = "https://$host/ISAPI/System/Network/interfaces";
 
@@ -25,7 +28,7 @@ function fetchNetworkInterfaces($host) {
     if (curl_errno($ch)) {
         echo "cURL Error: " . curl_error($ch);
     } else {
-        echo "Response: " . $response;
+        return xmlToJson($response);
     }
 
     // Close cURL session
@@ -33,4 +36,4 @@ function fetchNetworkInterfaces($host) {
 }
 
 // Example usage
-fetchNetworkInterfaces($host);
+echo json_encode(fetchNetworkInterfaces($host));

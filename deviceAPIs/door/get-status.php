@@ -34,3 +34,10 @@ function fetchAcsWorkStatus($host)
   curl_close($ch);
 }
 
+$doorStatusNumberMap = [
+  4 => 'controlled',
+  2 => 'remainOpen',
+  3 => 'remainClose',
+];
+$doorStatus = $doorStatusNumberMap[fetchAcsWorkStatus($host)];
+echo json_encode(["doorStatus" => $doorStatus]);

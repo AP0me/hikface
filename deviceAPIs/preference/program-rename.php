@@ -38,9 +38,7 @@ function updateProgram($host, $xmlBody)
 }
 
 // Example usage
-$host = "192.168.0.116";
-$sessionTag = "3OPXHQM1M31WVXU2M605C8F57KY2TIRJ3O2PI8U3KYZJROPNFAQO4GXXKKM7WRI7";
-$programName = $_GET['program_name'];
+$programName = reqBody()['program_name'];
 
 $xmlBody = <<<XML
 <?xml version="1.0" encoding="UTF-8"?>

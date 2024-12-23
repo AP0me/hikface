@@ -28,12 +28,13 @@ function updateSystemTime($host, $xmlBody)
   curl_close($ch);
 }
 
+$reqBody = reqBody();
 // XML body to send
 $xmlBody = '<?xml version="1.0" encoding="UTF-8"?>'
   . '<Time>'
-  . '<timeMode>'.$_GET['syncMode'].'</timeMode>'
-  . '<localTime>'.$_GET['datetime'].'</localTime>'
-  . '<timeZone>'.$_GET['zone'].'</timeZone>'
+  . '<timeMode>'.$reqBody['syncMode'].'</timeMode>'
+  . '<localTime>'.$reqBody['datetime'].'</localTime>'
+  . '<timeZone>'.$reqBody['zone'].'</timeZone>'
   . '</Time>';
 
 // Call the function

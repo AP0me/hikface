@@ -52,4 +52,5 @@ function searchCustomAudioStatus($host)
 }
 
 $response = searchCustomAudioStatus($host);
-echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+echo $response;
+

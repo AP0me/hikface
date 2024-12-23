@@ -6,20 +6,21 @@ function updateCustomPrompt($host)
   $url = "https://$host/ISAPI/AccessControl/customPrompt?format=json";
 
   // JSON body for the request
+  $reqBody = reqBody();
   $jsonBody = json_encode([
     "enabled" => true,
     "PromptList" => [
       [
         "promptType" => "stranger",
-        "promptContent" => $_GET['stranger']
+        "promptContent" => $reqBody['stranger']
       ],
       [
         "promptType" => "authenticationSuccess",
-        "promptContent" => $_GET['authenticated']
+        "promptContent" => $reqBody['authenticated']
       ],
       [
         "promptType" => "authenticationFailed",
-        "promptContent" => $_GET['authenticating_failed']
+        "promptContent" => $reqBody['authenticating_failed']
       ]
     ]
   ]);
@@ -59,4 +60,5 @@ function updateCustomPrompt($host)
 
 
 $response = updateCustomPrompt($host);
-echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+
+echo $response;

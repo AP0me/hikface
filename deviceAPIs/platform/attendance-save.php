@@ -52,18 +52,16 @@ function updateAttendanceMode($host, $attendanceMode, $attendanceStatusTime, $re
   return json_decode($response, true);
 }
 
+$attendanceSaveStatusData = [];
+
 // Example usage
-$attendanceMode = $_GET['attendanceData']->mode;
-$attendanceStatusTime = $_GET['attendanceData']->attendanceStatusTime;
-$reqAttendanceStatus = $_GET['attendanceData']->reqAttendanceStatus;
+// print_r(reqBody()['attendanceData']);
+$attendanceData = json_decode(reqBody()['attendanceData']);
+$attendanceMode = $attendanceData->mode;
+$attendanceStatusTime = $attendanceData->attendanceStatusTime;
+$reqAttendanceStatus = $attendanceData->reqAttendanceStatus;
 $attendanceModeUpdate = updateAttendanceMode($host, $attendanceMode, $attendanceStatusTime, $reqAttendanceStatus);
-
-if ($attendanceModeUpdate) {
-  echo '<pre>' . json_encode($attendanceModeUpdate, JSON_PRETTY_PRINT) . '</pre>';
-} else {
-  echo "Failed to update attendance mode configuration.";
-}
-
+$attendanceSaveStatusData[] = $attendanceModeUpdate;
 
 function updateKeyAttendance($host, $attendTypeID, $attendTypeName, $attendTypeLabel)
 {
@@ -129,11 +127,7 @@ $attendTypeIDMap = [
 foreach ($attendTypeIDMap as $key => $value) {
   $attendTypeID = $key; $attendTypeName = $value[0]; $attendTypeLabel = $value[1];
   $keyAttendanceUpdate = updateKeyAttendance($host, $attendTypeID, $attendTypeName, $attendTypeLabel);
-  if ($keyAttendanceUpdate) {
-    echo '<pre>' . json_encode($keyAttendanceUpdate, JSON_PRETTY_PRINT) . '</pre>';
-  } else {
-    echo "Failed to update key attendance configuration.";
-  }
+  $attendanceSaveStatusData[] = $keyAttendanceUpdate;
 }
 
 
@@ -192,13 +186,7 @@ function updateAttendancePlanTemplate($host)
 
 // Example usage
 $planTemplateUpdate = updateAttendancePlanTemplate($host);
-
-if ($planTemplateUpdate) {
-  echo '<pre>' . json_encode($planTemplateUpdate, JSON_PRETTY_PRINT) . '</pre>';
-} else {
-  echo "Failed to update attendance plan template.";
-}
-
+$attendanceSaveStatusData[] = $planTemplateUpdate;
 
 function updateAttendanceWeekPlan($host)
 {
@@ -247,14 +235,11 @@ function updateAttendanceWeekPlan($host)
   curl_close($ch);
 
   // Decode and return the response
-  return json_decode($response, true);
+  return json_decode($response);
 }
 
 // Example usage
 $weekPlanUpdate = updateAttendanceWeekPlan($host);
+$attendanceSaveStatusData[] = $weekPlanUpdate;
 
-if ($weekPlanUpdate) {
-  echo '<pre>' . json_encode($weekPlanUpdate, JSON_PRETTY_PRINT) . '</pre>';
-} else {
-  echo "Failed to update attendance week plan.";
-}
+echo json_encode($attendanceSaveStatusData);

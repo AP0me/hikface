@@ -38,4 +38,4 @@ function fetchTTSText($host)
 
 
 $response = fetchTTSText($host);
-echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+echo json_encode($response);

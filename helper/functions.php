@@ -45,3 +45,14 @@ function isAPIGet($url)
   // Close cURL session
   curl_close($ch);
 }
+
+
+function reqBody(){
+  $rawInput = file_get_contents('php://input');
+  $data = json_decode($rawInput, true);
+  if (json_last_error() !== JSON_ERROR_NONE) {
+    echo json_encode(['error' => 'Invalid JSON payload']);
+    die;
+  }
+  return $data;
+}

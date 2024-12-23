@@ -1,5 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
 function createProgram($host, $programName)
 {
@@ -76,9 +77,10 @@ XML;
   curl_close($ch);
 
   // Return response
-  return $response;
+  return xmlToJson($response);
 }
 
-$programName = $_GET['program_name'];
-$response = createProgram($host, $programName);
-echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+$programName = reqBody()['program_name'];
+$response = json_encode(createProgram($host, $programName));
+echo $response;
+

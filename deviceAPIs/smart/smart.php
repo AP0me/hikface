@@ -1,5 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
+
 
 function sendGetRequest($host, $endpoint, $headers = [])
 {
@@ -49,34 +51,36 @@ function sendGetRequest($host, $endpoint, $headers = [])
   curl_close($ch);
 
   // Return response
-  return $response;
+  if(isXml($response)){
+    return xmlToJson($response);
+  }
+  else{
+    return json_decode($response);
+  }
 }
-
-// Example usage
-$host = "192.168.0.116";
 
 // Request for Card Reader Engineering Mode Params
 $endpoint = "ISAPI/AccessControl/EngineeringModeMgr/cardReader/1/ReaderEngineeringModeParams?format=json";
 $response = sendGetRequest($host, $endpoint);
-echo "Response for Engineering Mode Params: <pre>" . htmlspecialchars($response) . "</pre>";
+echo json_encode($response);
 
 
 $endpoint = "ISAPI/AccessControl/CardReaderCfg/1?format=json";
 $response = sendGetRequest($host, $endpoint);
-echo "Response for CardReaderCfg: <pre>" . htmlspecialchars($response) . "</pre>";
+echo json_encode($response);
 
 
 $endpoint = "ISAPI/AccessControl/maskDetection?format=json";
 $response = sendGetRequest($host, $endpoint);
-echo "Response for MaskDetection: <pre>" . htmlspecialchars($response) . "</pre>";
+echo json_encode($response);
 
 
 $endpoint = "ISAPI/AccessControl/IdentityTerminal";
 $response = sendGetRequest($host, $endpoint);
-echo "Response for IdentityTerminal: <pre>" . htmlspecialchars($response) . "</pre>";
+echo json_encode($response);
 
 
 $endpoint = "ISAPI/AccessControl/FaceCompareCond";
 $response = sendGetRequest($host, $endpoint);
-echo "Response for FaceCompareCond: <pre>" . htmlspecialchars($response) . "</pre>";
+echo json_encode($response);
 

@@ -40,7 +40,7 @@ function fetchStorageConfig($host)
 $storageConfig = fetchStorageConfig($host);
 
 if ($storageConfig) {
-  echo '<pre>' . json_encode($storageConfig, JSON_PRETTY_PRINT) . '</pre>';
+  echo json_encode($storageConfig);
 } else {
   echo "Failed to fetch storage configuration.";
 }
@@ -85,7 +85,7 @@ function fetchUserAndRightShow($host)
 $userAndRightShow = fetchUserAndRightShow($host);
 
 if ($userAndRightShow) {
-  echo '<pre>' . json_encode($userAndRightShow, JSON_PRETTY_PRINT) . '</pre>';
+  echo json_encode($userAndRightShow);
 } else {
   echo "Failed to fetch user and right show data.";
 }
@@ -130,14 +130,9 @@ function fetchAcsConfig($host)
 $acsConfig = fetchAcsConfig($host);
 
 if ($acsConfig) {
-  echo '<pre>' . json_encode($acsConfig, JSON_PRETTY_PRINT) . '</pre>';
+  echo json_encode($acsConfig);
 } else {
   echo "Failed to fetch ACS configuration.";
 }
 ?>
 
-
-<br><br>
-<a href="privacy-save.php?storageConfig=<?= htmlspecialchars(json_encode($storageConfig)); ?>&userAndRightShow=<?= htmlspecialchars(json_encode($userAndRightShow)); ?>&acsConfig=<?= htmlspecialchars(json_encode($acsConfig)); ?>">
-  <button>Save</button>
-</a>
