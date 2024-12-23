@@ -2,8 +2,8 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-function upgrade() {
-    $url = "https://192.168.0.116/ISAPI/System/upgradeStatus";
+function upgrade($host) {
+    $url = "https://$host/ISAPI/System/upgradeStatus";
     $ch = curl_init($url);
 
     // Set cURL options
@@ -48,11 +48,11 @@ function upgrade() {
     // Close cURL session
     curl_close($ch);
 }
-echo json_encode(upgrade());
+echo json_encode(upgrade($host));
 
 
-function vers() {
-    $url = "https://192.168.0.116/ISAPI/System/onlineUpgrade/version?check=true";
+function vers($host) {
+    $url = "https://$host/ISAPI/System/onlineUpgrade/version?check=true";
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
@@ -86,4 +86,4 @@ function vers() {
     curl_close($ch);
 }
 
-echo json_encode(vers());
+echo json_encode(vers($host));

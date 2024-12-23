@@ -2,8 +2,8 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-function ssh() {
-    $url = "https://192.168.0.116/ISAPI/System/Network/ssh";
+function ssh($host) {
+    $url = "https://$host/ISAPI/System/Network/ssh";
     $ch = curl_init($url);
 
     // Set cURL options
@@ -48,4 +48,4 @@ function ssh() {
     // Close cURL session
     curl_close($ch);
 }
-echo json_encode(ssh());
+echo json_encode(ssh($host));

@@ -1,5 +1,7 @@
 <?php
-$url = 'https://192.168.0.116/ISAPI/AccessControl/UserInfo/Search?format=json&security=1&iv=126193887ffb915737e0c76173e18f83';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+
+$url = "https://$host/ISAPI/AccessControl/UserInfo/Search?format=json&security=1&iv=126193887ffb915737e0c76173e18f83";
 $data = json_encode([
   "UserInfoSearchCond" => [
     "searchID" => "7323fd9b3a9c4f4ba427384263a8eb14",

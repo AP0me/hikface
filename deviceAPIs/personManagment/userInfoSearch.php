@@ -1,10 +1,11 @@
 
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 
-function fetchAcsEvent()
+function fetchAcsEvent($host)
 {
   // URL for the API request
-  $url = "https://192.168.0.116/ISAPI/AccessControl/UserInfo/Search?format=json&security=1&iv=98116cf03555c48b8823f87d7e749a93";
+  $url = "https://$host/ISAPI/AccessControl/UserInfo/Search?format=json&security=1&iv=98116cf03555c48b8823f87d7e749a93";
   // Initialize cURL session
   $ch = curl_init($url);
   $data = json_encode([
@@ -43,4 +44,4 @@ function fetchAcsEvent()
     return $response;
   }
 }
-echo json_encode(fetchAcsEvent());
+echo json_encode(fetchAcsEvent($host));

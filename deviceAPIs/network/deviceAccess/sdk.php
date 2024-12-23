@@ -1,6 +1,8 @@
 <?php
-function http() {
-$url = 'https://192.168.0.116/ISAPI/Security/adminAccesses';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+
+function http($host) {
+$url = "https://$host/ISAPI/Security/adminAccesses";
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
@@ -37,4 +39,4 @@ $url = 'https://192.168.0.116/ISAPI/Security/adminAccesses';
         
     curl_close($ch);
 }}
-http();
+http($host);

@@ -1,6 +1,8 @@
 <?php
-function fetchNetwork() { 
-    $url = "https://192.168.0.116/ISAPI/Event/notification/httpHosts?security=1&iv=ea89e569f0513a02629d6a0419baa843";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+
+function fetchNetwork($host) { 
+    $url = "https://$host/ISAPI/Event/notification/httpHosts?security=1&iv=ea89e569f0513a02629d6a0419baa843";
     
     $ch = curl_init($url);
 
@@ -52,8 +54,8 @@ function fetchNetwork() {
     // Close cURL session
     curl_close($ch);
 }
-function http() {
-$url = 'https://192.168.0.116/ISAPI/Security/adminAccesses';
+function http($host) {
+$url = "https://$host/ISAPI/Security/adminAccesses";
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
@@ -94,5 +96,5 @@ $url = 'https://192.168.0.116/ISAPI/Security/adminAccesses';
         }
     curl_close($ch);
 }}
-http();
-fetchNetwork();
+http($host);
+fetchNetwork($host);

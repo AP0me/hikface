@@ -1,8 +1,9 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 
-function fetchAcsEvent()
+function fetchAcsEvent($host)
 {
-  $url = "https://192.168.0.116/ISAPI/AccessControl/UserInfo/Count?format=json";
+  $url = "https://$host/ISAPI/AccessControl/UserInfo/Count?format=json";
 
 
   // Initialize cURL session
@@ -31,4 +32,4 @@ function fetchAcsEvent()
     return $response;
   }
 }
-echo json_encode(fetchAcsEvent());
+echo json_encode(fetchAcsEvent($host));

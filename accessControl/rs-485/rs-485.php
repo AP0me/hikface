@@ -1,6 +1,8 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+
 function fetchNetworkInterfaces($host) {
-    $url = "https://192.168.0.116/ISAPI/System/Serial/ports/1";
+    $url = "https://$host/ISAPI/System/Serial/ports/1";
     
     $ch = curl_init($url);
 
@@ -59,4 +61,4 @@ function fetchNetworkInterfaces($host) {
 }
 
 // Example usage
-fetchNetworkInterfaces("192.168.0.116");
+fetchNetworkInterfaces($host);

@@ -2,9 +2,9 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-function imageSetting()
+function imageSetting($host)
 {
-  $url = "https://192.168.0.116/ISAPI/Image/channels/1";
+  $url = "https://$host/ISAPI/Image/channels/1";
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
@@ -40,11 +40,11 @@ function imageSetting()
   // Close cURL session
   curl_close($ch);
 }
-echo imageSetting();
+echo imageSetting($host);
 
-function LED($a)
+function LED($a, $host)
 {
-  $url = "https://192.168.0.116/ISAPI/Image/channels/$a/supplementLight";
+  $url = "https://$host/ISAPI/Image/channels/$a/supplementLight";
   $ch = curl_init($url);
 
   // Set cURL options
@@ -91,5 +91,5 @@ function LED($a)
   // Close cURL session
   curl_close($ch);
 }
-LED('1');
-LED('2');
+LED('1', $host);
+LED('2', $host);

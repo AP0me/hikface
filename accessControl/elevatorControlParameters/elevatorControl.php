@@ -1,6 +1,8 @@
 <?php
-function elevatorControlParameter() {
-    $url = "https://192.168.0.116/ISAPI/VideoIntercom/Elevators/1/ControlCfg?format=json&security=1&iv=6b5633d7e91a7bff94e5465fd6be8f5d";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+
+function elevatorControlParameter($host) {
+    $url = "https://$host/ISAPI/VideoIntercom/Elevators/1/ControlCfg?format=json&security=1&iv=6b5633d7e91a7bff94e5465fd6be8f5d";
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
@@ -45,4 +47,4 @@ function elevatorControlParameter() {
     }
     curl_close($ch);
 }
-elevatorControlParameter();
+elevatorControlParameter($host);

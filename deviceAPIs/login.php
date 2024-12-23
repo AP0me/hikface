@@ -1,4 +1,6 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+
 
 function computePasswordHash($password, $salt, $iterations)
 {
@@ -81,7 +83,6 @@ XML;
     return $response;
 }
 
-$host = "192.168.0.116";
 $username = "admin";
 $password = "12345678m";
 $random = "17081640";

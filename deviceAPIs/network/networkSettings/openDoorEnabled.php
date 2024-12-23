@@ -1,6 +1,8 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+
 function fetchNetworkInterfaces($host) {
-    $url = "https://192.168.0.116/ISAPI/AccessControl/bluetooth?format=json";
+    $url = "https://$host/ISAPI/AccessControl/bluetooth?format=json";
     $ch = curl_init($url);
 
     // Set cURL options
@@ -47,4 +49,4 @@ function fetchNetworkInterfaces($host) {
 }
 
 // Example usage
-fetchNetworkInterfaces("192.168.0.116");
+fetchNetworkInterfaces($host);

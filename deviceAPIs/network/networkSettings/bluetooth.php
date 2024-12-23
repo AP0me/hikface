@@ -1,6 +1,8 @@
 <?php
-function blueTooth() {
-    $url = "https://192.168.0.116/ISAPI/System/Bluetooth/deviceCfg?format=json&security=1&iv=4d705ddb6d17870ed5ad8fef9f4eb079";
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+
+function blueTooth($host) {
+    $url = "https://$host/ISAPI/System/Bluetooth/deviceCfg?format=json&security=1&iv=4d705ddb6d17870ed5ad8fef9f4eb079";
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
@@ -35,8 +37,8 @@ function blueTooth() {
     }
     curl_close($ch);
 }
-function openDoorEnabled() {
-    $url = "https://192.168.0.116/ISAPI/AccessControl/bluetooth?format=json";
+function openDoorEnabled($host) {
+    $url = "https://$host/ISAPI/AccessControl/bluetooth?format=json";
     $ch = curl_init($url);
 
     // Set cURL options
@@ -81,5 +83,5 @@ function openDoorEnabled() {
     // Close cURL session
     curl_close($ch);
 }
-blueTooth();
-openDoorEnabled();
+blueTooth($host);
+openDoorEnabled($host);

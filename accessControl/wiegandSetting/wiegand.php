@@ -1,6 +1,8 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+
 function fetchNetworkInterfaces($host) {
-    $url = "https://192.168.0.116/ISAPI/AccessControl/WiegandCfg/wiegandNo/1";
+    $url = "https://$host/ISAPI/AccessControl/WiegandCfg/wiegandNo/1";
     // Initialize cURL session
     $ch = curl_init($url);
 
@@ -48,4 +50,4 @@ function fetchNetworkInterfaces($host) {
     }
     curl_close($ch);
 }
-fetchNetworkInterfaces("192.168.0.116");
+fetchNetworkInterfaces($host);

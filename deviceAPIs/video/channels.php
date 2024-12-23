@@ -20,9 +20,6 @@ function streamingChannels($host)
   curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie.txt");
   curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt");
 
-  // Set the referrer
-  curl_setopt($ch, CURLOPT_REFERER, "https://192.168.0.116/doc/index.html");
-
   // Set the request method to GET
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
 

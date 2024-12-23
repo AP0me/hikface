@@ -1,4 +1,5 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 
 function updateDeviceInfo($host, $xmlBody, $backURL)
 {
@@ -65,4 +66,4 @@ $xmlBody = '<?xml version="1.0" encoding="UTF-8"?>'
 
 // Call the function
 
-updateDeviceInfo("192.168.0.116", $xmlBody, $reqBody['backURL']);
+updateDeviceInfo($host, $xmlBody, $reqBody['backURL']);

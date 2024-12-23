@@ -1,6 +1,8 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+
 function fetchNetworkInterfaces($host) {
-$url = "https://192.168.0.116/ISAPI/System/Network/EZVIZ?security=1&iv=8ae15bdec0f9bbec7f0157bd53a29370";
+$url = "https://$host/ISAPI/System/Network/EZVIZ?security=1&iv=8ae15bdec0f9bbec7f0157bd53a29370";
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
@@ -44,4 +46,4 @@ $url = "https://192.168.0.116/ISAPI/System/Network/EZVIZ?security=1&iv=8ae15bdec
     }
     curl_close($ch);
 }
-fetchNetworkInterfaces("192.168.0.116");
+fetchNetworkInterfaces($host);

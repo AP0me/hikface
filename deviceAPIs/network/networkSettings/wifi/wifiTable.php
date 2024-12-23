@@ -1,6 +1,8 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+
 function fetchNetworkInterfaces($host) {
-    $url = "https://192.168.0.116/ISAPI/System/Network/interfaces/2/wireless/accessPointList";
+    $url = "https://$host/ISAPI/System/Network/interfaces/2/wireless/accessPointList";
 
     // Initialize cURL session
     $ch = curl_init($url);
@@ -52,4 +54,4 @@ function fetchNetworkInterfaces($host) {
     curl_close($ch);
 }
 
-fetchNetworkInterfaces("192.168.0.116");
+fetchNetworkInterfaces($host);
