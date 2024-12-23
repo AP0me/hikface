@@ -36,4 +36,4 @@ function fetchSDKLanguage($host)
 }
 
 // Example usage
-echo fetchSDKLanguage($host);
+echo json_encode([ 'language' => fetchSDKLanguage($host)]);

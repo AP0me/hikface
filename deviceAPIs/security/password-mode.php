@@ -40,7 +40,7 @@ function fetchPwMgrParams($host)
 $pwMgrParams = fetchPwMgrParams($host);
 
 if ($pwMgrParams) {
-  echo '<pre>' . json_encode($pwMgrParams, JSON_PRETTY_PRINT) . '</pre>';
+  echo json_encode($pwMgrParams);
 } else {
   echo "Failed to fetch Password Manager Parameters.";
 }

@@ -62,13 +62,10 @@ $screenDisplayPreference = new ScreenDisplayPreference(
 );
 
 if ($identityTerminal) {
-  echo '<pre>' . json_encode($screenDisplayPreference, JSON_PRETTY_PRINT) . '</pre>';
+  echo json_encode($screenDisplayPreference, JSON_PRETTY_PRINT);
 } else {
   echo "Failed to fetch Identity Terminal data.";
 }
 ?>
 
-<br><br>
-<a href="screen-display-save.php?screenDisplayPreference=<?= htmlspecialchars(json_encode($screenDisplayPreference)); ?>">
-  <button>Save</button>
-</a>
+

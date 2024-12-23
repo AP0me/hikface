@@ -1,5 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
+
 
 function getFaceCompareCond($host)
 {
@@ -33,8 +35,8 @@ function getFaceCompareCond($host)
   curl_close($ch);
 
   // Return response
-  return $response;
+  return xmlToJson($response);
 }
 
 $response = getFaceCompareCond($host);
-echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+echo json_encode($response);

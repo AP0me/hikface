@@ -43,11 +43,7 @@ $mainAudioStream = new AudioSettings(
   $volumeOut,
   $mainAudioStreamData->Audio->enabled,
 );
-var_dump($mainAudioStream);
 
-?>
-<br>
-<br>
-<a href="save-audio.php?mainAudioStream=<?= htmlspecialchars(json_encode($mainAudioStream)); ?>">
-  <button>Save</button>
-</a>
+print_r(json_encode($mainAudioStream));
+
+

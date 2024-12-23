@@ -1,5 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
+
 
 function sendPutRequest($host, $endpoint, $body, $headers = [])
 {
@@ -51,99 +53,68 @@ function sendPutRequest($host, $endpoint, $body, $headers = [])
   curl_close($ch);
 
   // Return response
+  if(isXml($response)) {
+    return xmlToJson($response);
+  }
   return $response;
 }
 
-// Example usage
-$host = "192.168.0.116";
-
+$reqBody = reqBody();
 // Request 1: Card Reader Configuration
 $cardReaderCfgBody = json_encode([
-  "CardReaderCfg" => [
-    "enable" => true,
-    "okLedPolarity" => "anode",
-    "errorLedPolarity" => "anode",
-    "swipeInterval" => 0,
-    "enableFailAlarm" => true,
-    "maxReadCardFailNum" => 5,
-    "pressTimeout" => 10,
-    "enableTamperCheck" => true,
-    "offlineCheckTime" => 0,
-    "fingerPrintCheckLevel" => 5,
-    "faceMatchThresholdN" => 90,
-    "faceRecogizeTimeOut" => 3,
-    "faceRecogizeInterval" => 3,
-    "cardReaderFunction" => ["fingerPrint", "face"],
-    "cardReaderDescription" => "DS-K1T341CMFW",
-    "livingBodyDetect" => true,
-    "faceMatchThreshold1" => 60,
-    "liveDetLevelSet" => "general",
-    "liveDetAntiAttackCntLimit" => 100,
-    "enableLiveDetAntiAttack" => true,
-    "fingerPrintCapacity" => 3000,
-    "fingerPrintNum" => 5,
-    "defaultVerifyMode" => "faceOrFpOrCardOrPw",
-    "faceRecogizeEnable" => 1,
-    "enableReverseCardNo" => true,
-    "independSwipeIntervals" => 1,
-    "maskFaceMatchThresholdN" => 75,
-    "maskFaceMatchThreshold1" => 75,
-  ],
+  "CardReaderCfg" => json_decode($reqBody['CardReaderCfg']),
 ]);
+
 $response = sendPutRequest($host, "ISAPI/AccessControl/CardReaderCfg/1?format=json", $cardReaderCfgBody);
-echo "Response for CardReaderCfg: <pre>" . htmlspecialchars($response) . "</pre>";
+echo $response;
 
 // Request 2: Mask Detection
 $maskDetectionBody = json_encode([
-  "MaskDetection" => [
-    "enable" => true,
-    "noMaskStrategy" => "noTipsAndOpenDoor",
-  ],
+  "MaskDetection" => json_decode($reqBody['MaskDetection']),
 ]);
 $response = sendPutRequest($host, "ISAPI/AccessControl/maskDetection?format=json", $maskDetectionBody);
-echo "Response for MaskDetection: <pre>" . htmlspecialchars($response) . "</pre>";
+echo $response;
 
 // Request 3: Identity Terminal
+$IdentityTerminalData = (array)json_decode($reqBody['IdentityTerminal']);
+$faceAlgorithm = $IdentityTerminalData['faceAlgorithm'];
+$saveCertifiedImage = $IdentityTerminalData['saveCertifiedImage'];
+$readInfoOfCard = $IdentityTerminalData['readInfoOfCard'];
+$workMode = $IdentityTerminalData['workMode'];
+$eco = $IdentityTerminalData['eco'];
+$faceMatchThreshold1 = $IdentityTerminalData['faceMatchThreshold1'];
+$faceMatchThresholdN = $IdentityTerminalData['faceMatchThresholdN'];
+$changeThreshold = $IdentityTerminalData['changeThreshold'];
+$maskFaceMatchThresholdN = $IdentityTerminalData['maskFaceMatchThresholdN'];
+$maskFaceMatchThreshold1 = $IdentityTerminalData['maskFaceMatchThreshold1'];
+$enableScreenOff = $IdentityTerminalData['enableScreenOff'];
+$screenOffTimeout = $IdentityTerminalData['screenOffTimeout'];
+$showMode = $IdentityTerminalData['showMode'];
 $identityTerminalBody = <<<XML
 <IdentityTerminal version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">
-    <faceAlgorithm>DeepLearn</faceAlgorithm>
+    <faceAlgorithm>$faceAlgorithm</faceAlgorithm>
     <comNo/>
     <memoryLearning/>
-    <saveCertifiedImage>enable</saveCertifiedImage>
-    <readInfoOfCard>serialNo</readInfoOfCard>
-    <workMode>accessControlMode</workMode>
+    <saveCertifiedImage>$saveCertifiedImage</saveCertifiedImage>
+    <readInfoOfCard>$readInfoOfCard</readInfoOfCard>
+    <workMode>$workMode</workMode>
     <ecoMode>
-        <eco>enable</eco>
-        <faceMatchThreshold1>60</faceMatchThreshold1>
-        <faceMatchThresholdN>80</faceMatchThresholdN>
-        <changeThreshold>4</changeThreshold>
-        <maskFaceMatchThresholdN>70</maskFaceMatchThresholdN>
-        <maskFaceMatchThreshold1>70</maskFaceMatchThreshold1>
+        <eco>$eco</eco>
+        <faceMatchThreshold1>$faceMatchThreshold1</faceMatchThreshold1>
+        <faceMatchThresholdN>$faceMatchThresholdN</faceMatchThresholdN>
+        <changeThreshold>$changeThreshold</changeThreshold>
+        <maskFaceMatchThresholdN>$maskFaceMatchThresholdN</maskFaceMatchThresholdN>
+        <maskFaceMatchThreshold1>$maskFaceMatchThreshold1</maskFaceMatchThreshold1>
     </ecoMode>
-    <enableScreenOff>true</enableScreenOff>
-    <screenOffTimeout>60</screenOffTimeout>
-    <showMode>normal</showMode>
+    <enableScreenOff>$enableScreenOff</enableScreenOff>
+    <screenOffTimeout>$screenOffTimeout</screenOffTimeout>
+    <showMode>$showMode</showMode>
 </IdentityTerminal>
 XML;
+
 $response = sendPutRequest($host, "ISAPI/AccessControl/IdentityTerminal", $identityTerminalBody, [
   "Content-Type: application/xml",
 ]);
-echo "Response for IdentityTerminal: <pre>" . htmlspecialchars($response) . "</pre>";
+echo json_encode($response);
 
-// Request 4: Face Compare Condition
-$faceCompareCondBody = <<<XML
-<FaceCompareCond version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">
-    <pitch>45</pitch>
-    <yaw>45</yaw>
-    <leftBorder>5</leftBorder>
-    <rightBorder>5</rightBorder>
-    <upBorder>0</upBorder>
-    <bottomBorder>0</bottomBorder>
-    <faceScore>0</faceScore>
-    <maxDistance>auto</maxDistance>
-</FaceCompareCond>
-XML;
-$response = sendPutRequest($host, "ISAPI/AccessControl/FaceCompareCond", $faceCompareCondBody, [
-  "Content-Type: application/xml",
-]);
-echo "Response for FaceCompareCond: <pre>" . htmlspecialchars($response) . "</pre>";
+

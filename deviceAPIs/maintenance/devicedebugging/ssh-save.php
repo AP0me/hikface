@@ -2,26 +2,26 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-
-function deleteProgram($host)
+function enableSSH($host, $xmlBody)
 {
-  $url = "https://$host/ISAPI/Publish/ProgramMgr/program/1";
+  $url = "https://$host/ISAPI/System/Network/ssh";
 
   // Initialize cURL session
   $ch = curl_init($url);
 
   // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE"); // Set method to DELETE
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Disable SSL verification for testing
+  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+  curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlBody); // Send XML data
 
   // Set authentication credentials
   $username = "admin";
   $password = "12345678m";
   curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
   curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
-  
+
   // Execute cURL request
   $response = curl_exec($ch);
 
@@ -39,5 +39,13 @@ function deleteProgram($host)
 }
 
 
-$response = json_encode(deleteProgram($host));
-echo $response;
+// XML Body
+$ssh_enabled = reqBody()['enabled'];
+$xmlBody = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<SSH>
+  <enabled>$ssh_enabled</enabled>
+</SSH>
+XML;
+$response = enableSSH($host, $xmlBody);
+echo json_encode($response);

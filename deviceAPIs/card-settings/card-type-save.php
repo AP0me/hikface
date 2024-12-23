@@ -29,20 +29,17 @@ function updateM1CardEncryptCfg($host, $xmlBody)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    echo "Response: " . $response;
+    echo json_encode(xmlToJson($response));
   }
 
   curl_close($ch);
 }
-
 $xmlBody = '<?xml version="1.0" encoding="UTF-8"?>'
   . '<M1CardEncryptCfg version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">'
   . '<enable>false</enable>'
   . '<sectionID>13</sectionID>'
   . '</M1CardEncryptCfg>';
-
 updateM1CardEncryptCfg($host, $xmlBody);
-
 
 
 function updateNFCCfg($host, $jsonBody)
@@ -67,16 +64,13 @@ function updateNFCCfg($host, $jsonBody)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    echo "Response: " . $response;
+    echo $response;
   }
 
   curl_close($ch);
 }
-
-// Example Usage
 $jsonBody = json_encode(["NFCCfg" => ["enable" => true]]);
 updateNFCCfg($host, $jsonBody);
-
 
 
 function updateRFCardCfg($host, $jsonBody)
@@ -101,20 +95,28 @@ function updateRFCardCfg($host, $jsonBody)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    echo "Response: " . $response;
+    echo $response;
   }
 
   curl_close($ch);
 }
 
-// Example Usage
-$jsonBody = json_encode([
-  "RFCardCfg" => [
-    ["cardType" => "EMCard", "enabled" => true],
-    ["cardType" => "M1Card", "enabled" => true],
-    ["cardType" => "CPUCard", "enabled" => true],
-    ["cardType" => "DesfireCard", "enabled" => true],
-    ["cardType" => "FelicaCard", "enabled" => true],
-  ]
-]);
+$reqBody = reqBody();
+if(isset($reqBody['RFCardCfg'])){
+  $jsonBody = json_encode([
+    "RFCardCfg" => json_decode($reqBody['RFCardCfg']),
+  ]);
+}
+else{
+  $jsonBody = json_encode([
+    "RFCardCfg" => [
+      ["cardType" => "EMCard", "enabled" => true],
+      ["cardType" => "M1Card", "enabled" => true],
+      ["cardType" => "CPUCard", "enabled" => true],
+      ["cardType" => "DesfireCard", "enabled" => true],
+      ["cardType" => "FelicaCard", "enabled" => true],
+    ]
+  ]);
+}
+
 updateRFCardCfg($host, $jsonBody);

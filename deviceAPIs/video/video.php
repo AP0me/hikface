@@ -50,9 +50,7 @@ $mainVideoStream = new VideoStream(
   $mainVideoStreamData->Video->videoCodecType,
   $mainVideoStreamData->Video->keyFrameInterval,
 );
-print_r('mainVideoStream: ');
-print_r($mainVideoStream);
-print_r('<br>');
+print_r(json_encode($mainVideoStream));
 
 $subVideoStreamData = $videoStreamData[1];
 $subVideoStream = new VideoStream(
@@ -66,6 +64,5 @@ $subVideoStream = new VideoStream(
   $subVideoStreamData->Video->videoCodecType,
   $subVideoStreamData->Video->keyFrameInterval,
 );
-print_r('subVideoStream: ');
-print_r($subVideoStream);
+print_r(json_encode($subVideoStream));
 

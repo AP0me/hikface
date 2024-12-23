@@ -35,10 +35,11 @@ function updateDeviceInfo($host, $xmlBody, $backURL)
   exit;
 }
 
+$reqBody = reqBody();
 // XML body to send
 $xmlBody = '<?xml version="1.0" encoding="UTF-8"?>'
   . '<DeviceInfo version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">'
-  . '<deviceName>'.$_GET['device_name'].'</deviceName>'
+  . '<deviceName>'.$reqBody['device_name'].'</deviceName>'
   . '<deviceID>255</deviceID>'
   . '<model>DS-K1T341CMFW</model>'
   . '<serialNumber>DS-K1T341CMFW20230901V030315ENFH3990937</serialNumber>'
@@ -64,4 +65,4 @@ $xmlBody = '<?xml version="1.0" encoding="UTF-8"?>'
 
 // Call the function
 
-updateDeviceInfo("192.168.0.116", $xmlBody, $_GET['backURL']);
+updateDeviceInfo("192.168.0.116", $xmlBody, $reqBody['backURL']);

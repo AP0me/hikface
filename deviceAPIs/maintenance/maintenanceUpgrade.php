@@ -1,4 +1,7 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
+
 function upgrade() {
     $url = "https://192.168.0.116/ISAPI/System/upgradeStatus";
     $ch = curl_init($url);
@@ -39,17 +42,15 @@ function upgrade() {
     if (curl_errno($ch)) {
         echo "cURL Error: " . curl_error($ch);
     } else {
-        $xml=new SimpleXMLElement($response);
-        print_r($xml);echo '<br>';
-        print_r((string)$xml['version']);echo '<br>';
-        print_r((string)$xml->upgrading);echo '<br>';
-        print_r((string)$xml->percent);echo '<br>';
+        return xmlToJson($response);
     }
 
     // Close cURL session
     curl_close($ch);
 }
-upgrade();
+echo json_encode(upgrade());
+
+
 function vers() {
     $url = "https://192.168.0.116/ISAPI/System/onlineUpgrade/version?check=true";
     $ch = curl_init($url);
@@ -80,10 +81,9 @@ function vers() {
     if (curl_errno($ch)) {
         echo "cURL Error: " . curl_error($ch);
     } else {
-        $xml=new SimpleXMLElement($response);
-        print_r((string)$xml->newVersion);echo '<br>';
-        print_r((string)$xml->newVersionAvailable);echo '<br>';
+        return xmlToJson($response);
     }
     curl_close($ch);
 }
-vers();
+
+echo json_encode(vers());

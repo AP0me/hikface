@@ -1,4 +1,7 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
+
 function ssh() {
     $url = "https://192.168.0.116/ISAPI/System/Network/ssh";
     $ch = curl_init($url);
@@ -39,10 +42,10 @@ function ssh() {
     if (curl_errno($ch)) {
         echo "cURL Error: " . curl_error($ch);
     } else {
-        echo "Response: " . $response;
+        return xmlToJson($response);
     }
 
     // Close cURL session
     curl_close($ch);
 }
-ssh();
+echo json_encode(ssh());

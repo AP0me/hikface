@@ -29,14 +29,14 @@ function updateDeviceId($host, $xmlBody)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    echo "Response: " . $response;
+    return xmlToJson($response);
   }
 
   // Close cURL session
   curl_close($ch);
 }
 
-$deviceIDs = json_decode($_GET['deviceIDs']);
+$deviceIDs = json_decode(reqBody()['deviceIDs']);
 $unitType = $deviceIDs->deviceType;
 $floorNumber = $deviceIDs->floorNumber;
 $deviceIndex = $deviceIDs->deviceIndex;
@@ -54,4 +54,4 @@ $xmlBody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   . "<deviceIndex>$deviceIndex</deviceIndex>"
   . "</DeviceId>";
 
-updateDeviceId($host, $xmlBody);
+echo json_encode(updateDeviceId($host, $xmlBody));

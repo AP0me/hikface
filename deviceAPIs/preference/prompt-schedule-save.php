@@ -6,14 +6,7 @@ function updateTTSText($host)
   $url = "https://$host/ISAPI/AccessControl/Verification/ttsText?format=json";
 
   // JSON body
-  $jsonBody = json_encode([
-    "TTSText" => [
-      "enable" => true,
-      "prefix" => "none",
-      "Success" => [],
-      "Failure" => []
-    ]
-  ]);
+  $jsonBody = reqBody()['ttsText'];
 
   // Initialize cURL session
   $ch = curl_init($url);
@@ -47,5 +40,6 @@ function updateTTSText($host)
   return $response;
 }
 
-$response = updateTTSText($host);
-echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+$response = (updateTTSText($host));
+echo $response;
+
