@@ -3,7 +3,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
 
-function sendGetRequest($host, $endpoint, $headers = [])
+function sendGetRequest($host, $endpoint)
 {
   $url = "https://$host/$endpoint";
 
@@ -21,21 +21,6 @@ function sendGetRequest($host, $endpoint, $headers = [])
   $password = "12345678m";
   curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
   curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
-
-  // Set default headers
-  $defaultHeaders = [
-    "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
-    "Accept: */*",
-    "Accept-Language: en-US,en;q=0.5",
-    "If-Modified-Since: 0",
-    "X-Requested-With: XMLHttpRequest",
-    "Pragma: no-cache",
-    "Cache-Control: no-cache",
-  ];
-
-  // Merge default and additional headers
-  $finalHeaders = array_merge($defaultHeaders, $headers);
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $finalHeaders);
 
   // Execute cURL request
   $response = curl_exec($ch);

@@ -23,21 +23,8 @@ function sendPutRequest($host, $endpoint, $body, $headers = [])
   curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
   curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
 
-  // Set default headers
-  $defaultHeaders = [
-    "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:132.0) Gecko/20100101 Firefox/132.0",
-    "Accept: */*",
-    "Accept-Language: en-US,en;q=0.5",
-    "Content-Type: application/x-www-form-urlencoded; charset=UTF-8",
-    "If-Modified-Since: 0",
-    "X-Requested-With: XMLHttpRequest",
-    "Pragma: no-cache",
-    "Cache-Control: no-cache",
-  ];
-
-  // Merge default and additional headers
-  $finalHeaders = array_merge($defaultHeaders, $headers);
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $finalHeaders);
+  // Set headers
+  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
   // Execute cURL request
   $response = curl_exec($ch);
