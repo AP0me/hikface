@@ -45,11 +45,7 @@ function updateIdentityTerminal($host, $screenDisplayPreference)
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); // Set method to PUT
   curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlBody); // Attach XML payload
 
-  // Set authentication credentials
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
 
   // Set additional headers
   curl_setopt($ch, CURLOPT_HTTPHEADER, [

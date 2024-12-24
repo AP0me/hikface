@@ -10,11 +10,7 @@ function streamingChannels($host)
   $url = "https://$host/ISAPI/Streaming/channels";
   curl_setopt($ch, CURLOPT_URL, $url);
 
-  // Set authentication credentials
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
 
   // Include credentials (cookies, session, etc.)
   curl_setopt($ch, CURLOPT_COOKIEFILE, "cookie.txt");

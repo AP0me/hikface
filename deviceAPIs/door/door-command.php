@@ -15,11 +15,7 @@ function doorCommand($host, $command, $redirectURL){
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
   curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 
-  // Set authentication credentials
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
 
   // Set additional headers
   $headers = [

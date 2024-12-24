@@ -16,11 +16,7 @@ function updateM1CardEncryptCfg($host, $xmlBody)
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
   curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlBody);
 
-  // Set authentication credentials
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
 
   // Execute cURL request
   $response = curl_exec($ch);
@@ -54,10 +50,7 @@ function updateNFCCfg($host, $jsonBody)
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
   curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
 
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
 
   $response = curl_exec($ch);
 
@@ -85,10 +78,7 @@ function updateRFCardCfg($host, $jsonBody)
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
   curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
 
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
 
   $response = curl_exec($ch);
 
@@ -102,12 +92,11 @@ function updateRFCardCfg($host, $jsonBody)
 }
 
 $reqBody = reqBody();
-if(isset($reqBody['RFCardCfg'])){
+if (isset($reqBody['RFCardCfg'])) {
   $jsonBody = json_encode([
     "RFCardCfg" => json_decode($reqBody['RFCardCfg']),
   ]);
-}
-else{
+} else {
   $jsonBody = json_encode([
     "RFCardCfg" => [
       ["cardType" => "EMCard", "enabled" => true],

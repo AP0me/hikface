@@ -1,5 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
 function updateCustomPrompt($host)
 {
@@ -36,11 +37,7 @@ function updateCustomPrompt($host)
   curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody); // Attach JSON body
 
   
-  // Set authentication credentials
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
 
   // Execute cURL request
   $response = curl_exec($ch);

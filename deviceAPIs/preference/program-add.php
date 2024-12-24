@@ -58,11 +58,7 @@ XML;
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); // Set method to POST
   curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlBody); // Attach XML body
 
-  // Set authentication credentials
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
 
   // Execute cURL request
   $response = curl_exec($ch);

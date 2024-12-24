@@ -17,11 +17,7 @@ function sendPutRequest($host, $endpoint, $body, $headers = [])
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
   curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 
-  // Set authentication credentials
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  deviceAuth($ch);
 
   // Set headers
   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);

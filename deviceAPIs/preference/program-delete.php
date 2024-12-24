@@ -16,11 +16,7 @@ function deleteProgram($host)
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE"); // Set method to DELETE
 
-  // Set authentication credentials
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
   
   // Execute cURL request
   $response = curl_exec($ch);

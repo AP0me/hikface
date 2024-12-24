@@ -1,4 +1,5 @@
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
 class NumberOfUsersWithAccessMethod
 {
@@ -39,10 +40,8 @@ function userAccessMethods($host)
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
   curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+
+  $ch = deviceAuth($ch);
   
   $response = json_decode(curl_exec($ch));
   if (curl_errno($ch)) {

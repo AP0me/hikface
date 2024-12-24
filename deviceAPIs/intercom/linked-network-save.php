@@ -16,10 +16,7 @@ function updateRelatedDeviceAddress($host, $xmlBody)
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); // Set method to PUT
   curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlBody); // Set XML body
 
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
 
   // Execute cURL request
   $response = curl_exec($ch);

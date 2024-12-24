@@ -10,10 +10,8 @@ function imageSetting($host)
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+
+  $ch = deviceAuth($ch);
 
   // Execute cURL request
   $response = curl_exec($ch);
@@ -53,11 +51,7 @@ function LED($a, $host)
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
 
-  // Set authentication credentials
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
 
   // Execute cURL request
   $response = curl_exec($ch);

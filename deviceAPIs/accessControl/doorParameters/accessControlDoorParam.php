@@ -1,5 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
 function doorParameters($host)
 {
@@ -14,11 +15,7 @@ function doorParameters($host)
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
 
-    // Set authentication credentials
-    $username = "admin";
-    $password = "12345678m";
-    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-    curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+    $ch = deviceAuth($ch);
 
     // Execute cURL request
     $response = curl_exec($ch);
@@ -65,11 +62,8 @@ function lockTypeStatus($host)
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
 
-    // Set authentication credentials
-    $username = "admin";
-    $password = "12345678m";
-    curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-    curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+    $ch = deviceAuth($ch);
+
 
     // Execute cURL request
     $response = json_decode(curl_exec($ch));

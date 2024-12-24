@@ -1,5 +1,6 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
 function updateConfig($host, $endpoint, $payload)
 {
@@ -15,10 +16,7 @@ function updateConfig($host, $endpoint, $payload)
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
   curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
 
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
 
   curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "Content-Type: application/x-www-form-urlencoded; charset=UTF-8"

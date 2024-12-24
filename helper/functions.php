@@ -12,6 +12,16 @@ function isXml($xml)
   return $xml !== false;
 }
 
+function deviceAuth($ch)
+{
+  // Set authentication credentials
+  $username = "admin";
+  $password = "12345678m";
+  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
+  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  return $ch;
+}
+
 function isAPIGet($url)
 {
   $ch = curl_init($url);
@@ -22,11 +32,7 @@ function isAPIGet($url)
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
 
-  // Set authentication credentials
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  $ch = deviceAuth($ch);
 
   // Execute cURL request
   $response = curl_exec($ch);
@@ -47,7 +53,8 @@ function isAPIGet($url)
 }
 
 
-function reqBody(){
+function reqBody()
+{
   $rawInput = file_get_contents('php://input');
   $data = json_decode($rawInput, true);
   if (json_last_error() !== JSON_ERROR_NONE) {

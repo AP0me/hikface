@@ -4,6 +4,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/event-number.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/method-user-count.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/access-methods.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/deviceAPIs/system/project-config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
+
 class BasicInfo
 {
   public $deviceName;
@@ -52,12 +54,8 @@ function fetchDeviceInfo($host)
   curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
   curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-
-  // Set authentication credentials
-  $username = "admin";
-  $password = "12345678m";
-  curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
-  curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+  
+  $ch = deviceAuth($ch);
 
   // Execute cURL request
   $response = curl_exec($ch);
