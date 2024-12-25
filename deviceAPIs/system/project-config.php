@@ -30,3 +30,4 @@ function fetchProjectConfig($host)
 }
 
 $projectConfig = fetchProjectConfig($host);
+echo json_encode($projectConfig);
