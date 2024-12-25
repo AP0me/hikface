@@ -98,25 +98,11 @@ $numberOfEvents = fetchAcsEventTotalNum($host);
 
 $parser = xml_parser_create();
 
-print_r('DeviceInfo<br>');
 $deviceInfo = fetchDeviceInfo($host);
-foreach ($deviceInfo as $key => $value) {
-  print_r('--' . $key . ': ' . $value . '<br>');
-}
-print_r(json_encode($numberOfUsers) . '<br>');
-print_r(json_encode($accessMethodCounts) . '<br>');
-print_r($numberOfEvents . '<br>');
+print_r(json_encode([
+  'deviceInfo' => $deviceInfo,
+  'numberOfUsers' => $numberOfUsers,
+  'accessMethodCounts' => $accessMethodCounts,
+  'numberOfEvents' => $numberOfEvents,
+], JSON_PRETTY_PRINT));
 
-$backURL = $_SERVER['PHP_SELF'];
-?>
-
-<form action="device-info-set.php" method="get">
-  <input type="hidden" name="backURL" value="<?= $backURL ?>">
-  <input type="text" name="device_name" class="Device Name" value="<?= $deviceInfo->deviceName ?>">
-  <button type="submit">Save</button>
-</form>
-
-<label for="language-input">Language</label>
-<select name="language" id="language-input">
-  <option value="lang_id_0">English</option>
-</select>
