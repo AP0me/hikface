@@ -1,7 +1,14 @@
 <?php
-function xmlToJson($reponseXML)
+function xmlToJson($reponseXML): string
 {
-  return json_decode(json_encode(new SimpleXMLElement($reponseXML)));
+  $simpleXMLResponse = new SimpleXMLElement($reponseXML);
+  $jsonResponse = json_encode($simpleXMLResponse);
+  if(is_bool($jsonResponse)) {
+    return json_encode(['error' => 'Invalid JSON response']);
+  }
+  else {
+    return $jsonResponse;
+  }
 }
 
 function isXml($xml)
@@ -22,7 +29,7 @@ function deviceAuth($ch)
   return $ch;
 }
 
-function isAPI($url, $method, $body = null)
+function isAPI($url, $method, $body = null): array
 {
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -41,7 +48,11 @@ function isAPI($url, $method, $body = null)
     if (isXml($response)) {
       return xmlToJson($response);
     } else {
-      return json_decode($response);
+      $decoded = json_decode($response);
+      if($decoded === null) {
+        return ['error' => 'Invalid JSON response'];
+      }
+      return $decoded;
     }
   }
   curl_close($ch);

@@ -24,7 +24,7 @@ function fetchSDKLanguage($host)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    return xmlToJson($response)->type;
+    return json_decode(xmlToJson($response))->type;
   }
 
   // Close cURL session
