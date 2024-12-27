@@ -29,7 +29,7 @@ function deviceAuth($ch)
   return $ch;
 }
 
-function isAPI($url, $method, $body = null): array
+function isAPI($url, $method, $body = null): object
 {
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -41,21 +41,25 @@ function isAPI($url, $method, $body = null): array
 
   $ch = deviceAuth($ch);
   $response = curl_exec($ch);
+  curl_close($ch);
   
   if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
+    echo curl_error($ch);
+    return (object)['error' => 'Curl error'];
   } else {
     if (isXml($response)) {
-      return xmlToJson($response);
-    } else {
+      return json_decode(xmlToJson($response));
+    }
+    else {
       $decoded = json_decode($response);
       if($decoded === null) {
-        return ['error' => 'Invalid JSON response'];
+        return (object)['error' => 'Invalid JSON response'];
       }
-      return $decoded;
+      else{
+        return $decoded;
+      }
     }
   }
-  curl_close($ch);
 }
 
 

@@ -18,16 +18,16 @@ $xmlBody = <<<XML
 echo json_encode(updateM1CardEncryptCfg($host, $xmlBody));
 
 
-function updateNFCCfg($host, $jsonBody)
+function updateNFCCfg($host, $jsonBody): object
 {
   $url = "https://$host/ISAPI/AccessControl/Configuration/NFCCfg?format=json";
-  isAPI($url, "PUT", $jsonBody);
+  return isAPI($url, "PUT", $jsonBody);
 }
 $jsonBody = json_encode(["NFCCfg" => ["enable" => true]]);
-updateNFCCfg($host, $jsonBody);
+echo json_encode(updateNFCCfg($host, $jsonBody));
 
 
-function updateRFCardCfg($host, $jsonBody): array
+function updateRFCardCfg($host, $jsonBody): object
 {
   $url = "https://$host/ISAPI/AccessControl/Configuration/RFCardCfg?format=json";
   return isAPI($url, "PUT", $jsonBody);

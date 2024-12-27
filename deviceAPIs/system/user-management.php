@@ -11,5 +11,4 @@ function fetchSecurityUsers($host, $queryParams)
 }
 
 $queryParams = "security=1&iv=f3a4c0d14b477aa30667e31ad344d246";
-$secUsers = fetchSecurityUsers($host, $queryParams);
-print_r($secUsers);
+echo json_encode(fetchSecurityUsers($host, $queryParams));
