@@ -1,0 +1,14 @@
+{
+  "RFCardCfg": [
+  { "cardType": (string)"EMCard", "enabled": (bool)true },
+  { "cardType": (string)"M1Card", "enabled": (bool)true },
+  { "cardType": (string)"CPUCard", "enabled": (bool)true },
+  { "cardType": (string)"DesfireCard", "enabled": (bool)true },
+  { "cardType": (string)"FelicaCard", "enabled": (bool)true }
+  ],
+  "M1CardEncryptCfg": {
+    "enable": "true",
+    "sectionID": 13
+  },
+  "NFCCfg": "enable"
+}

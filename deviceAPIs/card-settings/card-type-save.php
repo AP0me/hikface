@@ -8,11 +8,14 @@ function updateM1CardEncryptCfg($host, $xmlBody)
   return isAPI($url, "PUT", $xmlBody);
 }
 
+$reqBody = reqBody();
+$enable = $reqBody['M1CardEncryptCfg']['enable'];
+$sector = $reqBody['M1CardEncryptCfg']['sectionID'];
 $xmlBody = <<<XML
   <?xml version="1.0" encoding="UTF-8"?>
   <M1CardEncryptCfg version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">
-    <enable>false</enable>
-    <sectionID>13</sectionID>
+    <enable>$enable</enable>
+    <sectionID>$sector</sectionID>
   </M1CardEncryptCfg>
   XML;
 echo json_encode(updateM1CardEncryptCfg($host, $xmlBody));
@@ -23,7 +26,7 @@ function updateNFCCfg($host, $jsonBody): object
   $url = "https://$host/ISAPI/AccessControl/Configuration/NFCCfg?format=json";
   return isAPI($url, "PUT", $jsonBody);
 }
-$jsonBody = json_encode(["NFCCfg" => ["enable" => true]]);
+$jsonBody = json_encode(["NFCCfg" => ["enable" => $reqBody['NFCCfg']]]);
 echo json_encode(updateNFCCfg($host, $jsonBody));
 
 
@@ -33,10 +36,9 @@ function updateRFCardCfg($host, $jsonBody): object
   return isAPI($url, "PUT", $jsonBody);
 }
 
-$reqBody = reqBody();
 if (isset($reqBody['RFCardCfg'])) {
   $jsonBody = json_encode([
-    "RFCardCfg" => json_decode($reqBody['RFCardCfg']),
+    "RFCardCfg" => $reqBody['RFCardCfg'],
   ]);
 } else {
   $jsonBody = json_encode([
