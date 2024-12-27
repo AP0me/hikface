@@ -22,22 +22,19 @@ function deviceAuth($ch)
   return $ch;
 }
 
-function isAPIGet($url)
+function isAPI($url, $method, $body = null)
 {
   $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
+  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+  if($body && (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'TRACE'])))
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 
   $ch = deviceAuth($ch);
-
-  // Execute cURL request
   $response = curl_exec($ch);
-
-  // Check for errors
+  
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
@@ -47,8 +44,6 @@ function isAPIGet($url)
       return json_decode($response);
     }
   }
-
-  // Close cURL session
   curl_close($ch);
 }
 
