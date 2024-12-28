@@ -34,33 +34,11 @@ function updateIdentityTerminal($host, $screenDisplayPreference)
   XML;
   // var_dump(xmlToJson($xmlBody));
   // exit;
-
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); // Set method to PUT
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlBody); // Attach XML payload
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
-    return null;
+  $response = isAPI($url, 'PUT', $xmlBody);
+  if (isset($response->error)) {
+    return $response->error;
   }
-
-  // Close cURL session
-  curl_close($ch);
-
-  // Return the response
-  return xmlToJson($response);
+  return $response;
 }
 
 // Example usage
@@ -68,9 +46,4 @@ $screenDisplayPreference = reqBody()['screenDisplayPreference'];
 // print_r($screenDisplayPreference);
 // die;
 $response = updateIdentityTerminal($host, (array)$screenDisplayPreference);
-
-if ($response) {
-  echo json_encode($response);
-} else {
-  echo "Failed to update Identity Terminal.";
-}
+echo json_encode($response);

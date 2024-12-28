@@ -6,16 +6,6 @@ function updateAttendanceMode($host, $attendanceMode, $attendanceStatusTime, $re
 {
   $url = "https://$host/ISAPI/AccessControl/Configuration/attendanceMode?format=json";
 
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); // Set method to PUT
-
-  // Set request body
   $jsonBody = json_encode([
     "AttendanceMode" => [
       "mode" => $attendanceMode,
@@ -23,23 +13,14 @@ function updateAttendanceMode($host, $attendanceMode, $attendanceStatusTime, $re
       "reqAttendanceStatus" => $reqAttendanceStatus
     ]
   ]);
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
 
-  $ch = deviceAuth($ch);
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
+  $response = isAPI($url, 'PUT', $jsonBody);
+  if (isset($response->error)) {
+    echo $response->error;
     return null;
   }
-
-  // Close cURL session
-  curl_close($ch);
-
   // Decode and return the response
-  return json_decode($response, true);
+  return (array)$response;
 }
 
 $attendanceSaveStatusData = [];
@@ -47,26 +28,15 @@ $attendanceSaveStatusData = [];
 // Example usage
 // print_r(reqBody()['attendanceData']);
 $attendanceData = reqBody()['attendanceData'];
-$attendanceMode = $attendanceData->mode;
-$attendanceStatusTime = $attendanceData->attendanceStatusTime;
-$reqAttendanceStatus = $attendanceData->reqAttendanceStatus;
+$attendanceMode = $attendanceData['mode'];
+$attendanceStatusTime = $attendanceData['attendanceStatusTime'];
+$reqAttendanceStatus = $attendanceData['reqAttendanceStatus'];
 $attendanceModeUpdate = updateAttendanceMode($host, $attendanceMode, $attendanceStatusTime, $reqAttendanceStatus);
 $attendanceSaveStatusData[] = $attendanceModeUpdate;
 
 function updateKeyAttendance($host, $attendTypeID, $attendTypeName, $attendTypeLabel)
 {
   $url = "https://$host/ISAPI/AccessControl/keyCfg/$attendTypeID/attendance?format=json";
-
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); // Set method to PUT
-
-  // Set request body
   $jsonBody = json_encode([
     "Attendance" => [
       "enable" => false,
@@ -74,24 +44,12 @@ function updateKeyAttendance($host, $attendTypeID, $attendTypeName, $attendTypeL
       "label" => "$attendTypeLabel"
     ]
   ]);
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
+  $response = isAPI($url, 'PUT', $jsonBody);
+  if (isset($response->error)) {
+    echo $response->error;
     return null;
   }
-
-  // Close cURL session
-  curl_close($ch);
-
-  // Decode and return the response
-  return json_decode($response, true);
+  return (array)$response;
 }
 
 // Example usage
@@ -105,7 +63,9 @@ $attendTypeIDMap = [
 ];
 
 foreach ($attendTypeIDMap as $key => $value) {
-  $attendTypeID = $key; $attendTypeName = $value[0]; $attendTypeLabel = $value[1];
+  $attendTypeID = $key;
+  $attendTypeName = $value[0];
+  $attendTypeLabel = $value[1];
   $keyAttendanceUpdate = updateKeyAttendance($host, $attendTypeID, $attendTypeName, $attendTypeLabel);
   $attendanceSaveStatusData[] = $keyAttendanceUpdate;
 }
@@ -115,17 +75,7 @@ foreach ($attendTypeIDMap as $key => $value) {
 function updateAttendancePlanTemplate($host)
 {
   $url = "https://$host/ISAPI/AccessControl/Attendance/planTemplate/1?format=json";
-
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); // Set method to PUT
-
-  // Set request body
+  // TODO: This is a placeholder request body.
   $jsonBody = json_encode([
     "AttendancePlanTemplate" => [
       "enable" => true,
@@ -134,24 +84,14 @@ function updateAttendancePlanTemplate($host)
       "weekPlanNo" => 1
     ]
   ]);
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
+  $response = isAPI($url, 'PUT', $jsonBody);
+  if (isset($response->error)) {
+    echo $response->error;
     return null;
   }
 
-  // Close cURL session
-  curl_close($ch);
-
   // Decode and return the response
-  return json_decode($response, true);
+  return (array)$response;
 }
 
 // Example usage
@@ -161,44 +101,21 @@ $attendanceSaveStatusData[] = $planTemplateUpdate;
 function updateAttendanceWeekPlan($host)
 {
   $url = "https://$host/ISAPI/AccessControl/Attendance/weekPlan/1?format=json";
-
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); // Set method to PUT
-
-  // Set request body
+  // TODO: This is a placeholder request body.
   $jsonBody = json_encode([
     "AttendanceWeekPlan" => [
       "enable" => true,
-      "WeekPlanCfg" => [] // Adjust configuration as needed
+      "WeekPlanCfg" => []
     ]
   ]);
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
+  $response = isAPI($url, 'PUT', $jsonBody);
+  if (isset($response->error)) {
+    echo $response->error;
     return null;
   }
-
-  // Close cURL session
-  curl_close($ch);
-
-  // Decode and return the response
-  return json_decode($response);
+  return (array)$response;
 }
 
-// Example usage
 $weekPlanUpdate = updateAttendanceWeekPlan($host);
 $attendanceSaveStatusData[] = $weekPlanUpdate;
 

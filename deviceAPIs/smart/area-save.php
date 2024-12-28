@@ -13,44 +13,23 @@ function updateFaceCompareCond($host, $borderData)
 
   // XML body
   $xmlBody = <<<XML
-<FaceCompareCond version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">
-    <pitch>45</pitch>
-    <yaw>45</yaw>
-    <leftBorder>$leftBorder</leftBorder>
-    <rightBorder>$rightBorder</rightBorder>
-    <upBorder>$upBorder</upBorder>
-    <bottomBorder>$bottomBorder</bottomBorder>
-    <faceScore>0</faceScore>
-    <maxDistance>auto</maxDistance>
-</FaceCompareCond>
-XML;
+  <FaceCompareCond version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">
+      <pitch>45</pitch>
+      <yaw>45</yaw>
+      <leftBorder>$leftBorder</leftBorder>
+      <rightBorder>$rightBorder</rightBorder>
+      <upBorder>$upBorder</upBorder>
+      <bottomBorder>$bottomBorder</bottomBorder>
+      <faceScore>0</faceScore>
+      <maxDistance>auto</maxDistance>
+  </FaceCompareCond>
+  XML;
 
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); // Set method to PUT
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlBody); // Attach XML body
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
-    return null;
+  $response = isAPI($url, 'PUT', $xmlBody);
+  if (isset($response->error)) {
+    return $response->error;
   }
-
-  // Close cURL session
-  curl_close($ch);
-
-  // Return response
-  return xmlToJson($response);
+  return $response;
 }
 
 $borderData = reqBody()['borderData'];

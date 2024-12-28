@@ -5,28 +5,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 function updateConfig($host, $endpoint, $payload)
 {
   $url = "https://$host/$endpoint";
-
-  $jsonBody = json_encode($payload);
-
-  $ch = curl_init($url);
-
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
-
-  $ch = deviceAuth($ch);
-  $response = curl_exec($ch);
-
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
-    return null;
+  $response = isAPI($url, 'PUT', json_encode($payload));
+  if (isset($response->error)) {
+    return $response->error;
   }
-
-  curl_close($ch);
-
-  return json_decode($response, true);
+  return (array)$response;
 }
 
 // Extract URL parameters

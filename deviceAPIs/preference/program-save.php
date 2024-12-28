@@ -8,53 +8,32 @@ function updatePlaySchedule($host, $schedule_start, $schedule_end)
 
   // XML body for the request
   $xmlBody = <<<XML
-<?xml version="1.0" encoding="UTF-8"?>
-<PlaySchedule version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">
-    <id>1</id>
-    <scheduleName>web</scheduleName>
-    <scheduleMode>screensaver</scheduleMode>
-    <scheduleType>daily</scheduleType>
-    <DailySchedule>
-        <PlaySpanList>
-            <PlaySpan>
-                <id>1</id>
-                <programNo>1</programNo>
-                <TimeRange>
-                    <beginTime>$schedule_start</beginTime>
-                    <endTime>$schedule_end</endTime>
-                </TimeRange>
-            </PlaySpan>
-        </PlaySpanList>
-    </DailySchedule>
-</PlaySchedule>
-XML;
+  <?xml version="1.0" encoding="UTF-8"?>
+  <PlaySchedule version="2.0" xmlns="http://www.isapi.org/ver20/XMLSchema">
+      <id>1</id>
+      <scheduleName>web</scheduleName>
+      <scheduleMode>screensaver</scheduleMode>
+      <scheduleType>daily</scheduleType>
+      <DailySchedule>
+          <PlaySpanList>
+              <PlaySpan>
+                  <id>1</id>
+                  <programNo>1</programNo>
+                  <TimeRange>
+                      <beginTime>$schedule_start</beginTime>
+                      <endTime>$schedule_end</endTime>
+                  </TimeRange>
+              </PlaySpan>
+          </PlaySpanList>
+      </DailySchedule>
+  </PlaySchedule>
+  XML;
 
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT"); // Set method to PUT
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlBody); // Attach XML body
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
-    return null;
+  $response = isAPI($url, 'PUT', $xmlBody);
+  if (isset($response->error)) {
+    return $response->error;
   }
-
-  // Close cURL session
-  curl_close($ch);
-
-  // Return response
-  return xmlToJson($response);
+  return $response;
 }
 
 function deletePlaySchedule($host)
@@ -98,7 +77,6 @@ if (isset($schedule_start) && isset($schedule_end) && $schedule_start != '' && $
 
   $response = json_encode(updatePlaySchedule($host, $schedule_start, $schedule_end));
   echo $response;
-  
 } else {
   echo "Please provide both schedule_start and schedule_end parameters.";
 }
