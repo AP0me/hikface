@@ -1,14 +1,35 @@
 {
-  "RFCardCfg": [
-  { "cardType": (string)"EMCard", "enabled": (bool)true },
-  { "cardType": (string)"M1Card", "enabled": (bool)true },
-  { "cardType": (string)"CPUCard", "enabled": (bool)true },
-  { "cardType": (string)"DesfireCard", "enabled": (bool)true },
-  { "cardType": (string)"FelicaCard", "enabled": (bool)true }
-  ],
-  "M1CardEncryptCfg": {
-    "enable": "true",
-    "sectionID": 13
-  },
-  "NFCCfg": "enable"
+  "CardReaderCfg": {
+    "enable": true,
+    "okLedPolarity": "anode",
+    "errorLedPolarity": "anode",
+    "swipeInterval": 0,
+    "enableFailAlarm": true,
+    "maxReadCardFailNum": 5,
+    "pressTimeout": 10,
+    "enableTamperCheck": true,
+    "offlineCheckTime": 0,
+    "fingerPrintCheckLevel": 5,
+    "faceMatchThresholdN": 90,
+    "faceRecogizeTimeOut": 3,
+    "faceRecogizeInterval": 3,
+    "cardReaderFunction": [
+      "fingerPrint",
+      "face"
+    ],
+    "cardReaderDescription": "DS-K1T341CMFW",
+    "livingBodyDetect": true,
+    "faceMatchThreshold1": 60,
+    "liveDetLevelSet": "general",
+    "liveDetAntiAttackCntLimit": 100,
+    "enableLiveDetAntiAttack": true,
+    "fingerPrintCapacity": 3000,
+    "fingerPrintNum": 5,
+    "defaultVerifyMode": "faceOrFpOrCardOrPw",
+    "faceRecogizeEnable": 1,
+    "enableReverseCardNo": false,
+    "independSwipeIntervals": 0,
+    "maskFaceMatchThresholdN": 75,
+    "maskFaceMatchThreshold1": 75
+  }
 }

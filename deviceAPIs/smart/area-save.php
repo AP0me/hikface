@@ -53,6 +53,6 @@ XML;
   return xmlToJson($response);
 }
 
-$borderData = json_decode(reqBody()['borderData']);
+$borderData = reqBody()['borderData'];
 $response = updateFaceCompareCond($host, (array)$borderData);
 echo json_encode($response);

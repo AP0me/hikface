@@ -1,6 +1,6 @@
 <?php 
-// $host = 'z5cs9h4fhqka.share.zrok.io';
 $host = '192.168.0.116';
+// $host = 'vzuzntmyjpri.share.zrok.io';
 
 
 // Confirm cookie is set

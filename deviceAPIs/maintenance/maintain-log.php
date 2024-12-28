@@ -59,33 +59,7 @@ class MainTainlogRow implements JsonSerializable
 function logSearch($host, $body)
 {
   $url = "https://$host/ISAPI/ContentMgmt/logSearch";
-
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); // Set method to POST
-  curl_setopt($ch, CURLOPT_POSTFIELDS, $body); // Set request body
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
-    return null;
-  }
-
-  // Close cURL session
-  curl_close($ch);
-
-  // Return response
-  return xmlToJson($response);
+  return isAPI($url, 'POST', $body);
 }
 
 $CMSearchDescription = reqBody()['CMSearchDescription'];

@@ -26,13 +26,6 @@ function updateAttendanceMode($host, $attendanceMode, $attendanceStatusTime, $re
   curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
 
   $ch = deviceAuth($ch);
-
-  // Set headers
-  $headers = [
-    "Content-Type: application/x-www-form-urlencoded; charset=UTF-8"
-  ];
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
   // Execute cURL request
   $response = curl_exec($ch);
 
@@ -53,7 +46,7 @@ $attendanceSaveStatusData = [];
 
 // Example usage
 // print_r(reqBody()['attendanceData']);
-$attendanceData = json_decode(reqBody()['attendanceData']);
+$attendanceData = reqBody()['attendanceData'];
 $attendanceMode = $attendanceData->mode;
 $attendanceStatusTime = $attendanceData->attendanceStatusTime;
 $reqAttendanceStatus = $attendanceData->reqAttendanceStatus;
@@ -84,12 +77,6 @@ function updateKeyAttendance($host, $attendTypeID, $attendTypeName, $attendTypeL
   curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
 
   $ch = deviceAuth($ch);
-
-  // Set headers
-  $headers = [
-    "Content-Type: application/x-www-form-urlencoded; charset=UTF-8"
-  ];
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
   // Execute cURL request
   $response = curl_exec($ch);
@@ -151,12 +138,6 @@ function updateAttendancePlanTemplate($host)
 
   $ch = deviceAuth($ch);
 
-  // Set headers
-  $headers = [
-    "Content-Type: application/x-www-form-urlencoded; charset=UTF-8"
-  ];
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
   // Execute cURL request
   $response = curl_exec($ch);
 
@@ -200,12 +181,6 @@ function updateAttendanceWeekPlan($host)
   curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
 
   $ch = deviceAuth($ch);
-
-  // Set headers
-  $headers = [
-    "Content-Type: application/x-www-form-urlencoded; charset=UTF-8"
-  ];
-  curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
   // Execute cURL request
   $response = curl_exec($ch);

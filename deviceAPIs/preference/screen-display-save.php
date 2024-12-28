@@ -47,11 +47,6 @@ function updateIdentityTerminal($host, $screenDisplayPreference)
 
   $ch = deviceAuth($ch);
 
-  // Set additional headers
-  curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Content-Type: application/x-www-form-urlencoded; charset=UTF-8"
-  ]);
-
   // Execute cURL request
   $response = curl_exec($ch);
 
@@ -69,7 +64,7 @@ function updateIdentityTerminal($host, $screenDisplayPreference)
 }
 
 // Example usage
-$screenDisplayPreference = json_decode(reqBody()['screenDisplayPreference']);
+$screenDisplayPreference = reqBody()['screenDisplayPreference'];
 // print_r($screenDisplayPreference);
 // die;
 $response = updateIdentityTerminal($host, (array)$screenDisplayPreference);

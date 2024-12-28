@@ -4,6 +4,18 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/logs.php';
 
 // Call the function
 $logsTableValueMap = json_decode(file_get_contents('event-type-map.json'));
+$data = json_encode([
+  "AcsEventCond" => [
+    "searchID" => "57f48f21928740cb86119fbb878c2c8f",
+    "searchResultPosition" => 0,
+    "maxResults" => 20,
+    "major" => 0,
+    "minor" => 0,
+    // "startTime" => "2024-12-06T00:00:00+08:00",
+    // "endTime" => "2024-12-06T23:59:59+08:00",
+    "timeReverseOrder" => true
+  ]
+]);
 $processedLogs = fetchAcsEvent($logsTableValueMap, $host);
 $numberOfEvents = count($processedLogs);
 

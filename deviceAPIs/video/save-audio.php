@@ -63,7 +63,7 @@ function updateAudioOut($host, $xmlBody)
   curl_close($ch);
 }
 
-$mainAudioStream = json_decode(reqBody()['mainAudioStream']);
+$mainAudioStream = reqBody()['mainAudioStream'];
 $inputVolume = $mainAudioStream->inputVolume;
 $outputVolume = $mainAudioStream->outputVolume;
 $audioInputChannelID = $mainAudioStream->audioInputChannelID;

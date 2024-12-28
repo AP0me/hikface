@@ -68,7 +68,7 @@ function fetchDeviceInfo($host)
     // print_r((array)$xml);
     $projectConfig = fetchProjectConfig($host);
     $basicInfo = new BasicInfo(
-      (string)$xml->deviceName,
+      (string)$xml->deviceName, //TODO: deviceName is not defined.
       'English',
       (string)$xml->model,
       (string)$xml->serialNumber,
@@ -99,10 +99,10 @@ $numberOfEvents = fetchAcsEventTotalNum($host);
 $parser = xml_parser_create();
 
 $deviceInfo = fetchDeviceInfo($host);
-print_r(json_encode([
+echo json_encode([
   'deviceInfo' => $deviceInfo,
   'numberOfUsers' => $numberOfUsers,
   'accessMethodCounts' => $accessMethodCounts,
   'numberOfEvents' => $numberOfEvents,
-], JSON_PRETTY_PRINT));
+]);
 

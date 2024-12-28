@@ -17,11 +17,6 @@ function updateConfig($host, $endpoint, $payload)
   curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonBody);
 
   $ch = deviceAuth($ch);
-
-  curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Content-Type: application/x-www-form-urlencoded; charset=UTF-8"
-  ]);
-
   $response = curl_exec($ch);
 
   if (curl_errno($ch)) {

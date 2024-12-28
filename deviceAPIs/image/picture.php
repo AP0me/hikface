@@ -20,7 +20,7 @@ function imageSetting($host)
   if (curl_errno($ch)) {
     echo "cURL Error: " . curl_error($ch);
   } else {
-    $xml = xmlToJson($response);
+    $xml = json_decode(xmlToJson($response));
     return json_encode([
         'brightnessLevel' => $xml->Color->brightnessLevel,
         'contrastLevel' => $xml->Color->contrastLevel,

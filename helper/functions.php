@@ -63,7 +63,7 @@ function isAPI($url, $method, $body = null): object
 }
 
 
-function reqBody()
+function reqBody(): array
 {
   $rawInput = file_get_contents('php://input');
   $data = json_decode($rawInput, true);

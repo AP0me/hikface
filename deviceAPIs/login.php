@@ -66,14 +66,6 @@ XML;
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
     curl_setopt($ch, CURLOPT_POSTFIELDS, $xmlBody);
 
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        "User-Agent: Mozilla/5.0",
-        "Accept: */*",
-        "Content-Type: application/x-www-form-urlencoded; charset=UTF-8",
-        "If-Modified-Since: 0",
-        "X-Requested-With: XMLHttpRequest"
-    ]);
-
     $response = curl_exec($ch);
     if (curl_errno($ch)) {
         echo "cURL Error: " . curl_error($ch);

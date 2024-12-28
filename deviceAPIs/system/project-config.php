@@ -28,6 +28,3 @@ function fetchProjectConfig($host)
   // Close cURL session
   curl_close($ch);
 }
-
-$projectConfig = fetchProjectConfig($host);
-echo json_encode($projectConfig);

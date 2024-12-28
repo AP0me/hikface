@@ -32,9 +32,9 @@ function updateRelatedDeviceAddress($host, $xmlBody)
   curl_close($ch);
 }
 
-$linkedNetwork = json_decode(reqBody()['linkedNetwork']);
-$serverIPAddress = implode('.', $linkedNetwork->serverIPAddress);
-$stationIPAddress = implode('.', $linkedNetwork->stationIPAddress);
+$linkedNetwork = reqBody()['linkedNetwork'];
+$serverIPAddress = implode('.', $linkedNetwork['serverIPAddress']);
+$stationIPAddress = implode('.', $linkedNetwork['stationIPAddress']);
 
 $xmlBody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   . "<RelatedDeviceAddress version=\"2.0\" xmlns=\"http://www.isapi.org/ver20/XMLSchema\">"

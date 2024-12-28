@@ -2,4 +2,4 @@
 <?php require_once $_SERVER['DOCUMENT_ROOT'].'/deviceAPIs/door/door-command.php'; ?>
 
 <?php
-doorCommand($host, 'close', '../index.php?side=overview');
+doorCommand($host, 'close');
