@@ -1,0 +1,1 @@
+C:/Users/User/OneDrive/Desktop/Work/NaviMax/hik/hikface/accessControl/doorParameters/accessControlDoorParam.php
