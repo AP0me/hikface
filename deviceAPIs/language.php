@@ -5,7 +5,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 function fetchSDKLanguage($host)
 {
   $url = "https://$host/SDK/language";
-  return isAPI($url, "GET")->type;
+  $response = isAPI($url, 'GET');
+  if(isset($response->error)){
+    echo json_encode($response->error);
+    return null;
+  }
+  return $response->type;
 }
 
 // Example usage

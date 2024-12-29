@@ -56,5 +56,4 @@ function createProgram($host, $programName)
 }
 
 $programName = reqBody()['program_name'];
-$response = json_encode(createProgram($host, $programName));
-echo $response;
+echo json_encode(createProgram($host, $programName));

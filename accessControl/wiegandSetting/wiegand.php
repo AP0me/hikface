@@ -7,7 +7,7 @@ function fetchNetworkInterfaces($host)
     $url = "https://$host/ISAPI/AccessControl/WiegandCfg/wiegandNo/1";
     $response = isAPI($url, 'GET');
     if(isset($response->error)){
-        echo json_encode($response);
+        echo json_encode($response->error);
         return null;
     }
     if ($response->enable == 'true') {

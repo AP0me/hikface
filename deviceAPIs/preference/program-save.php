@@ -56,5 +56,5 @@ if (isset($schedule_start) && isset($schedule_end) && $schedule_start != '' && $
     "updatePlaySchedule" => updatePlaySchedule($host, $schedule_start, $schedule_end),
   ]);
 } else {
-  echo "Please provide both schedule_start and schedule_end parameters.";
+  echo json_encode(["error" => "Please provide both schedule_start and schedule_end parameters."]);
 }

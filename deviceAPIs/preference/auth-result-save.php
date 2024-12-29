@@ -31,5 +31,4 @@ function updateCustomPrompt($host)
 }
 
 
-$response = updateCustomPrompt($host);
-echo $response;
+echo json_encode(updateCustomPrompt($host));

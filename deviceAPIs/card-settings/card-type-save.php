@@ -18,7 +18,6 @@ $xmlBody = <<<XML
     <sectionID>$sector</sectionID>
   </M1CardEncryptCfg>
   XML;
-echo json_encode(updateM1CardEncryptCfg($host, $xmlBody));
 
 
 function updateNFCCfg($host, $jsonBody): object
@@ -27,7 +26,6 @@ function updateNFCCfg($host, $jsonBody): object
   return isAPI($url, "PUT", $jsonBody);
 }
 $jsonBody = json_encode(["NFCCfg" => ["enable" => $reqBody['NFCCfg']]]);
-echo json_encode(updateNFCCfg($host, $jsonBody));
 
 
 function updateRFCardCfg($host, $jsonBody): object
@@ -52,4 +50,8 @@ if (isset($reqBody['RFCardCfg'])) {
   ]);
 }
 
-echo json_encode(updateRFCardCfg($host, $jsonBody));
+echo json_encode([
+  "updateM1CardEncryptCfg" => updateM1CardEncryptCfg($host, $xmlBody),
+  "updateNFCCfg" => updateNFCCfg($host, $jsonBody),
+  "updateRFCardCfg" => updateRFCardCfg($host, $jsonBody),
+]);

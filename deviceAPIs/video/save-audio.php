@@ -53,5 +53,8 @@ $audioOutXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   . "</AudioOutVolumelist>"
   . "</AudioOut>";
 
-echo json_encode(updateAudioIn($host, $audioInXml));
-echo json_encode(updateAudioOut($host, $audioOutXml));
+
+echo json_encode([
+  "updateAudioIn" => updateAudioIn($host, $audioInXml),
+  "updateAudioOut" => updateAudioOut($host, $audioOutXml),
+]);

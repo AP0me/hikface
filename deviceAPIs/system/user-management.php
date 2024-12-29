@@ -7,7 +7,11 @@ class SecUser{
 function fetchSecurityUsers($host, $queryParams)
 {
   $url = "https://$host/ISAPI/Security/users?$queryParams";
-  return isAPI($url, 'GET');
+  $response = isAPI($url, 'GET');
+  if(isset($response->error)){
+    return $response->error;
+  }
+  return $response;
 }
 
 $queryParams = "security=1&iv=f3a4c0d14b477aa30667e31ad344d246";

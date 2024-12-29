@@ -25,6 +25,4 @@ function searchCustomAudioStatus($host)
   return $response;
 }
 
-$response = json_encode(searchCustomAudioStatus($host));
-echo $response;
-
+echo json_encode(searchCustomAudioStatus($host));

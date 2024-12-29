@@ -61,5 +61,4 @@ $xmlBody = <<<XML
 </Program>
 XML;
 
-$response = updateProgram($host, $xmlBody);
-echo "Response: <pre>" . htmlspecialchars($response) . "</pre>";
+echo json_encode(updateProgram($host, $xmlBody));

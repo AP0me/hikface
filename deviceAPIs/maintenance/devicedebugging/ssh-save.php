@@ -5,7 +5,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 function enableSSH($host, $xmlBody)
 {
   $url = "https://$host/ISAPI/System/Network/ssh";
-  return isAPI($url, 'PUT', $xmlBody);
+  $reponse = isAPI($url, 'PUT', $xmlBody);
+  if(isset($reponse->error)){
+    return $reponse->error;
+  }
+  return $reponse;
 }
 
 
@@ -17,5 +21,4 @@ $xmlBody = <<<XML
   <enabled>$ssh_enabled</enabled>
 </SSH>
 XML;
-$response = enableSSH($host, $xmlBody);
-echo json_encode($response);
+echo json_encode(enableSSH($host, $xmlBody));

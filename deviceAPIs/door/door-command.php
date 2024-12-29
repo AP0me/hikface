@@ -11,8 +11,7 @@ function doorCommand($host, $command)
   XML;
   $response = isAPI($url, "PUT", $data);
   if (isset($response->error)) {
-    echo "cURL Error: " . $response->error;
-  } else {
-    echo json_encode($response);
+    echo $response->error;
   }
+  echo json_encode($response);
 }

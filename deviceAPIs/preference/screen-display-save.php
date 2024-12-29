@@ -45,5 +45,4 @@ function updateIdentityTerminal($host, $screenDisplayPreference)
 $screenDisplayPreference = reqBody()['screenDisplayPreference'];
 // print_r($screenDisplayPreference);
 // die;
-$response = updateIdentityTerminal($host, (array)$screenDisplayPreference);
-echo json_encode($response);
+echo json_encode(updateIdentityTerminal($host, (array)$screenDisplayPreference));

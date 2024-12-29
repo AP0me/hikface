@@ -5,7 +5,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 function setCommuMode($host, $body)
 {
   $url = "https://$host/ISAPI/Security/CommuMode?format=json";
-  return isAPI($url, 'PUT', $body);
+  $reponse = isAPI($url, "PUT", $body);
+  if (isset($reponse->error)) {
+    return $reponse->error;
+  }
+  return $reponse;
 }
 
 
@@ -15,5 +19,4 @@ $body = json_encode([
   ]
 ]);
 
-$response = setCommuMode($host, $body);
-echo $response;
+echo json_encode(setCommuMode($host, $body));

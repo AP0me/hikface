@@ -24,15 +24,16 @@ $acsConfigPayload = isset($queryParams['acsConfig']) ? json_decode($queryParams[
 if ($storageConfigPayload) {
   $storageConfigPayload = ["EventStorageCfg" => ["mode" => $storageConfigPayload['mode']]];
   $eventStorageConfig = updateConfig($host, "ISAPI/AccessControl/AcsEvent/StorageCfg?format=json", $storageConfigPayload);
-  echo '<pre>Storage Config: ' . json_encode($eventStorageConfig, JSON_PRETTY_PRINT) . '</pre>';
 }
-
 if ($userAndRightShowPayload) {
   $userAndRightShowConfig = updateConfig($host, "ISAPI/AccessControl/userAndRightShow?format=json", $userAndRightShowPayload);
-  echo '<pre>User and Right Show Config: ' . json_encode($userAndRightShowConfig, JSON_PRETTY_PRINT) . '</pre>';
 }
-
 if ($acsConfigPayload) {
   $acsConfig = updateConfig($host, "ISAPI/AccessControl/AcsCfg?format=json", $acsConfigPayload);
-  echo '<pre>ACS Config: ' . json_encode($acsConfig, JSON_PRETTY_PRINT) . '</pre>';
 }
+
+echo json_encode([
+  "eventStorageConfig" => json_encode($eventStorageConfig),
+  "userAndRightShowConfig" => json_encode($userAndRightShowConfig),
+  "acsConfig" => json_encode($acsConfig),
+]);

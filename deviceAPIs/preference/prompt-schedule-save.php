@@ -15,6 +15,5 @@ function updateTTSText($host)
   return $response;
 }
 
-$response = json_encode(updateTTSText($host));
-echo $response;
+echo json_encode(updateTTSText($host));
 
