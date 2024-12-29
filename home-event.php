@@ -16,7 +16,7 @@ $data = json_encode([
     "timeReverseOrder" => true
   ]
 ]);
-$processedLogs = fetchAcsEvent($logsTableValueMap, $host);
+$processedLogs = fetchAcsEvent($logsTableValueMap, $host, $data);
 $numberOfEvents = count($processedLogs);
 
 ?>
