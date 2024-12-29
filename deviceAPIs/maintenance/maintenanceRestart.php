@@ -6,7 +6,7 @@ function fetchNetworkInterfaces($host) {
     $url = "https://$host/ISAPI/VCS/wireshark/capture/capabilities";
     $response = isAPI($url, 'GET');
     if (isset($response->error)) {
-        echo $response->error;
+        echo json_encode($response->error);
         return null;
     }
     return $response;

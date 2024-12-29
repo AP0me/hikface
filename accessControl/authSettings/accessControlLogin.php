@@ -9,21 +9,21 @@ function home($host)
 
   // Check for errors
   if (isset($response->error)) {
-    echo "cURL Error: " . $response->error;
-  } else {
-    return [
-      "cardReaderFunction" => $response->CardReaderCfg->cardReaderFunction,
-      "cardReaderDescription" => $response->CardReaderCfg->cardReaderDescription,
-      "enable" => $response->CardReaderCfg->enable,
-      "defaultVerifyMode" => $response->CardReaderCfg->defaultVerifyMode,
-      "faceRecogizeInterval" => $response->CardReaderCfg->faceRecogizeInterval,
-      "independSwipeIntervals" => $response->CardReaderCfg->independSwipeIntervals,
-      "enableFailAlarm" => $response->CardReaderCfg->enableFailAlarm,
-      "maxReadCardFailNum" => $response->CardReaderCfg->maxReadCardFailNum,
-      "enableTamperCheck" => $response->CardReaderCfg->enableTamperCheck,
-      "enableReverseCardNo" => $response->CardReaderCfg->enableReverseCardNo,
-    ];
+    echo json_encode($response->error);
+    return null;
   }
+  return [
+    "cardReaderFunction" => $response->CardReaderCfg->cardReaderFunction,
+    "cardReaderDescription" => $response->CardReaderCfg->cardReaderDescription,
+    "enable" => $response->CardReaderCfg->enable,
+    "defaultVerifyMode" => $response->CardReaderCfg->defaultVerifyMode,
+    "faceRecogizeInterval" => $response->CardReaderCfg->faceRecogizeInterval,
+    "independSwipeIntervals" => $response->CardReaderCfg->independSwipeIntervals,
+    "enableFailAlarm" => $response->CardReaderCfg->enableFailAlarm,
+    "maxReadCardFailNum" => $response->CardReaderCfg->maxReadCardFailNum,
+    "enableTamperCheck" => $response->CardReaderCfg->enableTamperCheck,
+    "enableReverseCardNo" => $response->CardReaderCfg->enableReverseCardNo,
+  ];
 }
 
 function assistant($host)
@@ -33,27 +33,27 @@ function assistant($host)
 
   // Check for errors
   if (isset($response->error)) {
-    echo "cURL Error: " . $response->error;
-  } else {
-    $cardReaderFunctionProcessed = [];
-    for ($i = 0; $i < count($response->CardReaderCfg->cardReaderFunction); $i++) {
-      array_push($cardReaderFunctionProcessed, $response->CardReaderCfg->cardReaderFunction[$i]);
-    }
-    return [
-      'cardReaderFunctionProcessed' => $cardReaderFunctionProcessed,
-      "cardReaderDescription" => $response->CardReaderCfg->cardReaderDescription,
-      "enable" => $response->CardReaderCfg->enable,
-      "defaultVerifyMode" => $response->CardReaderCfg->defaultVerifyMode,
-      "faceRecogizeInterval" => $response->CardReaderCfg->faceRecogizeInterval,
-      "enableFailAlarm" => $response->CardReaderCfg->enableFailAlarm,
-      "maxReadCardFailNum" => $response->CardReaderCfg->maxReadCardFailNum,
-      "offlineCheckTime" => $response->CardReaderCfg->offlineCheckTime,
-      "pressTimeout" => $response->CardReaderCfg->pressTimeout,
-      "okLedPolarity" => $response->CardReaderCfg->okLedPolarity,
-      "errorLedPolarity" => $response->CardReaderCfg->errorLedPolarity,
-      "enableTamperCheck" => $response->CardReaderCfg->enableTamperCheck,
-    ];
+    echo json_encode($response->error);
+    return null;
   }
+  $cardReaderFunctionProcessed = [];
+  for ($i = 0; $i < count($response->CardReaderCfg->cardReaderFunction); $i++) {
+    array_push($cardReaderFunctionProcessed, $response->CardReaderCfg->cardReaderFunction[$i]);
+  }
+  return [
+    'cardReaderFunctionProcessed' => $cardReaderFunctionProcessed,
+    "cardReaderDescription" => $response->CardReaderCfg->cardReaderDescription,
+    "enable" => $response->CardReaderCfg->enable,
+    "defaultVerifyMode" => $response->CardReaderCfg->defaultVerifyMode,
+    "faceRecogizeInterval" => $response->CardReaderCfg->faceRecogizeInterval,
+    "enableFailAlarm" => $response->CardReaderCfg->enableFailAlarm,
+    "maxReadCardFailNum" => $response->CardReaderCfg->maxReadCardFailNum,
+    "offlineCheckTime" => $response->CardReaderCfg->offlineCheckTime,
+    "pressTimeout" => $response->CardReaderCfg->pressTimeout,
+    "okLedPolarity" => $response->CardReaderCfg->okLedPolarity,
+    "errorLedPolarity" => $response->CardReaderCfg->errorLedPolarity,
+    "enableTamperCheck" => $response->CardReaderCfg->enableTamperCheck,
+  ];
 }
 
 $data = json_encode([

@@ -8,7 +8,7 @@ function updateAudioIn($host, $xmlBody)
   $url = "https://$host/ISAPI/System/Audio/AudioIn/channels/1";
   $response = isAPI($url, 'PUT', $xmlBody);
   if(isset($response->error)){
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
   return $response;
@@ -19,7 +19,7 @@ function updateAudioOut($host, $xmlBody)
   $url = "https://$host/ISAPI/System/Audio/AudioOut/channels/1";
   $response = isAPI($url, 'PUT', $xmlBody);
   if(isset($response->error)){
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
   return $response;

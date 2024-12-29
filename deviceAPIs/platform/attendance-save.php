@@ -16,7 +16,7 @@ function updateAttendanceMode($host, $attendanceMode, $attendanceStatusTime, $re
 
   $response = isAPI($url, 'PUT', $jsonBody);
   if (isset($response->error)) {
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
   // Decode and return the response
@@ -46,7 +46,7 @@ function updateKeyAttendance($host, $attendTypeID, $attendTypeName, $attendTypeL
   ]);
   $response = isAPI($url, 'PUT', $jsonBody);
   if (isset($response->error)) {
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
   return (array)$response;
@@ -86,7 +86,7 @@ function updateAttendancePlanTemplate($host)
   ]);
   $response = isAPI($url, 'PUT', $jsonBody);
   if (isset($response->error)) {
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
 
@@ -110,7 +110,7 @@ function updateAttendanceWeekPlan($host)
   ]);
   $response = isAPI($url, 'PUT', $jsonBody);
   if (isset($response->error)) {
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
   return (array)$response;

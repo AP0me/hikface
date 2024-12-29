@@ -7,7 +7,7 @@ function updateSystemTime($host, $xmlBody)
   $url = "https://$host/ISAPI/System/time";
   $response = isAPI($url, 'PUT', $xmlBody);
   if(isset($response->error)){
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
   return $response;

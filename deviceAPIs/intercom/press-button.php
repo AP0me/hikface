@@ -7,7 +7,7 @@ function fetchKeyCapabilities($host)
   $url = "https://$host/ISAPI/VideoIntercom/keyCfg/1/capabilities";
   $response = isAPI($url, 'GET');
   if (isset($response->error)) {
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
   return explode(',', $response->callMethod->{'@attributes'}->opt);
@@ -19,7 +19,7 @@ function fetchKeyConfig($host)
 
   $response = isAPI($url, 'GET');
   if (isset($response->error)) {
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
   return $response->KeyCfg->callMethod;

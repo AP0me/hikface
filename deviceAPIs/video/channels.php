@@ -10,7 +10,7 @@ function streamingChannels($host)
   $url = "https://$host/ISAPI/Streaming/channels";
   $response = isAPI($url, "GET");
   if(isset($reponse->error)){
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
   return $response;

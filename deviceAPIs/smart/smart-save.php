@@ -8,7 +8,7 @@ function sendPutRequest($host, $endpoint, $body)
   $url = "https://$host/$endpoint";
   $response = isAPI($url, "PUT", $body);
   if (isset($response->error)) {
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
   return $response;

@@ -7,7 +7,7 @@ function imageSetting($host)
   $url = "https://$host/ISAPI/Image/channels/1";
   $response = isAPI($url, 'GET');
   if(isset($response->error)){
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
   return [
@@ -28,7 +28,7 @@ function LED($a, $host)
   $url = "https://$host/ISAPI/Image/channels/$a/supplementLight";
   $response = isAPI($url, 'GET');
   if(isset($response->error)){
-    echo $response->error;
+    echo json_encode($response->error);
     return null;
   }
   return $response;

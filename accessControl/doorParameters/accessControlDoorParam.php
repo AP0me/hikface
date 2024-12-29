@@ -6,6 +6,9 @@ function doorParameters($host)
 {
     $url = "https://$host/ISAPI/AccessControl/Door/param/1?security=1&iv=70afca2183976d5a28453cd5edc7f01a";
     $xml = isAPI($url, 'GET');
+    if(isset($xml->error)){
+        return $xml->error;
+    }
     return [
         "doorName" => $xml->doorName,
         "openDuration" => $xml->openDuration,
