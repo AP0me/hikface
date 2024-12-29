@@ -37,7 +37,9 @@ class VideoStream
   }
 }
 
-$videoStreamData = streamingChannels($host);
+$videoStreamData = streamingChannels($host)->StreamingChannel;
+// echo json_encode($videoStreamData);
+// die;
 $mainVideoStreamData = $videoStreamData[0];
 $mainVideoStream = new VideoStream(
   $mainVideoStreamData->channelName,
@@ -50,7 +52,6 @@ $mainVideoStream = new VideoStream(
   $mainVideoStreamData->Video->videoCodecType,
   $mainVideoStreamData->Video->keyFrameInterval,
 );
-print_r(json_encode($mainVideoStream));
 
 $subVideoStreamData = $videoStreamData[1];
 $subVideoStream = new VideoStream(
@@ -64,5 +65,5 @@ $subVideoStream = new VideoStream(
   $subVideoStreamData->Video->videoCodecType,
   $subVideoStreamData->Video->keyFrameInterval,
 );
-print_r(json_encode($subVideoStream));
 
+echo json_encode([$mainVideoStream, $subVideoStream]);
