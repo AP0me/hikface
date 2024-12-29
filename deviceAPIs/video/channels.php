@@ -34,7 +34,7 @@ function streamingChannels($host)
     echo 'cURL error: ' . curl_error($ch);
   } else {
     // Print the response
-    return xmlToJson($response)->StreamingChannel;
+    return xmlToJson($response);
   }
 
   // Close the cURL session

@@ -2,32 +2,22 @@
 require_once $_SERVER['DOCUMENT_ROOT'] . '/hostname.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 
-function fetchNetworkInterfaces($host) {
+function fetchNetworkInterfaces($host)
+{
     $url = "https://$host/ISAPI/AccessControl/WiegandCfg/wiegandNo/1";
-    // Initialize cURL session
-    $ch = curl_init($url);
-
-    // Set cURL options
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
-
-    $ch = deviceAuth($ch);
-
-    // Execute cURL request
-    $response = curl_exec($ch);
-
-    // Check for errors
-    if (curl_errno($ch)) {
-        echo "cURL Error: " . curl_error($ch);
-    } else {
-       $xml=new SimpleXMLElement($response);
-       print_r($xml);echo '<br>';
-       print_r(((string)$xml->enable=='true') ? 'true' : 0);echo '<br>';
-       print_r( ((string)$xml->enable=='true') ? (string)$xml->communicateDirection : 0);echo '<br>';
-       print_r(((string)$xml->enable=='true') ? (string)$xml->wiegandMode : 0);
+    $response = isAPI($url, 'GET');
+    if(isset($response->error)){
+        echo json_encode($response);
+        return null;
     }
-    curl_close($ch);
+    if ($response->enable == 'true') {
+        return [
+            "enable" => $response->enable,
+            "communicateDirection" => $response->communicateDirection,
+            "wiegandMode" => $response->wiegandMode,
+        ];
+    } else {
+        return ["enable" => $response->enable, "communicateDirection" => 0, "wiegandMode" => 0,];
+    }
 }
-fetchNetworkInterfaces($host);
+echo json_encode(fetchNetworkInterfaces($host));

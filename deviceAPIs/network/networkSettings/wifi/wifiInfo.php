@@ -35,50 +35,26 @@ function fetchNetworkInterfaces($host)
 {
   // URL of the resource
   $url = "https://$host/ISAPI/System/Network/interfaces/2/ipAddress";
-
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
-  } else {
-
-    $xml = new SimpleXMLElement($response);
-
-
-    $wifiInfo = new WifiInfo(
-      (string)$xml->addressingType,
-      (string)$xml->ipAddress,
-      (string)$xml->subnetMask,
-      (string)$xml->DefaultGateway->ipAddress,
-      (string)$xml->Ipv6Mode->ipV6AddressingType,
-      (string)$xml->ipv6Address,
-      (string)$xml->bitMask,
-      (string)$xml->DefaultGateway->ipv6Address,
-      (string)$xml->DNSEnable,
-      (string)$xml->PrimaryDNS->ipAddress,
-      (string)$xml->SecondaryDNS->ipAddress,
-
-    );
-    return $wifiInfo;
+  $response = isAPI($url, 'GET');
+  if (isset($response->error)) {
+    echo json_encode($response->error);
+    return null;
   }
+  $wifiInfo = new WifiInfo(
+    (string)$response->addressingType,
+    (string)$response->ipAddress,
+    (string)$response->subnetMask,
+    (string)$response->DefaultGateway->ipAddress,
+    (string)$response->Ipv6Mode->ipV6AddressingType,
+    (string)$response->ipv6Address,
+    (string)$response->bitMask,
+    (string)$response->DefaultGateway->ipv6Address,
+    (string)$response->DNSEnable,
+    (string)$response->PrimaryDNS->ipAddress,
+    (string)$response->SecondaryDNS->ipAddress,
 
-  // Close cURL session
-  curl_close($ch);
+  );
+  return $wifiInfo;
 }
 
-// Example usage
-$a = fetchNetworkInterfaces($host);
-print_r($a);
+echo json_encode(fetchNetworkInterfaces($host));

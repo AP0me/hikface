@@ -21,32 +21,12 @@ class ScreenDisplayPreference
 function fetchIdentityTerminal($host)
 {
   $url = "https://$host/ISAPI/AccessControl/IdentityTerminal";
-
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
+  $response = isAPI($url, 'GET');
+  if (isset($response->error)) {
+    echo json_encode($response->error);
     return null;
   }
-
-  // Close cURL session
-  curl_close($ch);
-
-  // Decode and return the JSON response
-  return xmlToJson($response);
+  return $response;
 }
 
 // Example usage
@@ -57,11 +37,7 @@ $screenDisplayPreference = new ScreenDisplayPreference(
   $identityTerminal->showMode,
 );
 
-if ($identityTerminal) {
-  echo json_encode($screenDisplayPreference, JSON_PRETTY_PRINT);
-} else {
-  echo "Failed to fetch Identity Terminal data.";
-}
+echo json_encode($screenDisplayPreference);
 ?>
 
 

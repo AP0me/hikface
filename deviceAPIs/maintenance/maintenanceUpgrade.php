@@ -5,50 +5,26 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 function upgrade($host)
 {
     $url = "https://$host/ISAPI/System/upgradeStatus";
-    $ch = curl_init($url);
-
-    // Set cURL options
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
-
-    $ch = deviceAuth($ch);
-
-    // Execute cURL request
-    $response = curl_exec($ch);
-
-    // Check for errors
-    if (curl_errno($ch)) {
-        echo "cURL Error: " . curl_error($ch);
-    } else {
-        return xmlToJson($response);
+    $response = isAPI($url, 'GET');
+    if (isset($response->error)) {
+        echo json_encode($response->error);
+        return null;
     }
-
-    // Close cURL session
-    curl_close($ch);
+    return $response;
 }
-echo json_encode(upgrade($host));
-
 
 function vers($host)
 {
     $url = "https://$host/ISAPI/System/onlineUpgrade/version?check=true";
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
-
-    $ch = deviceAuth($ch);
-
-    $response = curl_exec($ch);
-    if (curl_errno($ch)) {
-        echo "cURL Error: " . curl_error($ch);
-    } else {
-        return xmlToJson($response);
+    $response = isAPI($url, 'GET');
+    if (isset($response->error)) {
+        echo json_encode($response->error);
+        return null;
     }
-    curl_close($ch);
+    return $response;
 }
 
-echo json_encode(vers($host));
+echo json_encode([
+    "upgrade" => upgrade($host),
+    "vers" => vers($host),
+]);

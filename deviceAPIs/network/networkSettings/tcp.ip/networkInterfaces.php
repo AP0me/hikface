@@ -44,46 +44,30 @@ class NetworkInfo
 function fetchNetworkInterfaces($host)
 {
   $url = "https://$host/ISAPI/System/Network/interfaces";
-
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
-
-  $ch = deviceAuth($ch);
-  
-  $response = curl_exec($ch);
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
-  } else {
-    $xml = new SimpleXMLElement($response);
-    print_r($xml);
-    echo '<br><br>';
-    $baseInfo = new NetworkInfo(
-      (string)$xml->NetworkInterface[0]->Link->autoNegotiation,
-      (string)$xml->NetworkInterface[0]->Link->speed,
-      (string)$xml->NetworkInterface[0]->Link->duplex,
-      (string)$xml->NetworkInterface[0]->IPAddress->addressingType,
-      (string)$xml->NetworkInterface[0]->IPAddress->ipAddress,
-      (string)$xml->NetworkInterface[0]->IPAddress->subnetMask,
-      (string)$xml->NetworkInterface[0]->IPAddress->DefaultGateway->ipAddress,
-      (string)$xml->NetworkInterface[0]->IPAddress->Ipv6Mode->ipV6AddressingType,
-      (string)$xml->NetworkInterface[0]->IPAddress->ipv6Address,
-      (string)$xml->NetworkInterface[0]->IPAddress->bitMask,
-      (string)$xml->NetworkInterface[0]->IPAddress->DefaultGateway->ipv6Address,
-      (string)$xml->NetworkInterface[0]->Link->MACAddress,
-      (string)$xml->NetworkInterface[0]->Link->MTU,
-      (string)$xml->NetworkInterface[0]->IPAddress->DNSEnable,
-      (string)$xml->NetworkInterface[0]->IPAddress->PrimaryDNS->ipAddress,
-      (string)$xml->NetworkInterface[0]->IPAddress->SecondaryDNS->ipAddress
-    );
-    return $baseInfo;
+  $response = isAPI($url, 'GET');
+  if (isset($response->error)) {
+    echo json_encode($response->error);
+    return null;
   }
-  curl_close($ch);
+  $baseInfo = new NetworkInfo(
+    (string)$response->NetworkInterface[0]->Link->autoNegotiation,
+    (string)$response->NetworkInterface[0]->Link->speed,
+    (string)$response->NetworkInterface[0]->Link->duplex,
+    (string)$response->NetworkInterface[0]->IPAddress->addressingType,
+    (string)$response->NetworkInterface[0]->IPAddress->ipAddress,
+    (string)$response->NetworkInterface[0]->IPAddress->subnetMask,
+    (string)$response->NetworkInterface[0]->IPAddress->DefaultGateway->ipAddress,
+    (string)$response->NetworkInterface[0]->IPAddress->Ipv6Mode->ipV6AddressingType,
+    (string)$response->NetworkInterface[0]->IPAddress->ipv6Address,
+    (string)$response->NetworkInterface[0]->IPAddress->bitMask,
+    (string)$response->NetworkInterface[0]->IPAddress->DefaultGateway->ipv6Address,
+    (string)$response->NetworkInterface[0]->Link->MACAddress,
+    (string)$response->NetworkInterface[0]->Link->MTU,
+    (string)$response->NetworkInterface[0]->IPAddress->DNSEnable,
+    (string)$response->NetworkInterface[0]->IPAddress->PrimaryDNS->ipAddress,
+    (string)$response->NetworkInterface[0]->IPAddress->SecondaryDNS->ipAddress
+  );
+  return $baseInfo;
 }
-$a = fetchNetworkInterfaces($host);
-print_r($a);
+
+echo json_encode(fetchNetworkInterfaces($host));

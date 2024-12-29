@@ -5,68 +5,37 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 function imageSetting($host)
 {
   $url = "https://$host/ISAPI/Image/channels/1";
-  $ch = curl_init($url);
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
-  } else {
-    $xml = json_decode(xmlToJson($response));
-    return json_encode([
-        'brightnessLevel' => $xml->Color->brightnessLevel,
-        'contrastLevel' => $xml->Color->contrastLevel,
-        'saturationLevel' => $xml->Color->saturationLevel,
-        'SharpnessLevel' => $xml->Sharpness->SharpnessLevel,
-        'mode' => $xml->WDR->mode,
-        'powerLineFrequencyMode' => $xml->powerLineFrequency->powerLineFrequencyMode,
-        'enabled' => $xml->Beauty->enabled,
-        'whiteningStrength' => $xml->Beauty->whiteningStrength,
-        'skinSmoothingStrength' => $xml->Beauty->skinSmoothingStrength,
-      ]
-    );
+  $response = isAPI($url, 'GET');
+  if(isset($response->error)){
+    echo $response->error;
+    return null;
   }
-
-  // Close cURL session
-  curl_close($ch);
+  return [
+    'brightnessLevel' => $response->Color->brightnessLevel,
+    'contrastLevel' => $response->Color->contrastLevel,
+    'saturationLevel' => $response->Color->saturationLevel,
+    'SharpnessLevel' => $response->Sharpness->SharpnessLevel,
+    'mode' => $response->WDR->mode,
+    'powerLineFrequencyMode' => $response->powerLineFrequency->powerLineFrequencyMode,
+    'enabled' => $response->Beauty->enabled,
+    'whiteningStrength' => $response->Beauty->whiteningStrength,
+    'skinSmoothingStrength' => $response->Beauty->skinSmoothingStrength,
+  ];
 }
-echo imageSetting($host);
 
 function LED($a, $host)
 {
   $url = "https://$host/ISAPI/Image/channels/$a/supplementLight";
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
-  } else {
-    $xml = new SimpleXMLElement($response);
-    print_r($xml);
-    echo '<br>';
+  $response = isAPI($url, 'GET');
+  if(isset($response->error)){
+    echo $response->error;
+    return null;
   }
-
-  // Close cURL session
-  curl_close($ch);
+  return $response;
 }
-LED('1', $host);
-LED('2', $host);
+
+echo json_encode([
+  "imageSetting" => imageSetting($host),
+  "LED1" => LED('1', $host),
+  "LED2" => LED('2', $host),
+]);

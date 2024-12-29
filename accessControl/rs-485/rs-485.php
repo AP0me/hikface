@@ -5,53 +5,23 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/helper/functions.php';
 function fetchNetworkInterfaces($host)
 {
     $url = "https://$host/ISAPI/System/Serial/ports/1";
-
-    $ch = curl_init($url);
-
-    // Set cURL options
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET"); // Set method to GET
-
-    $ch = deviceAuth($ch);
-
-
-    // Execute cURL request
-    $response = curl_exec($ch);
-
-    // Check for errors
-    if (curl_errno($ch)) {
-        echo "cURL Error: " . curl_error($ch);
-    } else {
-        $xml = new SimpleXMLElement($response);
-        print_r($xml);
-        echo '<br>';
-        print_r((string)$xml->enabled);
-        echo '<br>';
-        print_r((string)$xml->direction);
-        echo '<br>';
-        print_r((string)$xml->mode);
-        echo '<br>';
-        print_r((string)$xml->serialAddress);
-        echo '<br>';
-        print_r((string)$xml->baudRate);
-        echo '<br>';
-        print_r((string)$xml->dataBits);
-        echo '<br>';
-        print_r((string)$xml->stopBits);
-        echo '<br>';
-        print_r((string)$xml->parityType);
-        echo '<br>';
-        print_r((string)$xml->flowCtrl);
-        echo '<br>';
-        print_r((string)$xml->duplexMode);
-        echo '<br>';
+    $response = isAPI($url, 'GET');
+    if (isset($response->error)) {
+        return $response->error;
     }
-
-    // Close cURL session
-    curl_close($ch);
+    return [
+        "enabled" => $response->enabled,
+        "direction" => $response->direction,
+        "mode" => $response->mode,
+        "serialAddress" => $response->serialAddress,
+        "baudRate" => $response->baudRate,
+        "dataBits" => $response->dataBits,
+        "stopBits" => $response->stopBits,
+        "parityType" => $response->parityType,
+        "flowCtrl" => $response->flowCtrl,
+        "duplexMode" => $response->duplexMode,
+    ];
 }
 
 // Example usage
-fetchNetworkInterfaces($host);
+echo json_encode(fetchNetworkInterfaces($host));

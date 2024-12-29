@@ -39,32 +39,11 @@ function updatePlaySchedule($host, $schedule_start, $schedule_end)
 function deletePlaySchedule($host)
 {
   $url = "https://$host/ISAPI/Publish/ScheduleMgr/playSchedule/1";
-
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return response instead of outputting it
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Bypass SSL verification for testing
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // Bypass host verification
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE"); // Set method to DELETE
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
-    return null;
+  $response = isAPI($url, 'DELETE');
+  if (isset($response->error)) {
+    return $response->error;
   }
-
-  // Close cURL session
-  curl_close($ch);
-
-  // Return response
-  return xmlToJson($response);
+  return $response;
 }
 
 $reqBody = reqBody();
@@ -72,11 +51,10 @@ $schedule_start = $reqBody['schedule_start']; // 02:00:00
 $schedule_end = $reqBody['schedule_end']; // 17:30:00
 
 if (isset($schedule_start) && isset($schedule_end) && $schedule_start != '' && $schedule_end != '') {
-  $response = json_encode(deletePlaySchedule($host));
-  echo $response;
-
-  $response = json_encode(updatePlaySchedule($host, $schedule_start, $schedule_end));
-  echo $response;
+  echo json_encode([
+    "deletePlaySchedule" => updatePlaySchedule($host, $schedule_start, $schedule_end),
+    "updatePlaySchedule" => updatePlaySchedule($host, $schedule_start, $schedule_end),
+  ]);
 } else {
   echo "Please provide both schedule_start and schedule_end parameters.";
 }

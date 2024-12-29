@@ -24,30 +24,12 @@ class DeviceIDs
 function fetchDeviceId($host)
 {
   $url = "https://$host/ISAPI/VideoIntercom/deviceId";
-
-  // Initialize cURL session
-  $ch = curl_init($url);
-
-  // Set cURL options
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-  curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-  curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
-
-  $ch = deviceAuth($ch);
-
-  // Execute cURL request
-  $response = curl_exec($ch);
-
-  // Check for errors
-  if (curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
-  } else {
-    return xmlToJson($response);
+  $response = isAPI($url, 'GET');
+  if(isset($response->error)){
+    echo $response->error;
+    return null;
   }
-
-  // Close cURL session
-  curl_close($ch);
+  return $response;
 }
 
 $deviceIDData = fetchDeviceId($host);
@@ -60,9 +42,5 @@ $deviceIDs = new DeviceIDs(
   (int)$deviceIDData->unitNumber,
 );
 
-print_r($deviceIDs);
-?>
-<br><br>
-<a href="device-num-save.php?deviceIDs=<?= htmlspecialchars(json_encode($deviceIDs)); ?>">
-  <button>Save</button>
-</a>
+echo json_encode($deviceIDs);
+
